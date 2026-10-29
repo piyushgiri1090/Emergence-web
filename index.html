@@ -796,8 +796,18 @@
                             <div id="homeNearbyPharmacies" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                         </div>
                     </div>
+                    <section id="nearbyGoogleMapPanel" class="hidden mt-5 overflow-hidden rounded-xl border border-gray-200" aria-label="Google Maps nearby hospitals">
+                        <div class="flex flex-col gap-2 bg-gray-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <h3 id="nearbyGoogleMapHeading" class="text-sm font-bold text-brand-darktext">Hospitals on Google Maps</h3>
+                                <p class="text-[11px] text-gray-500">Google Maps results for the selected location.</p>
+                            </div>
+                            <a id="nearbyGoogleMapsLink" class="w-fit rounded-lg bg-white px-3 py-2 text-xs font-bold text-brand-blue shadow-sm hover:bg-blue-50" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer">Open Google Maps</a>
+                        </div>
+                        <iframe id="nearbyGoogleMapFrame" class="h-72 w-full border-0 sm:h-96" title="Google Maps search for nearby hospitals" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                    </section>
                     <button type="button" onclick="openAssistantWithNearbyRecommendations()" class="mt-4 rounded-lg border border-brand-blue px-3 py-2 text-xs font-bold text-brand-blue hover:bg-blue-50">Ask assistant about these places</button>
-                    <p class="text-[10px] text-gray-400 mt-4">Your device location is used only when you choose “Use My Location.” Map data © OpenStreetMap contributors; coverage and contact details may be incomplete. Call 112 for emergencies (108 ambulance service where available).</p>
+                    <p class="text-[10px] text-gray-400 mt-4">Your location is used only after you search; searched locations are sent to OpenStreetMap and Google Maps to show results. Map coverage and contact details may be incomplete. Call 112 for emergencies (108 ambulance service where available).</p>
                 </div>
             </section>
 
@@ -1735,11 +1745,21 @@
                 <p class="max-w-[90%] rounded-xl bg-blue-50 p-3 text-gray-800">Describe what happened—try “snake bite”, “bleeding”, “burn”, “electric shock”, “poison”, or “accident”. हिंदी में भी पूछें।</p>
             </div>
             <div id="assistantNearbyRecommendations" class="hidden max-h-40 overflow-y-auto border-t border-gray-100 px-4 py-3 text-xs" aria-live="polite"></div>
-            <form class="flex gap-2 border-t border-gray-100 p-3" onsubmit="event.preventDefault(); submitEmergencyAssistantQuestion()">
+            <form class="flex flex-wrap gap-2 border-t border-gray-100 p-3" onsubmit="event.preventDefault(); submitEmergencyAssistantQuestion()">
                 <label class="sr-only" for="emergencyAssistantInput">Ask about basic first aid</label>
-                <input id="emergencyAssistantInput" type="text" maxlength="300" autocomplete="off" placeholder="Ask a first-aid question..." class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-xs focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
+                <input id="emergencyAssistantInput" type="text" maxlength="300" autocomplete="off" placeholder="Ask a first-aid question..." class="min-w-0 flex-1 basis-36 rounded-lg border border-gray-300 px-3 py-2 text-xs focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
+                <label class="sr-only" for="emergencyAssistantVoiceLanguage">Voice input language</label>
+                <select id="emergencyAssistantVoiceLanguage" class="rounded-lg border border-gray-300 bg-white px-2 py-2 text-xs focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100" aria-label="Voice input language">
+                    <option value="hi-IN">हिंदी</option>
+                    <option value="en-IN">English</option>
+                </select>
+                <button id="emergencyAssistantVoiceButton" type="button" onclick="toggleEmergencyAssistantVoiceInput()" aria-label="Start voice input" class="flex items-center gap-1 rounded-lg border border-brand-blue px-3 py-2 text-xs font-bold text-brand-blue hover:bg-blue-50">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18v3m-4 0h8m-4-6a4 4 0 004-4V5a4 4 0 00-8 0v6a4 4 0 004 4zm7-4a7 7 0 01-14 0"/></svg>
+                    <span id="emergencyAssistantVoiceButtonText">Speak</span>
+                </button>
                 <button type="submit" class="rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white hover:bg-blue-800">Send</button>
             </form>
+            <p id="emergencyAssistantVoiceStatus" class="px-3 pb-3 text-[10px] text-gray-500" role="status" aria-live="polite">Voice input uses your browser’s speech service, may send audio to that provider, and may need internet access.</p>
         </section>
         <button id="emergencyAssistantToggle" type="button" aria-expanded="false" aria-controls="emergencyAssistantPanel" onclick="toggleEmergencyAssistant()" class="rounded-full bg-brand-blue px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-blue-800">
             First Aid Help
@@ -2290,6 +2310,22 @@
             setNearbyStatus(`Showing mapped services ${scopeDescription} for ${locationLabel}: ${countQualifier}${counts.hospital} hospitals/clinics, ${countQualifier}${counts.police} police/fire stations and ${countQualifier}${counts.pharmacy} pharmacies. Distances are approximate; map coverage may be incomplete.`);
         }
 
+        function updateNearbyGoogleMap(latitude, longitude, locationLabel, searchScope) {
+            const panel = document.getElementById('nearbyGoogleMapPanel');
+            const frame = document.getElementById('nearbyGoogleMapFrame');
+            const heading = document.getElementById('nearbyGoogleMapHeading');
+            const mapsLink = document.getElementById('nearbyGoogleMapsLink');
+            const locationQuery = searchScope === 'area'
+                ? `hospitals in ${locationLabel}`
+                : `hospitals near ${latitude},${longitude}`;
+            const encodedQuery = encodeURIComponent(locationQuery);
+            frame.src = `https://maps.google.com/maps?q=${encodedQuery}&output=embed`;
+            frame.title = `Google Maps hospital search: ${locationLabel}`;
+            heading.textContent = `Hospitals on Google Maps · ${locationLabel}`;
+            mapsLink.href = `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`;
+            panel.classList.remove('hidden');
+        }
+
         function updateAssistantNearbyRecommendations() {
             const container = document.getElementById('assistantNearbyRecommendations');
             if (!container || !latestNearbyLocation) return;
@@ -2361,6 +2397,83 @@
             const input = document.getElementById('emergencyAssistantInput');
             input.value = 'Show hospitals, police stations and pharmacies for this location';
             submitEmergencyAssistantQuestion();
+        }
+
+        let emergencyAssistantRecognition = null;
+        let emergencyAssistantVoiceActive = false;
+        let emergencyAssistantVoiceBaseText = '';
+
+        function setEmergencyAssistantVoiceActive(isActive) {
+            emergencyAssistantVoiceActive = isActive;
+            const button = document.getElementById('emergencyAssistantVoiceButton');
+            const buttonText = document.getElementById('emergencyAssistantVoiceButtonText');
+            buttonText.textContent = isActive ? 'Stop' : 'Speak';
+            button.setAttribute('aria-label', isActive ? 'Stop voice input' : 'Start voice input');
+            button.classList.toggle('bg-red-50', isActive);
+            button.classList.toggle('text-red-700', isActive);
+            button.classList.toggle('border-red-300', isActive);
+        }
+
+        function toggleEmergencyAssistantVoiceInput() {
+            const status = document.getElementById('emergencyAssistantVoiceStatus');
+            if (emergencyAssistantVoiceActive) {
+                emergencyAssistantRecognition.stop();
+                status.textContent = 'Stopping voice input...';
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                status.textContent = 'Voice input is not supported in this browser. Try the latest Chrome or Edge, or type your question.';
+                return;
+            }
+
+            emergencyAssistantRecognition = new SpeechRecognition();
+            emergencyAssistantRecognition.lang = document.getElementById('emergencyAssistantVoiceLanguage').value;
+            emergencyAssistantRecognition.continuous = false;
+            emergencyAssistantRecognition.interimResults = true;
+            emergencyAssistantRecognition.maxAlternatives = 1;
+            emergencyAssistantVoiceBaseText = document.getElementById('emergencyAssistantInput').value.trim();
+            emergencyAssistantRecognition.onstart = () => {
+                setEmergencyAssistantVoiceActive(true);
+                status.textContent = 'Listening… speak now. Your text will not be sent until you tap Send.';
+            };
+            emergencyAssistantRecognition.onresult = event => {
+                let transcript = '';
+                let hasInterimText = false;
+                for (let index = 0; index < event.results.length; index += 1) {
+                    transcript += event.results[index][0].transcript;
+                    if (!event.results[index].isFinal) hasInterimText = true;
+                }
+                const combinedText = [emergencyAssistantVoiceBaseText, transcript.trim()].filter(Boolean).join(' ');
+                document.getElementById('emergencyAssistantInput').value = combinedText.slice(0, 300);
+                status.textContent = hasInterimText
+                    ? 'Recognizing speech…'
+                    : 'Voice text ready. Review it, then tap Send.';
+            };
+            emergencyAssistantRecognition.onerror = event => {
+                const messages = {
+                    'no-speech': 'No speech detected. Tap Speak and try again.',
+                    'not-allowed': 'Microphone access is blocked. Allow microphone access in browser settings, then try again.',
+                    'service-not-allowed': 'Speech recognition is unavailable. Try again or type your question.',
+                    network: 'Speech recognition needs an internet connection in this browser. Type your question if offline.'
+                };
+                status.textContent = messages[event.error] || `Voice input failed (${event.error}). Please type your question and try again.`;
+                setEmergencyAssistantVoiceActive(false);
+            };
+            emergencyAssistantRecognition.onend = () => {
+                setEmergencyAssistantVoiceActive(false);
+                if (status.textContent.startsWith('Listening') || status.textContent.startsWith('Recognizing')) {
+                    status.textContent = 'Voice text ready. Review it, then tap Send.';
+                }
+            };
+            status.textContent = 'Requesting microphone access...';
+            try {
+                emergencyAssistantRecognition.start();
+            } catch (error) {
+                setEmergencyAssistantVoiceActive(false);
+                status.textContent = `Could not start voice input (${error.message}). Check microphone permission or type your question.`;
+            }
         }
 
         function getNominatimAreaId(result) {
@@ -2594,6 +2707,7 @@
                     }
                 }
 
+                updateNearbyGoogleMap(latitude, longitude, locationLabel, searchArea ? 'area' : 'nearby');
                 const result = await fetchNearbyOpenStreetMapData(latitude, longitude, searchArea);
                 renderNearbyServices(result.elements, latitude, longitude, locationLabel, result.scope);
                 if (areaFallbackNotice) {
@@ -2624,6 +2738,9 @@
             panel.classList.toggle('hidden', !isOpening);
             button.setAttribute('aria-expanded', String(isOpening));
             button.textContent = isOpening ? 'Close First Aid Help' : 'First Aid Help';
+            if (!isOpening && emergencyAssistantVoiceActive) {
+                emergencyAssistantRecognition.stop();
+            }
             if (isOpening) document.getElementById('emergencyAssistantInput').focus();
         }
 
