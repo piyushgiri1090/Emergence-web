@@ -661,8 +661,10 @@
                             <div class="flex justify-between items-start">
                                 <span class="guide-photo-frame rounded-lg text-xs">
                                     <svg class="guide-photo-icon bg-red-100 p-2 text-brand-red" viewBox="0 0 24 24" fill="none" role="img" aria-label="Snake safety icon">
-                                        <path d="M5 5.5c2.5 0 2.5 3 5 3s2.5-3 5-3 2.5 3 5 3M5 12c2.5 0 2.5 3 5 3s2.5-3 5-3 2.5 3 5 3M5 18.5c2.5 0 2.5-3 5-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                        <circle cx="19.5" cy="15" r="1" fill="currentColor"/>
+                                        <path d="M5.2 17.8c-2-2.7-1.6-7.3 1-9.6 2.7-2.4 7.8-2.2 9.5.8 1.5 2.8-.2 6.1-3.1 6.2-2.5.1-3.8-2.8-2-4.5 1.7-1.7 4.7-.7 5.6 1.3 1 2.1 3.5 2.4 5 1.2 1.2-1 1.4-3 .3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="20.7" cy="8.3" r="1.7" fill="currentColor"/>
+                                        <circle cx="21.2" cy="7.9" r=".35" fill="white"/>
+                                        <path d="m22 8.3 1 .5-.9.5" stroke="currentColor" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </span>
                                 <span class="text-[10px] font-bold text-brand-red uppercase">Critical</span>
@@ -763,6 +765,12 @@
                         <input id="homeNearbyLocation" type="search" maxlength="120" placeholder="Hospital, police station, city, area or PIN code in India" class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
                         <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Nearby Services</button>
                     </form>
+                    <label class="mb-3 flex flex-col gap-1 text-xs font-semibold text-gray-700 sm:max-w-sm" for="homeNearbyDistrict">
+                        Or choose a Uttar Pradesh district (searches around its mapped centre)
+                        <select id="homeNearbyDistrict" class="nearby-district-select rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm font-normal focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
+                            <option value="">Select a UP district</option>
+                        </select>
+                    </label>
                     <p id="homeNearbyStatus" class="text-xs text-gray-600 mb-4" role="status" aria-live="polite">Your location is only used to search nearby emergency services.</p>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                         <div>
@@ -1245,6 +1253,12 @@
                         <input id="hospitalsNearbyLocation" type="search" maxlength="120" placeholder="Hospital, city, area or PIN code in India" class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
                         <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Nearby Hospitals</button>
                     </form>
+                    <label class="mb-3 flex flex-col gap-1 text-xs font-semibold text-gray-700 sm:max-w-sm" for="hospitalsNearbyDistrict">
+                        Or choose a Uttar Pradesh district (searches around its mapped centre)
+                        <select id="hospitalsNearbyDistrict" class="nearby-district-select rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm font-normal focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
+                            <option value="">Select a UP district</option>
+                        </select>
+                    </label>
                     <p id="hospitalsNearbyStatus" class="text-xs text-gray-600 mb-3" role="status" aria-live="polite">Location access is requested only when you tap the button.</p>
                     <div id="hospitalsNearbyResults" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                     <p class="text-[10px] text-gray-400 mt-4">Your location is used only after you choose a search. Nearby map data © OpenStreetMap contributors; coverage and contact details may be incomplete.</p>
@@ -1439,6 +1453,12 @@
                         <input id="policeNearbyLocation" type="search" maxlength="120" placeholder="Police station, city, area or PIN code in India" class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
                         <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Nearby Stations</button>
                     </form>
+                    <label class="mb-3 flex flex-col gap-1 text-xs font-semibold text-gray-700 sm:max-w-sm" for="policeNearbyDistrict">
+                        Or choose a Uttar Pradesh district (searches around its mapped centre)
+                        <select id="policeNearbyDistrict" class="nearby-district-select rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm font-normal focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
+                            <option value="">Select a UP district</option>
+                        </select>
+                    </label>
                     <p id="policeNearbyStatus" class="text-xs text-gray-600 mb-3" role="status" aria-live="polite">Location access is requested only when you tap the button.</p>
                     <div id="policeNearbyResults" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                     <p class="text-[10px] text-gray-400 mt-4">Location and nearby map data © OpenStreetMap contributors.</p>
@@ -1649,6 +1669,32 @@
         </section>
 
     </main>
+
+    <aside id="emergencyAssistant" class="fixed bottom-4 right-4 z-[70] flex flex-col items-end gap-3 no-print">
+        <section id="emergencyAssistantPanel" class="hidden w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-brand-bordergray bg-white shadow-2xl" aria-label="Offline emergency guide assistant">
+            <div class="bg-brand-darktext p-4 text-white">
+                <div class="flex items-start justify-between gap-2">
+                    <div>
+                        <h2 class="font-bold">Emergency Guide Assistant</h2>
+                        <p class="mt-1 text-[11px] text-blue-100">Offline guided replies · not an AI or medical professional</p>
+                    </div>
+                    <a href="tel:112" class="shrink-0 rounded-lg bg-red-600 px-3 py-2 text-xs font-extrabold text-white">Call 112</a>
+                </div>
+                <p class="mt-3 text-[11px] text-white">Serious emergency? Call 112 now (or 108 ambulance service where available). Do not wait for this assistant. It does not contact emergency services.</p>
+            </div>
+            <div id="emergencyAssistantMessages" class="max-h-64 space-y-3 overflow-y-auto p-4 text-xs" aria-live="polite">
+                <p class="max-w-[90%] rounded-xl bg-blue-50 p-3 text-gray-800">Describe what happened—try “snake bite”, “bleeding”, “burn”, “electric shock”, “poison”, or “accident”. हिंदी में भी पूछें।</p>
+            </div>
+            <form class="flex gap-2 border-t border-gray-100 p-3" onsubmit="event.preventDefault(); submitEmergencyAssistantQuestion()">
+                <label class="sr-only" for="emergencyAssistantInput">Ask about basic first aid</label>
+                <input id="emergencyAssistantInput" type="text" maxlength="300" autocomplete="off" placeholder="Ask a first-aid question..." class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-xs focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
+                <button type="submit" class="rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white hover:bg-blue-800">Send</button>
+            </form>
+        </section>
+        <button id="emergencyAssistantToggle" type="button" aria-expanded="false" aria-controls="emergencyAssistantPanel" onclick="toggleEmergencyAssistant()" class="rounded-full bg-brand-blue px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-blue-800">
+            First Aid Help
+        </button>
+    </aside>
 
     <!-- SOS LOCATION MODAL -->
     <div id="sosModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -1861,8 +1907,8 @@
             const panel = document.getElementById('homeNearbyPanel');
             panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            if (!query) {
-                setNearbyStatus('Enter a hospital name, city, area, landmark or PIN code in India to search nearby services.', true);
+            if (!query && !document.getElementById('homeNearbyDistrict').value) {
+                setNearbyStatus('Enter a hospital name, city, area or PIN code, or select a Uttar Pradesh district.', true);
                 searchInput.focus();
                 return;
             }
@@ -1872,22 +1918,47 @@
         }
 
         const nearbySearchRadiusMeters = 12000;
+        const uttarPradeshDistricts = [
+            'Agra', 'Aligarh', 'Ambedkar Nagar', 'Amethi', 'Amroha', 'Auraiya', 'Ayodhya', 'Azamgarh',
+            'Baghpat', 'Bahraich', 'Ballia', 'Balrampur', 'Banda', 'Barabanki', 'Bareilly', 'Basti',
+            'Bhadohi', 'Bijnor', 'Budaun', 'Bulandshahr', 'Chandauli', 'Chitrakoot', 'Deoria', 'Etah',
+            'Etawah', 'Farrukhabad', 'Fatehpur', 'Firozabad', 'Gautam Buddha Nagar', 'Ghaziabad',
+            'Ghazipur', 'Gonda', 'Gorakhpur', 'Hamirpur', 'Hapur', 'Hardoi', 'Hathras', 'Jalaun',
+            'Jaunpur', 'Jhansi', 'Kannauj', 'Kanpur Dehat', 'Kanpur Nagar', 'Kasganj', 'Kaushambi',
+            'Kushinagar', 'Lakhimpur Kheri', 'Lalitpur', 'Lucknow', 'Maharajganj', 'Mahoba',
+            'Mainpuri', 'Mathura', 'Mau', 'Meerut', 'Mirzapur', 'Moradabad', 'Muzaffarnagar',
+            'Pilibhit', 'Pratapgarh', 'Prayagraj', 'Rae Bareli', 'Rampur', 'Saharanpur', 'Sambhal',
+            'Sant Kabir Nagar', 'Shahjahanpur', 'Shamli', 'Shravasti', 'Siddharthnagar', 'Sitapur',
+            'Sonbhadra', 'Sultanpur', 'Unnao', 'Varanasi'
+        ];
+        document.querySelectorAll('.nearby-district-select').forEach(select => {
+            uttarPradeshDistricts.forEach(district => {
+                const option = document.createElement('option');
+                option.value = district;
+                option.textContent = district;
+                select.appendChild(option);
+            });
+        });
+
         const nearbyServiceContainers = {
             home: {
                 statusId: 'homeNearbyStatus',
                 hospitalsId: 'homeNearbyHospitals',
                 policeId: 'homeNearbyPolice',
-                locationInputId: 'homeNearbyLocation'
+                locationInputId: 'homeNearbyLocation',
+                districtSelectId: 'homeNearbyDistrict'
             },
             hospitals: {
                 statusId: 'hospitalsNearbyStatus',
                 hospitalsId: 'hospitalsNearbyResults',
-                locationInputId: 'hospitalsNearbyLocation'
+                locationInputId: 'hospitalsNearbyLocation',
+                districtSelectId: 'hospitalsNearbyDistrict'
             },
             police: {
                 statusId: 'policeNearbyStatus',
                 policeId: 'policeNearbyResults',
-                locationInputId: 'policeNearbyLocation'
+                locationInputId: 'policeNearbyLocation',
+                districtSelectId: 'policeNearbyDistrict'
             }
         };
         let nearbyRequestInProgress = false;
@@ -2140,13 +2211,16 @@
             setNearbyStatus(`Showing emergency services near ${locationLabel}: up to ${hospitalCount} hospitals/clinics and ${policeCount} police/fire stations within 12 km. Distances are approximate.`);
         }
 
-        async function findIndianLocation(query) {
+        async function findIndianLocation(query, district = '') {
+            const locationQuery = district
+                ? [query, district, 'Uttar Pradesh', 'India'].filter(Boolean).join(', ')
+                : query;
             const parameters = new URLSearchParams({
                 format: 'jsonv2',
                 addressdetails: '1',
                 limit: '1',
                 countrycodes: 'in',
-                q: query
+                q: locationQuery
             });
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 15000);
@@ -2167,6 +2241,9 @@
                 if (!result || result.address?.country_code?.toLowerCase() !== 'in'
                     || !Number.isFinite(latitude) || !Number.isFinite(longitude)) {
                     throw new Error('Location not found in India. Try a city, area, landmark or PIN code.');
+                }
+                if (district && result.address.state?.toLowerCase() !== 'uttar pradesh') {
+                    throw new Error(`Could not confirm a location in ${district}, Uttar Pradesh. Try the district name or a nearby city/landmark.`);
                 }
 
                 return {
@@ -2239,13 +2316,15 @@
                 let locationLabel = 'your current location';
 
                 if (useSearch) {
-                    const input = document.getElementById(nearbyServiceContainers[source].locationInputId);
+                    const sourceContainer = nearbyServiceContainers[source];
+                    const input = document.getElementById(sourceContainer.locationInputId);
                     const query = input.value.trim();
-                    if (!query) {
-                        throw new Error('Enter an Indian city, area, landmark or PIN code to search.');
+                    const district = document.getElementById(sourceContainer.districtSelectId).value;
+                    if (!query && !district) {
+                        throw new Error('Enter an Indian city, area, landmark or PIN code, or select a Uttar Pradesh district.');
                     }
 
-                    const location = await findIndianLocation(query);
+                    const location = await findIndianLocation(query, district);
                     latitude = location.latitude;
                     longitude = location.longitude;
                     locationLabel = location.label;
@@ -2279,6 +2358,109 @@
                     delete button.dataset.originalLabel;
                 });
             }
+        }
+
+        function toggleEmergencyAssistant() {
+            const panel = document.getElementById('emergencyAssistantPanel');
+            const button = document.getElementById('emergencyAssistantToggle');
+            const isOpening = panel.classList.contains('hidden');
+            panel.classList.toggle('hidden', !isOpening);
+            button.setAttribute('aria-expanded', String(isOpening));
+            button.textContent = isOpening ? 'Close First Aid Help' : 'First Aid Help';
+            if (isOpening) document.getElementById('emergencyAssistantInput').focus();
+        }
+
+        function getEmergencyAssistantReply(question) {
+            const text = question.toLowerCase();
+            const isHindi = /[\u0900-\u097f]/.test(question)
+                || /\b(kya|kaise|karo|kare|bachao|hai|kaat|kata|lag|chot|jal|khun|khoon|madad|dawa|aspataal|kahan|batao)\b/i.test(question);
+            const replies = {
+                emergency: [
+                    'Call 112 now (or 108 ambulance service where available). Move away from immediate danger only if it is safe, and follow the emergency operator. Do not wait for this chat.',
+                    'अभी 112 पर कॉल करें (जहाँ उपलब्ध हो वहाँ 108 एम्बुलेंस भी)। केवल सुरक्षित होने पर ही खतरे से दूर जाएँ और आपातकालीन ऑपरेटर के निर्देश मानें। चैट के लिए इंतज़ार न करें।'
+                ],
+                snake: [
+                    'Snakebite: call 112/108 and arrange urgent hospital care. Keep the person calm and still; remove rings/tight items and loosely immobilize the limb. Do not cut, suck, ice, or tightly tie the bite; do not try to catch the snake.',
+                    'साँप काटने पर 112/108 पर कॉल करें और तुरंत अस्पताल ले जाएँ। व्यक्ति को शांत और स्थिर रखें, अंगूठी/तंग चीज़ें हटाएँ और अंग को ढीले सहारे से स्थिर करें। घाव काटें/चूसें नहीं, बर्फ़ या कसकर पट्टी न बाँधें और साँप पकड़ने की कोशिश न करें।'
+                ],
+                bleeding: [
+                    'For severe bleeding call 112/108. Put on gloves if available and press firmly on the wound with clean gauze/cloth continuously. Do not remove embedded objects or lift soaked dressings; add more layers and follow emergency instructions.',
+                    'तेज़ खून बहने पर 112/108 पर कॉल करें। दस्ताने हों तो पहनें और साफ़ गॉज़/कपड़े से घाव पर लगातार मज़बूत दबाव दें। फँसी वस्तु न निकालें और भीगी पट्टी न हटाएँ; ऊपर से और कपड़ा रखें और आपात सेवा के निर्देश मानें।'
+                ],
+                burn: [
+                    'Cool a thermal burn under cool clean running water for 20 minutes if possible. Remove jewellery/clothing near it unless stuck, and cover loosely with clean non-fluffy material. Do not use ice, toothpaste, butter, or pop blisters. Seek urgent care for large/deep, face, hand, genital, electrical, or chemical burns.',
+                    'जलने पर संभव हो तो 20 मिनट तक ठंडे साफ़ बहते पानी से ठंडा करें। पास के गहने/कपड़े हटाएँ, लेकिन चिपकी चीज़ न खींचें; साफ़ कपड़े से ढीला ढकें। बर्फ़, टूथपेस्ट, मक्खन न लगाएँ और फफोले न फोड़ें। बड़ा/गहरा घाव या चेहरे, हाथ, जननांग, बिजली/रसायन से जलने पर तुरंत चिकित्सा लें।'
+                ],
+                electric: [
+                    'Electric shock: do not touch the person while power may still be on. Switch off the supply only if safe; keep away from fallen wires and call 112. Once the scene is safe, check breathing and follow the emergency operator’s CPR instructions.',
+                    'बिजली के झटके में सप्लाई चालू हो सकती है तो व्यक्ति को न छुएँ। सुरक्षित हो तभी बिजली बंद करें; गिरे तारों से दूर रहें और 112 पर कॉल करें। जगह सुरक्षित होने पर साँस जाँचें और CPR के लिए ऑपरेटर के निर्देश मानें।'
+                ],
+                poison: [
+                    'Suspected poisoning: call 112 and get urgent medical/poison-centre advice. Do not induce vomiting or give food, drink, or medicine unless a clinician instructs you. Keep the product/container and note the time and amount if known.',
+                    'ज़हर का शक हो तो 112 पर कॉल करें और तुरंत डॉक्टर/ज़हर सलाह सेवा से संपर्क करें। डॉक्टर के कहे बिना उल्टी न कराएँ और खाना, पानी या दवा न दें। पैक/बोतल संभालें और पता हो तो समय व मात्रा नोट करें।'
+                ],
+                cpr: [
+                    'If someone is unresponsive and not breathing normally, call 112/108, ask for an AED, and start chest compressions if you can. Push hard and fast in the centre of the chest and follow the dispatcher; continue until help takes over.',
+                    'व्यक्ति बेहोश है और सामान्य साँस नहीं ले रहा तो 112/108 पर कॉल करें, AED मँगाएँ और कर सकें तो छाती दबाना शुरू करें। छाती के बीच में तेज़ और मज़बूत दबाव दें, ऑपरेटर के निर्देश मानें और मदद आने तक जारी रखें।'
+                ],
+                choking: [
+                    'Severe choking (cannot speak, cough, or breathe): call 112 and get trained help. Use age-appropriate choking first aid only if trained; if the person becomes unresponsive, start CPR and follow the dispatcher. Do not blindly sweep the mouth.',
+                    'गंभीर दम घुटने पर (बोल/खाँस/साँस न पाए) 112 पर कॉल करें। प्रशिक्षित हों तभी उम्र के अनुसार choking first aid दें। बेहोश होने पर CPR शुरू करें और ऑपरेटर के निर्देश मानें। मुँह में बिना देखे उँगली न डालें।'
+                ],
+                accident: [
+                    'Road accident: first make the scene safe and call 112/108. Do not move a person with possible head/neck/back injury unless there is immediate danger. For serious bleeding, use firm direct pressure; do not remove a helmet unless needed to open an airway and you are trained.',
+                    'सड़क दुर्घटना में पहले जगह सुरक्षित करें और 112/108 पर कॉल करें। सिर/गर्दन/पीठ की चोट के शक में व्यक्ति को न हिलाएँ, जब तक तुरंत खतरा न हो। तेज़ खून पर दबाव दें; हेलमेट न उतारें, सिवाय साँस का रास्ता खोलने की ज़रूरत और प्रशिक्षण होने पर।'
+                ],
+                hospital: [
+                    'Use “Use My Location” or choose a UP district in the nearby-services panel to find mapped hospitals and police stations. Allow location access in your browser. Map coverage and phone numbers may be incomplete—verify by calling; call 112 for immediate danger.',
+                    'पास के अस्पताल/पुलिस स्टेशन के लिए nearby-services में “Use My Location” दबाएँ या UP का ज़िला चुनें। ब्राउज़र में location अनुमति दें। मैप/फोन नंबर अधूरे हो सकते हैं—जाने से पहले पुष्टि करें; तत्काल खतरे में 112 पर कॉल करें।'
+                ],
+                medicine: [
+                    'I cannot diagnose or recommend a medicine or dose. Do not give medicines/food/drink to an unconscious person. Follow the packet or a clinician/pharmacist; for poisoning, allergy, snakebite, severe symptoms, or a child, seek urgent professional help. Call 112 for emergencies.',
+                    'मैं बीमारी की पहचान या दवा/खुराक नहीं बता सकता। बेहोश व्यक्ति को दवा/खाना/पानी न दें। पैकेट या डॉक्टर/फ़ार्मासिस्ट की सलाह मानें। ज़हर, एलर्जी, साँप काटने, गंभीर लक्षण या बच्चे की स्थिति में तुरंत चिकित्सा लें; आपात स्थिति में 112 कॉल करें।'
+                ],
+                general: [
+                    'I can share basic guidance for snakebite, bleeding, burns, electric shock, poisoning, choking, CPR, or road accidents. For anything severe or unclear, call 112 (or 108 ambulance service where available) and follow a clinician/dispatcher.',
+                    'मैं साँप काटने, खून बहने, जलने, बिजली के झटके, ज़हर, दम घुटने, CPR या दुर्घटना पर सामान्य जानकारी दे सकता हूँ। गंभीर या अस्पष्ट स्थिति में 112 (जहाँ उपलब्ध हो 108 एम्बुलेंस) पर कॉल करें और डॉक्टर/ऑपरेटर के निर्देश मानें।'
+                ]
+            };
+
+            let topic = 'general';
+            if (/snake|साँप|सांप|snakebite|सर्पदंश|saap/.test(text)) topic = 'snake';
+            else if (/bleed|blood|खून|रक्त|bleeding/.test(text)) topic = 'bleeding';
+            else if (/burn|जल|झुलस|आग/.test(text)) topic = 'burn';
+            else if (/electric|shock|बिजली|करंट/.test(text)) topic = 'electric';
+            else if (/poison|ज़हर|जहर|विष|निगल/.test(text)) topic = 'poison';
+            else if (/chok|दम घुट|गले में|सांस|साँस|breath/.test(text)) topic = 'choking';
+            else if (/cpr|बेहोश|होश|cardiac|heart|दिल/.test(text)) topic = 'cpr';
+            else if (/accident|दुर्घटना|एक्सीडेंट|fracture|हड्डी|spine|रीढ़/.test(text)) topic = 'accident';
+            else if (/hospital|police|location|nearby|near me|अस्पताल|पुलिस|लोकेशन|पास में|नज़दीक/.test(text)) topic = 'hospital';
+            else if (/medicine|medicine|दवा|गोली|tablet|dose|खुराक|medication/.test(text)) topic = 'medicine';
+            else if (/emergency|urgent|help now|आपात|इमरजेंसी|खतरा/.test(text)) topic = 'emergency';
+
+            return replies[topic][isHindi ? 1 : 0];
+        }
+
+        function submitEmergencyAssistantQuestion() {
+            const input = document.getElementById('emergencyAssistantInput');
+            const question = input.value.trim();
+            if (!question) return;
+
+            const messages = document.getElementById('emergencyAssistantMessages');
+            const userMessage = document.createElement('p');
+            userMessage.className = 'ml-auto max-w-[90%] rounded-xl bg-brand-blue p-3 text-white';
+            userMessage.textContent = question;
+            messages.appendChild(userMessage);
+
+            const assistantMessage = document.createElement('p');
+            assistantMessage.className = 'max-w-[90%] whitespace-pre-line rounded-xl bg-blue-50 p-3 text-gray-800';
+            assistantMessage.textContent = getEmergencyAssistantReply(question);
+            messages.appendChild(assistantMessage);
+
+            while (messages.children.length > 13) messages.removeChild(messages.children[0]);
+            messages.scrollTop = messages.scrollHeight;
+            input.value = '';
+            input.focus();
         }
 
         // SOS MODAL FUNCTIONS & GEOLOCATION
