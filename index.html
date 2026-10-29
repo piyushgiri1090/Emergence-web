@@ -2359,8 +2359,23 @@
             const panel = document.getElementById('emergencyAssistantPanel');
             if (panel.classList.contains('hidden')) toggleEmergencyAssistant();
             const input = document.getElementById('emergencyAssistantInput');
-            input.value = 'Show nearby hospitals, police stations and pharmacies';
+            input.value = 'Show hospitals, police stations and pharmacies for this location';
             submitEmergencyAssistantQuestion();
+        }
+
+        function getNominatimAreaId(result) {
+            if (result.category !== 'boundary' || result.type !== 'administrative') return null;
+            const osmId = Number(result.osm_id);
+            if (!Number.isSafeInteger(osmId)) return null;
+            if (result.osm_type === 'relation') return 3600000000 + osmId;
+            if (result.osm_type === 'way') return 2400000000 + osmId;
+            return null;
+        }
+
+        function getNominatimBoundingBox(result) {
+            if (!Array.isArray(result.boundingbox) || result.boundingbox.length !== 4) return null;
+            const bounds = result.boundingbox.map(Number);
+            return bounds.every(Number.isFinite) ? bounds : null;
         }
 
         async function findIndianLocation(query, district = '') {
@@ -2402,16 +2417,56 @@
                     latitude,
                     longitude,
                     label: result.display_name,
-                    areaId: result.osm_type === 'relation' && result.category === 'boundary' && result.type === 'administrative'
-                        ? 3600000000 + Number(result.osm_id)
-                        : null,
-                    boundingBox: Array.isArray(result.boundingbox) && result.boundingbox.length === 4
-                        ? result.boundingbox.map(Number)
-                        : null
+                    areaId: getNominatimAreaId(result),
+                    boundingBox: getNominatimBoundingBox(result)
                 };
             } catch (error) {
                 if (error.name === 'AbortError') {
                     throw new Error('Location search timed out. Please try again.');
+                }
+                throw error;
+            } finally {
+                clearTimeout(timeoutId);
+            }
+        }
+
+        async function findIndianAreaFromCoordinates(latitude, longitude) {
+            const parameters = new URLSearchParams({
+                format: 'jsonv2',
+                addressdetails: '1',
+                zoom: '10',
+                lat: String(latitude),
+                lon: String(longitude)
+            });
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${parameters}`, {
+                    signal: controller.signal,
+                    headers: { Accept: 'application/json' }
+                });
+                if (!response.ok) {
+                    throw new Error(`Local area lookup returned HTTP ${response.status}.`);
+                }
+
+                const result = await response.json();
+                const areaId = getNominatimAreaId(result);
+                const boundingBox = getNominatimBoundingBox(result);
+                if (result.address?.country_code?.toLowerCase() !== 'in'
+                    || !result.display_name || (!areaId && !boundingBox)) {
+                    throw new Error('A mapped local area could not be identified for your location.');
+                }
+                return {
+                    latitude: Number(result.lat) || latitude,
+                    longitude: Number(result.lon) || longitude,
+                    label: result.display_name,
+                    areaId,
+                    boundingBox
+                };
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    throw new Error('Local area lookup timed out.');
                 }
                 throw error;
             } finally {
@@ -2436,15 +2491,18 @@
                     query: `[out:json][timeout:25];(nwr(${south},${west},${north},${east})["amenity"~"^(${amenityPattern})$"];nwr(${south},${west},${north},${east})["healthcare"~"^(${healthcarePattern})$"];);out center tags;`
                 });
             }
-            queries.push({
-                scope: 'nearby',
-                query: `[out:json][timeout:20];(nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["amenity"~"^(${amenityPattern})$"];nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["healthcare"~"^(${healthcarePattern})$"];);out center tags;`
-            });
+            if (!searchArea) {
+                queries.push({
+                    scope: 'nearby',
+                    query: `[out:json][timeout:20];(nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["amenity"~"^(${amenityPattern})$"];nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["healthcare"~"^(${healthcarePattern})$"];);out center tags;`
+                });
+            }
             const endpoints = [
                 'https://overpass.kumi.systems/api/interpreter',
                 'https://overpass-api.de/api/interpreter'
             ];
             const errors = [];
+            let hasSuccessfulAreaResponse = false;
 
             for (const query of queries) {
                 for (const endpoint of endpoints) {
@@ -2465,6 +2523,7 @@
                         if (data.elements.length || query.scope === 'nearby') {
                             return { elements: data.elements, scope: query.scope };
                         }
+                        hasSuccessfulAreaResponse = true;
                     } catch (error) {
                         errors.push(error.name === 'AbortError' ? 'Map search timed out.' : error.message);
                     } finally {
@@ -2473,6 +2532,9 @@
                 }
             }
 
+            if (hasSuccessfulAreaResponse) {
+                return { elements: [], scope: 'area' };
+            }
             throw new Error(`Map search is unavailable. ${errors.join(' ')}`);
         }
 
@@ -2495,6 +2557,7 @@
                 let longitude;
                 let locationLabel = 'your current location';
                 let searchArea = null;
+                let areaFallbackNotice = '';
 
                 if (useSearch) {
                     const sourceContainer = nearbyServiceContainers[source];
@@ -2521,11 +2584,21 @@
                     longitude = Number(currentLon);
                     hasLiveLocation = true;
                     updateSosLocationDisplay();
-                    setNearbyStatus('Location found. Searching OpenStreetMap for mapped services within 12 km...');
+                    try {
+                        searchArea = await findIndianAreaFromCoordinates(latitude, longitude);
+                        locationLabel = searchArea.label;
+                        setNearbyStatus(`Local area found: ${locationLabel}. Searching mapped services throughout this area...`);
+                    } catch (error) {
+                        areaFallbackNotice = `Could not identify your mapped local area (${error.message}); showing services within 12 km instead.`;
+                        setNearbyStatus(areaFallbackNotice, true);
+                    }
                 }
 
                 const result = await fetchNearbyOpenStreetMapData(latitude, longitude, searchArea);
                 renderNearbyServices(result.elements, latitude, longitude, locationLabel, result.scope);
+                if (areaFallbackNotice) {
+                    setNearbyStatus(`${document.getElementById('homeNearbyStatus').textContent} ${areaFallbackNotice}`, true);
+                }
             } catch (error) {
                 if (!useSearch) {
                     hasLiveLocation = false;
@@ -2600,8 +2673,8 @@
                     'सड़क दुर्घटना में पहले जगह सुरक्षित करें और 112/108 पर कॉल करें। सिर/गर्दन/पीठ की चोट के शक में व्यक्ति को न हिलाएँ, जब तक तुरंत खतरा न हो। तेज़ खून पर दबाव दें; हेलमेट न उतारें, सिवाय साँस का रास्ता खोलने की ज़रूरत और प्रशिक्षण होने पर।'
                 ],
                 hospital: [
-                    'Search any Indian city, area, PIN code, or choose a UP district to see mapped hospitals, police/fire stations, and pharmacies across that searched area. “Use My Location” shows services within 12 km. Map data and phone numbers may be incomplete—confirm before travelling; call 112 for immediate danger.',
-                    'किसी भी भारतीय शहर, इलाके, PIN code को खोजें या UP का ज़िला चुनें—उस पूरे खोजे गए क्षेत्र के अस्पताल, पुलिस/फायर स्टेशन और फ़ार्मेसी दिखेंगे। “Use My Location” से 12 km के भीतर सेवाएँ दिखती हैं। मैप/फोन नंबर अधूरे हो सकते हैं—जाने से पहले पुष्टि करें; तत्काल खतरे में 112 पर कॉल करें।'
+                    'Search any Indian city, area, PIN code, or choose a UP district to see mapped hospitals, police/fire stations, and pharmacies across that searched area. “Use My Location” searches your mapped local area; if it cannot be identified, the search falls back to within 12 km. Map data and phone numbers may be incomplete—confirm before travelling; call 112 for immediate danger.',
+                    'किसी भी भारतीय शहर, इलाके, PIN code को खोजें या UP का ज़िला चुनें—उस पूरे खोजे गए क्षेत्र के अस्पताल, पुलिस/फायर स्टेशन और फ़ार्मेसी दिखेंगे। “Use My Location” आपके मैप किए गए स्थानीय क्षेत्र में खोजता है; क्षेत्र की पहचान न हो तो 12 km के भीतर खोज होगी। मैप/फोन नंबर अधूरे हो सकते हैं—जाने से पहले पुष्टि करें; तत्काल खतरे में 112 पर कॉल करें।'
                 ],
                 medicine: [
                     'I cannot diagnose or recommend a medicine or dose. Do not give medicines/food/drink to an unconscious person. Follow the packet or a clinician/pharmacist; for poisoning, allergy, snakebite, severe symptoms, or a child, seek urgent professional help. Call 112 for emergencies.',
