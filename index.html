@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Web | Emergency Rescue & First Aid Portal</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#123A63',
+                            reddark: '#0D2B4A',
+                            blue: '#1769AA',
+                            bluelight: '#2F80C9',
+                            graybg: '#F4F8FC',
+                            cardbg: '#FFFFFF',
+                            bordergray: '#D7E2EE',
+                            darktext: '#14283F',
+                            mutedtext: '#4B5563'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Family Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F8FC;
+            color: #14283F;
+        }
+        
+        .hero-bg {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            background-image: linear-gradient(rgba(13, 43, 74, 0.84), rgba(18, 58, 99, 0.88)), url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 42%;
+            filter: brightness(0.58) saturate(0.82);
+        }
+
+        .hero-bg::before {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(110deg, rgba(7, 18, 32, 0.78), rgba(12, 39, 65, 0.42));
+            content: "";
+        }
+
+        .hero-bg > div {
+            position: relative;
+            z-index: 2;
+        }
+
+        .guide-photo-icon {
+            display: block;
+            width: 44px;
+            height: 44px;
+            border-radius: 9px;
+            object-fit: cover;
+        }
+
+        .nearby-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 13px;
+            background: #fff;
+            padding: 14px;
+        }
+
+        .nearby-card a {
+            color: #1769aa;
+            font-weight: 700;
+        }
+
+        .nearby-find-btn:disabled {
+            cursor: wait;
+            opacity: 0.7;
+        }
+
+        .guide-hero-bg {
+            background-image: linear-gradient(rgba(23, 105, 170, 0.88), rgba(13, 43, 74, 0.90)), url('https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hospital-hero-bg {
+            background-image: linear-gradient(rgba(18, 58, 99, 0.88), rgba(13, 43, 74, 0.92)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        body {
+            background: #edf0ef;
+            color: #17212d;
+        }
+
+        #emergencyTopbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 260px;
+            z-index: 50;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            padding: 4px 12px;
+            background: #171d26;
+            box-shadow: 0 8px 24px rgba(13, 20, 29, 0.16);
+        }
+
+        #emergencyTopbar > div {
+            width: 100%;
+            max-width: none;
+            padding: 0 12px;
+            gap: 8px;
+        }
+
+        #emergencyTopbar > div > div:first-child {
+            gap: 7px;
+        }
+
+        #emergencyTopbar > div > div:first-child svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        #emergencyTopbar > div > div:first-child span {
+            font-size: 0.68rem;
+        }
+
+        #emergencyTopbar > div > div:last-child {
+            gap: 7px;
+            font-size: 0.7rem;
+        }
+
+        #emergencyTopbar a {
+            border-radius: 9px;
+            color: #fff;
+            background: #d84a3a;
+            padding: 5px 9px;
+            font-size: 0.68rem;
+        }
+
+        #emergencyTopbar a[href="tel:108"] {
+            background: #e98d3b;
+        }
+
+        #appSidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            z-index: 40;
+            width: 260px;
+            overflow-y: auto;
+            border: 0;
+            background: #171d26;
+            box-shadow: 8px 0 26px rgba(13, 20, 29, 0.12);
+        }
+
+        #appSidebar > div:first-child {
+            max-width: none;
+            padding: 24px 18px;
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between {
+            height: auto;
+            align-items: stretch;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        #appSidebar .text-brand-darktext,
+        #appSidebar .text-brand-bluelight {
+            color: #f5f7fa;
+        }
+
+        #appSidebar .bg-brand-red {
+            background-color: #e98d3b;
+        }
+
+        #appSidebar nav {
+            display: flex !important;
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 7px;
+        }
+
+        #appSidebar .nav-btn {
+            justify-content: flex-start;
+            width: 100%;
+            padding: 11px 12px;
+            border: 0 !important;
+            border-radius: 11px;
+            color: #b7c0cc !important;
+            font-weight: 500;
+        }
+
+        #appSidebar .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.07);
+            color: #fff !important;
+        }
+
+        #appSidebar .nav-btn.font-semibold {
+            color: #fff !important;
+            background: linear-gradient(90deg, rgba(233, 141, 59, 0.25), rgba(233, 141, 59, 0.08));
+            box-shadow: inset 3px 0 #e98d3b;
+        }
+
+        #appSidebar .nav-btn svg {
+            color: #e9a363;
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 {
+            padding: 4px 5px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 .bg-brand-red {
+            width: 38px;
+            height: 38px;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(233, 141, 59, 0.24);
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 span.block {
+            color: #aeb9c5;
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 span.text-xl {
+            font-size: 0.98rem;
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 span.block {
+            font-size: 0.58rem;
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 + nav + div {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 + nav + div button:first-child {
+            justify-content: center;
+            width: 100%;
+            padding: 11px 10px;
+            border-radius: 10px;
+            background: #d84a3a;
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 + nav + div button:last-child {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 + nav + div button:last-child svg {
+            color: #dce5ef;
+        }
+
+        main.flex-grow {
+            min-height: calc(100vh - 48px);
+            margin-left: 260px;
+            padding-top: 48px;
+        }
+
+        .tab-content > .hero-bg,
+        .tab-content > .guide-hero-bg,
+        .tab-content > .hospital-hero-bg {
+            margin: 22px 24px 0;
+            border-radius: 20px;
+            box-shadow: 0 16px 34px rgba(18, 38, 58, 0.14);
+        }
+
+        .tab-content > .hero-bg {
+            padding-top: 48px;
+            padding-bottom: 48px;
+        }
+
+        .tab-content > .hero-bg > div,
+        .tab-content > .guide-hero-bg > div,
+        .tab-content > .hospital-hero-bg > div {
+            max-width: 1000px;
+        }
+
+        .tab-content > .max-w-7xl {
+            max-width: none;
+            padding-right: 24px;
+            padding-left: 24px;
+        }
+
+        #quickGuideGrid > button {
+            min-height: 132px;
+            border-radius: 15px;
+            box-shadow: 0 5px 14px rgba(27, 38, 50, 0.04);
+        }
+
+        #quickGuideGrid > button > div:first-child {
+            align-items: center;
+        }
+
+        #quickGuideGrid .guide-photo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+        }
+
+        #quickGuideGrid .guide-photo-frame {
+            display: block;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(24, 34, 45, 0.12);
+        }
+
+        #quickGuideGrid > button:hover,
+        .hospital-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(27, 38, 50, 0.09);
+        }
+
+        #quickGuideGrid > button,
+        .hospital-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .tab-content .bg-white.rounded-2xl,
+        .tab-content .hospital-card,
+        #guide-content-area {
+            border-radius: 18px;
+            box-shadow: 0 10px 24px rgba(27, 38, 50, 0.055);
+        }
+
+        footer {
+            margin-left: 260px;
+        }
+
+        @media (max-width: 900px) {
+            #emergencyTopbar {
+                position: relative;
+                inset: auto;
+                min-height: auto;
+                padding: 4px 8px;
+            }
+
+            #emergencyTopbar > div {
+                padding: 0 8px;
+            }
+
+            #appSidebar {
+                position: relative;
+                inset: auto;
+                width: 100%;
+                overflow: visible;
+            }
+
+            #appSidebar > div:first-child {
+                padding: 12px 16px;
+            }
+
+            #appSidebar > div:first-child > .flex.justify-between {
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 {
+                border: 0;
+                padding: 0;
+            }
+
+            #appSidebar nav {
+                display: flex !important;
+                order: 3;
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 2px;
+            }
+
+            #appSidebar .nav-btn {
+                width: auto;
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+
+            #appSidebar .md\:hidden {
+                display: none !important;
+            }
+
+            #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 + nav + div {
+                order: 2;
+                width: auto;
+                flex-direction: row;
+            }
+
+            #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 + nav + div button:first-child {
+                width: auto;
+                white-space: nowrap;
+            }
+
+            #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 + nav + div button:last-child {
+                display: none;
+            }
+
+            main.flex-grow {
+                min-height: 0;
+                margin-left: 0;
+                padding-top: 0;
+            }
+
+            footer {
+                margin-left: 0;
+            }
+
+            .tab-content > .max-w-7xl {
+                padding-right: 16px;
+                padding-left: 16px;
+            }
+
+            .tab-content > .hero-bg,
+            .tab-content > .guide-hero-bg,
+            .tab-content > .hospital-hero-bg {
+                margin: 16px 16px 0;
+            }
+        }
+
+        @media (max-width: 520px) {
+            #emergencyTopbar > div {
+                align-items: center;
+                gap: 6px;
+            }
+
+            #emergencyTopbar > div > div:first-child span {
+                font-size: 0.56rem;
+            }
+
+            #emergencyTopbar > div > div:last-child {
+                gap: 4px;
+                font-size: 0.58rem;
+            }
+
+            #emergencyTopbar a {
+                padding: 4px 6px;
+                font-size: 0.58rem;
+            }
+
+            #emergencyTopbar a svg {
+                display: none;
+            }
+
+            .hero-video {
+                object-position: center;
+            }
+
+            #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 span.text-xl {
+                font-size: 0.82rem;
+            }
+
+            #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 span.block {
+                font-size: 0.48rem;
+            }
+
+            #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 + nav + div button:first-child span {
+                display: none;
+            }
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            main.flex-grow,
+            footer {
+                margin-left: 0 !important;
+                padding-top: 0 !important;
+            }
+            .print-full {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-brand-graybg antialiased">
+
+    <!-- TOP EMERGENCY QUICK CALL BAR -->
+    <div id="emergencyTopbar" class="bg-brand-red text-white py-2.5 px-4 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <span class="font-bold tracking-wide text-xs sm:text-sm uppercase">National Emergency Hotline Directory (India)</span>
+            </div>
+            <div class="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm font-semibold">
+                <a href="tel:112" class="bg-white text-brand-red hover:bg-gray-100 px-3 py-1 rounded-md transition flex items-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                    <span>Emergency: 112</span>
+                </a>
+                <a href="tel:108" class="bg-white text-brand-blue hover:bg-gray-100 px-3 py-1 rounded-md transition flex items-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z"/><path fill-rule="evenodd" d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-1.586l-1.293-1.293a1 1 0 00-1.414 1.414L13.586 13l-1.293 1.293a1 1 0 001.414 1.414L15 14.414V17a1 1 0 01-1 1h-2a1 1 0 110-2h1v-2H7v2h1a1 1 0 110 2H6a1 1 0 01-1-1v-2.586l1.293 1.293a1 1 0 001.414-1.414L6.414 13l1.293-1.293a1 1 0 00-1.414-1.414L5 11.586V5z" clip-rule="evenodd"/></svg>
+                    <span>Ambulance: 108</span>
+                </a>
+                <a href="tel:102" class="hidden md:flex bg-gray-900 text-white hover:bg-black px-3 py-1 rounded-md transition items-center gap-1.5">
+                    <span>Medical: 102</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER & NAVIGATION -->
+    <header id="appSidebar" class="bg-white border-b border-brand-bordergray sticky top-[41px] z-40 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Brand Title -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="bg-brand-red text-white p-2 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="Emergency Web heartbeat logo">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 21s-7.5-4.4-9.2-9.1C1.5 8.4 3.6 5.5 7 5.5c2.1 0 3.7 1.1 5 3 1.3-1.9 2.9-3 5-3 3.4 0 5.5 2.9 4.2 6.4C19.5 16.6 12 21 12 21Z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.6 12h3l1.5-2.5 2.2 5 1.9-3h6.2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-brand-darktext">Emergency Web</span>
+                        <span class="block text-[10px] font-bold text-brand-bluelight uppercase tracking-widest">Lucknow Emergency Response</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn text-brand-blue border-b-2 border-brand-blue font-semibold px-3 py-2 text-sm transition flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        <span>Home</span>
+                    </button>
+                    <button onclick="switchTab('guides')" id="nav-guides" class="nav-btn text-brand-mutedtext hover:text-brand-darktext font-medium px-3 py-2 text-sm transition flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <span>First Aid Guides</span>
+                    </button>
+                    <button onclick="switchTab('hospitals')" id="nav-hospitals" class="nav-btn text-brand-mutedtext hover:text-brand-darktext font-medium px-3 py-2 text-sm transition flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m3 0h1m-1-4h.01M9 16h.01M9 12h.01M15 16h.01M15 12h.01M12 12h.01M12 8h.01M12 4h.01"/></svg>
+                        <span>Nearest Hospitals</span>
+                    </button>
+                    <button onclick="switchTab('police')" id="nav-police" class="nav-btn text-brand-mutedtext hover:text-brand-darktext font-medium px-3 py-2 text-sm transition flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        <span>Helplines & Police</span>
+                    </button>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="openSosModal()" class="bg-brand-red text-white hover:bg-brand-reddark px-3.5 py-2 rounded-lg font-bold text-xs sm:text-sm tracking-wide shadow transition flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>SOS Share Location</span>
+                    </button>
+                    <button onclick="window.print()" class="hidden sm:flex bg-gray-100 hover:bg-gray-200 text-brand-darktext p-2 rounded-lg transition title='Print Emergency Reference Sheet'">
+                        <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Sub-Navigation Row -->
+        <div class="md:hidden border-t border-gray-200 bg-gray-50 px-2 py-2 flex justify-around overflow-x-auto text-xs font-semibold">
+            <button onclick="switchTab('home')" id="mob-nav-home" class="px-2.5 py-1.5 rounded text-brand-blue bg-white shadow-sm">Home</button>
+            <button onclick="switchTab('guides')" id="mob-nav-guides" class="px-2.5 py-1.5 rounded text-gray-600">First Aid</button>
+            <button onclick="switchTab('hospitals')" id="mob-nav-hospitals" class="px-2.5 py-1.5 rounded text-gray-600">Hospitals</button>
+            <button onclick="switchTab('police')" id="mob-nav-police" class="px-2.5 py-1.5 rounded text-gray-600">Police/Helpline</button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow">
+
+        <!-- ================= TAB 1: HOME PAGE ================= -->
+        <section id="tab-home" class="tab-content block">
+            <!-- Hero Banner -->
+            <div class="hero-bg text-white py-12 md:py-16 px-4 sm:px-6 lg:px-8 shadow-inner">
+                <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" poster="https://images.pexels.com/photos/8352120/pexels-photo-8352120.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=960">
+                    <source src="https://videos.pexels.com/video-files/9162015/9162015-hd_1080_1620_16fps.mp4" type="video/mp4">
+                </video>
+                <div class="max-w-5xl mx-auto text-center">
+                    <span class="inline-block bg-brand-red text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
+                        Lucknow - Faizabad Road Emergency Response Hub
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+                        Instant Critical Action & Medical Dispatch
+                    </h1>
+                    <p class="text-gray-200 text-sm sm:text-base md:text-lg max-w-3xl mx-auto mb-8 leading-relaxed">
+                        Rapid response first aid procedures, verified contacts, and nearby emergency hospital directions for GITM, Chinhat, and surrounding areas in Lucknow.
+                    </p>
+                    
+                    <!-- Universal Search Input -->
+                    <div class="max-w-2xl mx-auto relative">
+                        <div class="flex items-center bg-white rounded-xl shadow-xl overflow-hidden p-1">
+                            <div class="pl-3 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </div>
+                            <input type="text" id="homeSearchInput" onkeyup="filterHomeSearch()" placeholder="Search emergency guide (e.g. Snake Bite, Bleeding, RML Hospital, Police)..." class="w-full px-3 py-3 text-brand-darktext text-sm sm:text-base focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Access Emergency Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 mb-12">
+                <div class="bg-white rounded-2xl shadow-lg border border-brand-bordergray p-6">
+                    <h2 class="text-lg font-bold text-brand-darktext mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <span>Immediate Response First Aid Guides</span>
+                    </h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4" id="quickGuideGrid">
+                        <!-- Card 1: Snake Bite -->
+                        <button onclick="openGuide('snakeBite')" class="guide-card p-4 rounded-xl bg-red-50 border border-red-100 hover:border-brand-red transition text-left flex flex-col justify-between h-32 group">
+                            <div class="flex justify-between items-start">
+                                <span class="guide-photo-frame rounded-lg text-xs">
+                                    <img class="guide-photo-icon" src="https://images.pexels.com/photos/35902749/pexels-photo-35902749/free-photo-of-close-up-of-a-king-cobra-in-natural-habitat.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=320" alt="King cobra in its natural habitat">
+                                </span>
+                                <span class="text-[10px] font-bold text-brand-red uppercase">Critical</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-brand-darktext group-hover:text-brand-red transition">Snake Bite</h3>
+                                <p class="text-[11px] text-gray-500">Anti-venom protocol</p>
+                            </div>
+                        </button>
+
+                        <!-- Card 2: Bleeding -->
+                        <button onclick="openGuide('bleeding')" class="guide-card p-4 rounded-xl bg-red-50 border border-red-100 hover:border-brand-red transition text-left flex flex-col justify-between h-32 group">
+                            <div class="flex justify-between items-start">
+                                <span class="guide-photo-frame rounded-lg text-xs">
+                                    <img class="guide-photo-icon" src="https://images.pexels.com/photos/4531307/pexels-photo-4531307.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=320" alt="Blood donation bags">
+                                </span>
+                                <span class="text-[10px] font-bold text-brand-red uppercase">Urgent</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-brand-darktext group-hover:text-brand-red transition">Heavy Bleeding</h3>
+                                <p class="text-[11px] text-gray-500">Pressure techniques</p>
+                            </div>
+                        </button>
+
+                        <!-- Card 3: Accident -->
+                        <button onclick="openGuide('accident')" class="guide-card p-4 rounded-xl bg-blue-50 border border-blue-100 hover:border-brand-blue transition text-left flex flex-col justify-between h-32 group">
+                            <div class="flex justify-between items-start">
+                                <span class="bg-brand-blue text-white p-2 rounded-lg text-xs">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                                </span>
+                                <span class="text-[10px] font-bold text-brand-blue uppercase">Trauma</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-brand-darktext group-hover:text-brand-blue transition">Road Accident</h3>
+                                <p class="text-[11px] text-gray-500">Spine & scene care</p>
+                            </div>
+                        </button>
+
+                        <!-- Card 4: Cardiac CPR -->
+                        <button onclick="openGuide('cpr')" class="guide-card p-4 rounded-xl bg-red-50 border border-red-100 hover:border-brand-red transition text-left flex flex-col justify-between h-32 group">
+                            <div class="flex justify-between items-start">
+                                <span class="guide-photo-frame rounded-lg text-xs">
+                                    <img class="guide-photo-icon" src="https://images.pexels.com/photos/8352120/pexels-photo-8352120.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=320" alt="Anatomical heart model">
+                                </span>
+                                <span class="text-[10px] font-bold text-brand-red uppercase">Life Threat</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-brand-darktext group-hover:text-brand-red transition">Cardiac CPR</h3>
+                                <p class="text-[11px] text-gray-500">Chest compression</p>
+                            </div>
+                        </button>
+
+                        <!-- Card 5: Burns -->
+                        <button onclick="openGuide('burns')" class="guide-card p-4 rounded-xl bg-amber-50 border border-amber-100 hover:border-amber-500 transition text-left flex flex-col justify-between h-32 group">
+                            <div class="flex justify-between items-start">
+                                <span class="bg-amber-600 text-white p-2 rounded-lg text-xs">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
+                                </span>
+                                <span class="text-[10px] font-bold text-amber-700 uppercase">First Aid</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-brand-darktext group-hover:text-amber-700 transition">Burns & Scalds</h3>
+                                <p class="text-[11px] text-gray-500">Cooling & dressing</p>
+                            </div>
+                        </button>
+
+                        <!-- Card 6: Electric Shock -->
+                        <button onclick="openGuide('electric')" class="guide-card p-4 rounded-xl bg-amber-50 border border-amber-100 hover:border-amber-500 transition text-left flex flex-col justify-between h-32 group">
+                            <div class="flex justify-between items-start">
+                                <span class="bg-amber-600 text-white p-2 rounded-lg text-xs">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                </span>
+                                <span class="text-[10px] font-bold text-amber-700 uppercase">Hazard</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-brand-darktext group-hover:text-amber-700 transition">Electric Shock</h3>
+                                <p class="text-[11px] text-gray-500">Safe detachment</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Interactive Highlights: Hospitals & Local Area Hub -->
+            <section id="homeNearbyPanel" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+                <div class="bg-white rounded-2xl border border-brand-bordergray p-5 sm:p-6 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-brand-darktext">Find Emergency Help Near You</h2>
+                            <p class="text-xs text-gray-500 mt-1">Allow location access to find nearby hospitals, clinics, police and fire stations.</p>
+                        </div>
+                        <button type="button" class="nearby-find-btn bg-brand-red hover:bg-brand-reddark text-white font-bold text-xs px-4 py-2.5 rounded-lg transition" onclick="findNearbyEmergencyServices('home')">
+                            Use My Location
+                        </button>
+                    </div>
+                    <p id="homeNearbyStatus" class="text-xs text-gray-600 mb-4" role="status" aria-live="polite">Your location is only used to search nearby emergency services.</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                        <div>
+                            <h3 class="font-bold text-sm text-brand-darktext mb-2">Nearby Hospitals & Clinics</h3>
+                            <div id="homeNearbyHospitals" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-brand-darktext mb-2">Nearby Police & Fire Stations</h3>
+                            <div id="homeNearbyPolice" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-4">Nearby map data © OpenStreetMap contributors. Call 112 or 108 for emergencies.</p>
+                </div>
+            </section>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Left 2 Columns: Nearby Lucknow Hospitals -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="flex justify-between items-center border-b border-gray-200 pb-3">
+                            <div>
+                                <h2 class="text-xl font-bold text-brand-darktext">Nearby Emergency Hospitals in Lucknow</h2>
+                                <p class="text-xs text-gray-500">Faizabad Road & Gomti Nagar Extension, Lucknow</p>
+                            </div>
+                            <button onclick="switchTab('hospitals')" class="text-xs font-bold text-brand-bluelight hover:underline flex items-center gap-1">
+                                <span>View All Hospitals</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+
+                        <!-- Hospital Highlight 1: Chandan Hospital -->
+                        <div class="bg-white rounded-xl border border-brand-bordergray p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
+                                <div>
+                                    <span class="inline-block bg-green-100 text-green-800 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">Faizabad Road</span>
+                                    <h3 class="text-lg font-bold text-brand-darktext mt-1">Chandan Hospital</h3>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <a href="tel:05226666666" class="bg-brand-red hover:bg-brand-reddark text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                                        <span>Call 0522-6666666</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">Faizabad Road, near Vijayipur Railway Crossing, Gomti Nagar, Lucknow</p>
+                            <div class="flex flex-wrap gap-2 text-[11px] font-medium text-gray-700 mb-4">
+                                <span class="bg-gray-100 px-2 py-1 rounded">24/7 Trauma Center</span>
+                                <span class="bg-gray-100 px-2 py-1 rounded">Anti-Snake Venom</span>
+                                <span class="bg-gray-100 px-2 py-1 rounded">ICU & Cardiac Ambulance</span>
+                                <span class="bg-gray-100 px-2 py-1 rounded">Blood Bank</span>
+                            </div>
+                            <a href="https://maps.google.com/?q=Chandan+Hospital+Faizabad+Road+Lucknow" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-bluelight hover:underline">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>Get Google Maps Route Direction</span>
+                            </a>
+                        </div>
+
+                        <!-- Hospital Highlight 2: Dr. RML Institute -->
+                        <div class="bg-white rounded-xl border border-brand-bordergray p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
+                                <div>
+                                    <span class="inline-block bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">Govt Apex Hospital (~6.2 km)</span>
+                                    <h3 class="text-lg font-bold text-brand-darktext mt-1">Dr. Ram Manohar Lohia Institute (RMLIMS)</h3>
+                                </div>
+                                <a href="tel:05226692000" class="bg-brand-red hover:bg-brand-reddark text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                                    <span>Call Emergency Desk</span>
+                                </a>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">Vibhuti Khand, Gomti Nagar, Lucknow (Direct via Faizabad Rd)</p>
+                            <div class="flex flex-wrap gap-2 text-[11px] font-medium text-gray-700 mb-4">
+                                <span class="bg-gray-100 px-2 py-1 rounded">24/7 Level-1 Trauma</span>
+                                <span class="bg-gray-100 px-2 py-1 rounded">Full Anti-Venom Stock</span>
+                                <span class="bg-gray-100 px-2 py-1 rounded">Burn Intensive Unit</span>
+                            </div>
+                            <a href="https://maps.google.com/?q=Ram+Manohar+Lohia+Hospital+Vibhuti+Khand+Lucknow" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-bluelight hover:underline">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>Get Google Maps Route Direction</span>
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Local Emergency Contacts & Quick SOS -->
+                    <div class="space-y-6">
+                        <!-- Local Police Outpost Card -->
+                        <div class="bg-white rounded-xl border border-brand-bordergray p-5 shadow-sm">
+                            <h3 class="text-base font-bold text-brand-darktext mb-3 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                <span>Lucknow East Zone Police Stations</span>
+                            </h3>
+                            <ul class="space-y-3 text-xs">
+                                <li class="border-b border-gray-100 pb-2">
+                                    <div class="font-semibold text-gray-800">Chinhat Police Station</div>
+                                    <div class="text-gray-500">Faizabad Road, Chinhat Sector (~2.5 km)</div>
+                                    <a href="tel:05222816353" class="text-brand-bluelight font-bold hover:underline inline-block mt-1">Call 0522-2816353</a>
+                                </li>
+                                <li class="border-b border-gray-100 pb-2">
+                                    <div class="font-semibold text-gray-800">Mati Police Outpost</div>
+                                    <div class="text-gray-500">Faizabad Road, near Chinhat</div>
+                                    <a href="tel:112" class="text-brand-bluelight font-bold hover:underline inline-block mt-1">Dial 112 Direct</a>
+                                </li>
+                                <li>
+                                    <div class="font-semibold text-gray-800">Lucknow Women Powerline</div>
+                                    <div class="text-gray-500">24/7 Dedicated Assistance</div>
+                                    <a href="tel:1090" class="text-brand-red font-bold hover:underline inline-block mt-1">Dial 1090</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- One-Click Instant GPS Card -->
+                        <div class="bg-gray-900 text-white rounded-xl p-5 shadow-sm">
+                            <h3 class="text-base font-bold mb-2 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>Emergency Location Beacon</span>
+                            </h3>
+                            <p class="text-xs text-gray-300 mb-4">
+                                Share your live coordinates or a nearby landmark with family and rescue teams.
+                            </p>
+                            <button onclick="openSosModal()" class="w-full bg-brand-red hover:bg-brand-reddark text-white text-xs font-bold py-2.5 rounded-lg transition uppercase tracking-wider">
+                                Launch Location SOS Dispatch
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: FIRST AID GUIDES ================= -->
+        <section id="tab-guides" class="tab-content hidden">
+            <!-- Guide Hero Header -->
+            <div class="guide-hero-bg text-white py-10 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Step-by-Step Emergency First Aid Protocols</h1>
+                    <p class="text-gray-200 text-xs sm:text-sm mt-1">Evidence-based urgent procedure instructions while ambulance is en route.</p>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Guide Selector Buttons -->
+                <div class="flex space-x-2 overflow-x-auto pb-4 mb-6 border-b border-gray-200 no-scrollbar">
+                    <button onclick="showGuideDetail('snakeBite')" id="tab-btn-snakeBite" class="guide-tab-btn bg-brand-blue text-white px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm">
+                        Snake Bite Protocol
+                    </button>
+                    <button onclick="showGuideDetail('bleeding')" id="tab-btn-bleeding" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                        Heavy Blood Bleeding
+                    </button>
+                    <button onclick="showGuideDetail('accident')" id="tab-btn-accident" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                        Road Accident / Trauma
+                    </button>
+                    <button onclick="showGuideDetail('cpr')" id="tab-btn-cpr" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                        Cardiac Arrest & CPR
+                    </button>
+                    <button onclick="showGuideDetail('burns')" id="tab-btn-burns" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                        Burns & Scalds
+                    </button>
+                    <button onclick="showGuideDetail('electric')" id="tab-btn-electric" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                        Electric Shock Care
+                    </button>
+                </div>
+
+                <!-- GUIDE CONTENT DISPLAY PANELS -->
+                <div id="guide-content-area" class="bg-white rounded-2xl border border-brand-bordergray p-6 sm:p-8 shadow-sm">
+                    
+                    <!-- GUIDE: SNAKE BITE -->
+                    <div id="guide-detail-snakeBite" class="guide-pane">
+                        <div class="flex flex-col md:flex-row justify-between items-start border-b border-gray-200 pb-4 mb-6 gap-4">
+                            <div>
+                                <span class="bg-red-100 text-brand-red text-xs font-extrabold px-2.5 py-1 rounded uppercase">Highest Priority Action</span>
+                                <h2 class="text-2xl font-bold text-brand-darktext mt-2">Snake Bite First Aid Protocol</h2>
+                                <p class="text-xs text-gray-500">Common snakes in UP belt: Krait, Cobra, Russell's Viper. Immediate transport is critical.</p>
+                            </div>
+                            <a href="tel:108" class="bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-brand-reddark transition flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                                <span>Call Ambulance 108</span>
+                            </a>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                            <!-- DOs -->
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                                <h3 class="font-bold text-green-900 text-base mb-3 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>DO THIS IMMEDIATELY</span>
+                                </h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-green-950">
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-green-800">1.</span>
+                                        <span><strong>Keep the Victim Completely Still:</strong> Panic accelerates venom flow through lymphatics. Lay person down quietly.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-green-800">2.</span>
+                                        <span><strong>Immobilize Bitten Limb:</strong> Splint or support the bitten arm/leg at or below heart level using a rigid board or sling.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-green-800">3.</span>
+                                        <span><strong>Remove Tight Items:</strong> Strip off rings, watch, anklets, or tight clothing near bite site before swelling starts.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-green-800">4.</span>
+                                        <span><strong>Rush to Anti-Snake Venom (ASV) Hospital:</strong> Direct route to RMLIMS Hospital or Chandan Hospital immediately.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- DON'Ts -->
+                            <div class="bg-red-50 border border-red-200 rounded-xl p-5">
+                                <h3 class="font-bold text-red-900 text-base mb-3 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-red-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    <span>CRITICAL DON'TS (NEVER DO)</span>
+                                </h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-red-950">
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-red-800">1.</span>
+                                        <span><strong>DO NOT Cut Wound or Suck Venom:</strong> Sucking or cutting causes tissue necrosis, dangerous infection, and does not remove venom.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-red-800">2.</span>
+                                        <span><strong>DO NOT Apply Tight Tourniquet:</strong> Tight ropes or cords cut off arterial blood supply leading to limb loss/amputation.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-red-800">3.</span>
+                                        <span><strong>DO NOT Apply Ice, Chemicals, or Herbal Powders:</strong> Ice exacerbates local tissue destruction.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-red-800">4.</span>
+                                        <span><strong>DO NOT Give Alcohol or Aspirin:</strong> Aspirin thins blood and increases internal bleeding.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-100 rounded-xl p-4 text-xs text-gray-700">
+                            <strong>Note for Medical Staff / Escort:</strong> Note down time of bite, physical appearance of snake if safely seen (DO NOT capture or kill snake), and monitor breathing.
+                        </div>
+                    </div>
+
+                    <!-- GUIDE: BLEEDING -->
+                    <div id="guide-detail-bleeding" class="guide-pane hidden">
+                        <div class="flex flex-col md:flex-row justify-between items-start border-b border-gray-200 pb-4 mb-6 gap-4">
+                            <div>
+                                <span class="bg-red-100 text-brand-red text-xs font-extrabold px-2.5 py-1 rounded uppercase">Hemostasis Emergency</span>
+                                <h2 class="text-2xl font-bold text-brand-darktext mt-2">Heavy Blood Bleeding Protocol</h2>
+                                <p class="text-xs text-gray-500">Uncontrolled bleeding can lead to fatal shock in minutes.</p>
+                            </div>
+                            <a href="tel:108" class="bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-brand-reddark transition">Call Ambulance 108</a>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                                <h3 class="font-bold text-green-900 text-base mb-3">ACTION STEPS</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-green-950">
+                                    <li><strong>1. Direct Continuous Pressure:</strong> Place sterile gauze or cleanest available cloth over wound and push down firmly with both hands.</li>
+                                    <li><strong>2. Maintain Constant Pressure:</strong> Do not remove cloth to check wound. If blood soaks through, add another cloth layer on top.</li>
+                                    <li><strong>3. Elevate Bleeding Limb:</strong> Raise limb above heart level if no bone fracture is suspected.</li>
+                                    <li><strong>4. Apply Pressure Bandage:</strong> Wrap bandage firmly over dressing without cutting off circulation down limb.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 border border-red-200 rounded-xl p-5">
+                                <h3 class="font-bold text-red-900 text-base mb-3">WARNING & DON'TS</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-red-950">
+                                    <li><strong>DO NOT Remove Embedded Objects:</strong> If knife, glass, or metal is stuck, press around it to stop bleeding; never pull object out.</li>
+                                    <li><strong>DO NOT Clean Major Wounds First:</strong> Focus on stopping blood loss before trying to wash large arterial wounds.</li>
+                                    <li><strong>Avoid Unsupervised Tourniquets:</strong> Use commercial tourniquets only on severe limb arterial spurting when direct pressure fails.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GUIDE: ACCIDENT -->
+                    <div id="guide-detail-accident" class="guide-pane hidden">
+                        <div class="border-b border-gray-200 pb-4 mb-6">
+                            <span class="bg-blue-100 text-brand-blue text-xs font-extrabold px-2.5 py-1 rounded uppercase">Road Trauma Response</span>
+                            <h2 class="text-2xl font-bold text-brand-darktext mt-2">Road Accident & Spine Immobilization</h2>
+                            <p class="text-xs text-gray-500">Faizabad Road Expressway accident protocols.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                                <h3 class="font-bold text-green-900 text-base mb-3">KEY STEPS</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-green-950">
+                                    <li><strong>1. Scene Safety:</strong> Turn on hazard lights, divert traffic, protect victim from incoming vehicles.</li>
+                                    <li><strong>2. Immobilize Head and Neck:</strong> Hold victim's head straight inline with neck. Assume cervical spinal injury until proven otherwise.</li>
+                                    <li><strong>3. Airway Check:</strong> Check if patient is conscious and breathing normally without bending their neck back.</li>
+                                    <li><strong>4. Call Local Police & Medical Dispatch:</strong> Dial 112 / 108 with your exact landmark (e.g. near the GITM main gate).</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 border border-red-200 rounded-xl p-5">
+                                <h3 class="font-bold text-red-900 text-base mb-3">CRITICAL PRECAUTIONS</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-red-950">
+                                    <li><strong>DO NOT Move Victim Unnecessarily:</strong> Moving a spinal injury victim can cause permanent paralysis or death.</li>
+                                    <li><strong>DO NOT Remove Motorcycle Helmet:</strong> Unless victim is not breathing and airway is completely blocked.</li>
+                                    <li><strong>DO NOT Give Water to Unconscious Person:</strong> Causes choking and airway obstruction.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GUIDE: CPR -->
+                    <div id="guide-detail-cpr" class="guide-pane hidden">
+                        <div class="border-b border-gray-200 pb-4 mb-6">
+                            <span class="bg-red-100 text-brand-red text-xs font-extrabold px-2.5 py-1 rounded uppercase">Cardiac Lifesaving</span>
+                            <h2 class="text-2xl font-bold text-brand-darktext mt-2">Cardiac Arrest Hands-Only CPR</h2>
+                            <p class="text-xs text-gray-500">Perform when victim is unresponsive and not breathing normally.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                                <h3 class="font-bold text-green-900 text-base mb-3">COMPRESSION PROCEDURE</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-green-950">
+                                    <li><strong>1. Position Hands:</strong> Interlock fingers, place heel of hand in center of victim's chest (lower half of breastbone).</li>
+                                    <li><strong>2. Push Hard and Fast:</strong> Compress chest 2 inches (5 cm) deep at rate of 100 to 120 compressions per minute (to the rhythm of "Staying Alive").</li>
+                                    <li><strong>3. Allow Recoil:</strong> Let chest rise completely between each compression.</li>
+                                    <li><strong>4. Continue Uninterrupted:</strong> Rotate pushers every 2 minutes until emergency ambulance team takes over.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 border border-red-200 rounded-xl p-5">
+                                <h3 class="font-bold text-red-900 text-base mb-3">IMPORTANT DON'TS</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-red-950">
+                                    <li><strong>DO NOT Delay Starting CPR:</strong> Brain damage begins in 4 minutes without blood flow.</li>
+                                    <li><strong>DO NOT Perform on Soft Bed:</strong> Place victim on hard flat floor or ground so compressions are effective.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GUIDE: BURNS -->
+                    <div id="guide-detail-burns" class="guide-pane hidden">
+                        <div class="border-b border-gray-200 pb-4 mb-6">
+                            <span class="bg-amber-100 text-amber-800 text-xs font-extrabold px-2.5 py-1 rounded uppercase">Thermal First Aid</span>
+                            <h2 class="text-2xl font-bold text-brand-darktext mt-2">Burns & Scalds Management</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                                <h3 class="font-bold text-green-900 text-base mb-3">COOLING STEPS</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-green-950">
+                                    <li><strong>1. Cool Immediately:</strong> Run cool clean tap water over burn area for 10 to 20 minutes.</li>
+                                    <li><strong>2. Cover Loosely:</strong> Place clean cling film plastic wrap or sterile non-fluffy cloth loosely over burn area.</li>
+                                    <li><strong>3. Keep Warm:</strong> Keep non-injured parts of patient warm to prevent hypothermia.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 border border-red-200 rounded-xl p-5">
+                                <h3 class="font-bold text-red-900 text-base mb-3">NEVER APPLY</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-red-950">
+                                    <li><strong>NO Ice or Ice Water:</strong> Ice causes severe tissue damage and freezing burns.</li>
+                                    <li><strong>NO Toothpaste, Butter, or Oils:</strong> Traps heat in tissue and increases wound infection risk.</li>
+                                    <li><strong>DO NOT Pop Blisters:</strong> Intact blisters protect against bacterial infection.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GUIDE: ELECTRIC -->
+                    <div id="guide-detail-electric" class="guide-pane hidden">
+                        <div class="border-b border-gray-200 pb-4 mb-6">
+                            <span class="bg-amber-100 text-amber-800 text-xs font-extrabold px-2.5 py-1 rounded uppercase">Electrical Hazard</span>
+                            <h2 class="text-2xl font-bold text-brand-darktext mt-2">Electric Shock Safety & Relief</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                                <h3 class="font-bold text-green-900 text-base mb-3">SAFE DETACHMENT</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-green-950">
+                                    <li><strong>1. Cut Power Source First:</strong> Switch off main breaker or pull socket plug before touching victim.</li>
+                                    <li><strong>2. Use Non-Conductive Object:</strong> If power cannot be turned off, stand on dry wooden board or rubber mat and push victim away using dry wooden stick or plastic pole.</li>
+                                    <li><strong>3. Check Vitals:</strong> Once detached, check breathing and pulse. Prepare CPR if heart stopped.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 border border-red-200 rounded-xl p-5">
+                                <h3 class="font-bold text-red-900 text-base mb-3">HAZARDS</h3>
+                                <ul class="space-y-3 text-xs sm:text-sm text-red-950">
+                                    <li><strong>DO NOT Touch Victim Bare-Handed:</strong> While they are still in contact with electrical current, you will be electrocuted.</li>
+                                    <li><strong>DO NOT Use Metal or Wet Objects:</strong> Conducts electricity directly to rescuer.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: NEAREST HOSPITALS ================= -->
+        <section id="tab-hospitals" class="tab-content hidden">
+            <!-- Hospital Hero Banner -->
+            <div class="hospital-hero-bg text-white py-10 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Emergency Hospitals in Lucknow</h1>
+                    <p class="text-gray-200 text-xs sm:text-sm mt-1">Verified 24/7 Trauma Centers, Anti-Snake Venom stocking centers, & ICUs in Lucknow.</p>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                
+                <section class="bg-white rounded-2xl border border-brand-bordergray p-5 sm:p-6 shadow-sm mb-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
+                        <div>
+                            <h2 class="text-lg font-bold text-brand-darktext">Hospitals Near Your Location</h2>
+                            <p class="text-xs text-gray-500 mt-1">Find nearby hospitals and clinics using your device location.</p>
+                        </div>
+                        <button type="button" class="nearby-find-btn bg-brand-red hover:bg-brand-reddark text-white font-bold text-xs px-4 py-2.5 rounded-lg transition" onclick="findNearbyEmergencyServices('hospitals')">
+                            Find Nearby Hospitals
+                        </button>
+                    </div>
+                    <p id="hospitalsNearbyStatus" class="text-xs text-gray-600 mb-3" role="status" aria-live="polite">Location access is requested only when you tap the button.</p>
+                    <div id="hospitalsNearbyResults" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                </section>
+
+                <!-- Filter Bar -->
+                <div class="bg-white rounded-xl border border-brand-bordergray p-4 mb-6 flex flex-col sm:flex-row gap-3 justify-between items-center">
+                    <div class="w-full sm:w-auto text-xs font-semibold text-gray-700">
+                        Filter Facilities:
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                        <button onclick="filterHospitals('all')" id="hosp-filter-all" class="hosp-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-blue text-white">All Facilities</button>
+                        <button onclick="filterHospitals('venom')" id="hosp-filter-venom" class="hosp-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200">Anti-Snake Venom</button>
+                        <button onclick="filterHospitals('trauma')" id="hosp-filter-trauma" class="hosp-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200">24/7 Trauma Care</button>
+                    </div>
+                </div>
+
+                <!-- Hospital Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="hospitalsGrid">
+                    
+                    <!-- Hospital Card 1 -->
+                    <div class="hospital-card bg-white rounded-xl border border-brand-bordergray p-6 shadow-sm flex flex-col justify-between" data-features="venom trauma">
+                        <div>
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <span class="bg-green-100 text-green-800 text-[10px] font-extrabold px-2.5 py-1 rounded">Faizabad Road</span>
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">Private Super Speciality</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-darktext mb-1">Chandan Hospital</h3>
+                            <p class="text-xs text-gray-600 mb-3">Faizabad Road, Near Vijayipur Railway Crossing, Gomti Nagar, Lucknow - 226010</p>
+                            
+                            <div class="space-y-1.5 text-xs text-gray-700 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>Anti-Snake Venom Stock: <strong>Available 24/7</strong></span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>Level 1 Emergency & Cardiac ICU Dispatch</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>24/7 In-house Blood Bank</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between gap-2">
+                            <a href="tel:05226666666" class="bg-brand-red hover:bg-brand-reddark text-white text-xs font-bold px-4 py-2.5 rounded-lg text-center flex justify-center items-center gap-1.5 transition">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                                <span>Emergency Desk: 0522-6666666</span>
+                            </a>
+                            <a href="https://maps.google.com/?q=Chandan+Hospital+Faizabad+Road+Lucknow" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-brand-darktext text-xs font-bold px-4 py-2.5 rounded-lg text-center flex justify-center items-center gap-1.5 transition">
+                                <svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>Navigate (Maps)</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hospital Card 2 -->
+                    <div class="hospital-card bg-white rounded-xl border border-brand-bordergray p-6 shadow-sm flex flex-col justify-between" data-features="venom trauma">
+                        <div>
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <span class="bg-green-100 text-green-800 text-[10px] font-extrabold px-2.5 py-1 rounded">Vibhuti Khand</span>
+                                <span class="bg-purple-100 text-purple-800 text-[10px] font-extrabold px-2 py-0.5 rounded">Govt Autonomous Institute</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-darktext mb-1">Dr. Ram Manohar Lohia Institute (RMLIMS)</h3>
+                            <p class="text-xs text-gray-600 mb-3">Vibhuti Khand, Gomti Nagar, Lucknow - 226010</p>
+                            
+                            <div class="space-y-1.5 text-xs text-gray-700 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>Government Anti-Snake Venom Apex Center</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>24/7 Advanced Emergency & Trauma Wing</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>Burn Unit & Neurosurgery Trauma Desk</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between gap-2">
+                            <a href="tel:05226692000" class="bg-brand-red hover:bg-brand-reddark text-white text-xs font-bold px-4 py-2.5 rounded-lg text-center flex justify-center items-center gap-1.5 transition">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                                <span>Triage Desk: 0522-6692000</span>
+                            </a>
+                            <a href="https://maps.google.com/?q=Ram+Manohar+Lohia+Hospital+Vibhuti+Khand+Lucknow" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-brand-darktext text-xs font-bold px-4 py-2.5 rounded-lg text-center flex justify-center items-center gap-1.5 transition">
+                                <svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>Navigate (Maps)</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hospital Card 3 -->
+                    <div class="hospital-card bg-white rounded-xl border border-brand-bordergray p-6 shadow-sm flex flex-col justify-between" data-features="trauma">
+                        <div>
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <span class="bg-green-100 text-green-800 text-[10px] font-extrabold px-2.5 py-1 rounded">Gomti Nagar</span>
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">Private Hospital</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-darktext mb-1">Mayo Hospital</h3>
+                            <p class="text-xs text-gray-600 mb-3">Vikas Khand, Gomti Nagar, Lucknow - 226010</p>
+                            
+                            <div class="space-y-1.5 text-xs text-gray-700 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>24 Hours Emergency Critical Care</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>Road Accident & Fracture Trauma Unit</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between gap-2">
+                            <a href="tel:05222302688" class="bg-brand-red hover:bg-brand-reddark text-white text-xs font-bold px-4 py-2.5 rounded-lg text-center flex justify-center items-center gap-1.5 transition">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                                <span>Emergency: 0522-2302688</span>
+                            </a>
+                            <a href="https://maps.google.com/?q=Mayo+Hospital+Gomti+Nagar+Lucknow" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-brand-darktext text-xs font-bold px-4 py-2.5 rounded-lg text-center flex justify-center items-center gap-1.5 transition">
+                                <svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>Navigate (Maps)</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hospital Card 4 -->
+                    <div class="hospital-card bg-white rounded-xl border border-brand-bordergray p-6 shadow-sm flex flex-col justify-between" data-features="trauma venom">
+                        <div>
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <span class="bg-green-100 text-green-800 text-[10px] font-extrabold px-2.5 py-1 rounded">Gomti Nagar</span>
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">Multi-Speciality Tertiary</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-darktext mb-1">Sahara Hospital</h3>
+                            <p class="text-xs text-gray-600 mb-3">Viraj Khand 1, Gomti Nagar, Lucknow - 226010</p>
+                            
+                            <div class="space-y-1.5 text-xs text-gray-700 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>24 Hours Level-1 Polytrauma & ICU Care</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    <span>Anti-Venom & Toxicology Center</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between gap-2">
+                            <a href="tel:05226780001" class="bg-brand-red hover:bg-brand-reddark text-white text-xs font-bold px-4 py-2.5 rounded-lg text-center flex justify-center items-center gap-1.5 transition">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                                <span>Emergency: 0522-6780001</span>
+                            </a>
+                            <a href="https://maps.google.com/?q=Sahara+Hospital+Gomti+Nagar+Lucknow" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-brand-darktext text-xs font-bold px-4 py-2.5 rounded-lg text-center flex justify-center items-center gap-1.5 transition">
+                                <svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>Navigate (Maps)</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: HELPLINE & POLICE ================= -->
+        <section id="tab-police" class="tab-content hidden">
+            <div class="bg-gray-900 text-white py-10 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Helplines & Police Directory</h1>
+                    <p class="text-gray-300 text-xs sm:text-sm mt-1">Official emergency numbers for India & Local Lucknow Administration.</p>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                
+                <section class="bg-white rounded-2xl border border-brand-bordergray p-5 sm:p-6 shadow-sm mb-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
+                        <div>
+                            <h2 class="text-lg font-bold text-brand-darktext">Police & Fire Stations Near You</h2>
+                            <p class="text-xs text-gray-500 mt-1">Find nearby police stations and fire services using your device location.</p>
+                        </div>
+                        <button type="button" class="nearby-find-btn bg-brand-red hover:bg-brand-reddark text-white font-bold text-xs px-4 py-2.5 rounded-lg transition" onclick="findNearbyEmergencyServices('police')">
+                            Find Nearby Stations
+                        </button>
+                    </div>
+                    <p id="policeNearbyStatus" class="text-xs text-gray-600 mb-3" role="status" aria-live="polite">Location access is requested only when you tap the button.</p>
+                    <div id="policeNearbyResults" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                    <p class="text-[10px] text-gray-400 mt-4">Nearby map data © OpenStreetMap contributors.</p>
+                </section>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- National Helplines Box -->
+                    <div class="bg-white rounded-xl border border-brand-bordergray p-6 shadow-sm">
+                        <div class="flex items-center space-x-3 mb-4 border-b border-gray-100 pb-3">
+                            <span class="bg-brand-red text-white p-2 rounded-lg">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            </span>
+                            <div>
+                                <h3 class="font-bold text-base text-brand-darktext">National Hotline Numbers</h3>
+                                <p class="text-xs text-gray-500">Toll-Free All India</p>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-4 text-xs sm:text-sm">
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">National Emergency (All-in-One)</div>
+                                    <div class="text-gray-500 text-xs">Police, Fire, Medical</div>
+                                </div>
+                                <a href="tel:112" class="bg-brand-red text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-brand-reddark">112</a>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">Medical Ambulance Dispatch</div>
+                                    <div class="text-gray-500 text-xs">National Health Mission</div>
+                                </div>
+                                <a href="tel:108" class="bg-brand-blue text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-blue-800">108</a>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">Free Pregnant / Child Ambulance</div>
+                                    <div class="text-gray-500 text-xs">Government Referral</div>
+                                </div>
+                                <a href="tel:102" class="bg-gray-800 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-black">102</a>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <div>
+                                    <div class="font-bold text-gray-900">Fire Brigade</div>
+                                    <div class="text-gray-500 text-xs">Fire Emergency Services</div>
+                                </div>
+                                <a href="tel:101" class="bg-amber-600 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-amber-700">101</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Women & Safety Helplines -->
+                    <div class="bg-white rounded-xl border border-brand-bordergray p-6 shadow-sm">
+                        <div class="flex items-center space-x-3 mb-4 border-b border-gray-100 pb-3">
+                            <span class="bg-brand-blue text-white p-2 rounded-lg">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            </span>
+                            <div>
+                                <h3 class="font-bold text-base text-brand-darktext">Women & Public Safety</h3>
+                                <p class="text-xs text-gray-500">UP Police Helplines</p>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-4 text-xs sm:text-sm">
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">UP Women Power Line</div>
+                                    <div class="text-gray-500 text-xs">24/7 Harassment Redressal</div>
+                                </div>
+                                <a href="tel:1090" class="bg-brand-red text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-brand-reddark">1090</a>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">CM Helpline UP</div>
+                                    <div class="text-gray-500 text-xs">State Emergency Grievance</div>
+                                </div>
+                                <a href="tel:1076" class="bg-gray-800 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-black">1076</a>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <div>
+                                    <div class="font-bold text-gray-900">Disaster Management UP</div>
+                                    <div class="text-gray-500 text-xs">Flood & Natural Disaster</div>
+                                </div>
+                                <a href="tel:1078" class="bg-gray-800 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-black">1078</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Local Lucknow Police Stations -->
+                    <div class="bg-white rounded-xl border border-brand-bordergray p-6 shadow-sm md:col-span-2 lg:col-span-1">
+                        <div class="flex items-center space-x-3 mb-4 border-b border-gray-100 pb-3">
+                            <span class="bg-gray-900 text-white p-2 rounded-lg">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m3 0h1m-1-4h.01M9 16h.01M9 12h.01M15 16h.01M15 12h.01M12 12h.01M12 8h.01M12 4h.01"/></svg>
+                            </span>
+                            <div>
+                                <h3 class="font-bold text-base text-brand-darktext">Lucknow East Zone Police Stations</h3>
+                                <p class="text-xs text-gray-500">Local Lucknow East Zone</p>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-4 text-xs sm:text-sm">
+                            <li class="border-b border-gray-100 pb-2">
+                                <div class="font-bold text-gray-900">Chinhat Police Station</div>
+                                <div class="text-gray-500 text-xs">Faizabad Road, Chinhat, Lucknow</div>
+                                <a href="tel:05222816353" class="text-brand-bluelight font-bold text-xs hover:underline inline-block mt-1">Call 0522-2816353</a>
+                            </li>
+                            <li class="border-b border-gray-100 pb-2">
+                                <div class="font-bold text-gray-900">Gomti Nagar Police Station</div>
+                                <div class="text-gray-500 text-xs">Gomti Nagar, Lucknow</div>
+                                <a href="tel:05222300050" class="text-brand-bluelight font-bold text-xs hover:underline inline-block mt-1">Call 0522-2300050</a>
+                            </li>
+                            <li>
+                                <div class="font-bold text-gray-900">Gazipur Police Station</div>
+                                <div class="text-gray-500 text-xs">Near Polytechnic Crossing, Faizabad Rd</div>
+                                <a href="tel:05222351222" class="text-brand-bluelight font-bold text-xs hover:underline inline-block mt-1">Call 0522-2351222</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SOS LOCATION MODAL -->
+    <div id="sosModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative animate-fade-in">
+            <button onclick="closeSosModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="bg-brand-red text-white p-2.5 rounded-xl">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-brand-darktext">Emergency GPS Location SOS</h3>
+                    <p class="text-xs text-gray-500">Share live GPS coordinates or add a nearby landmark</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-bold text-gray-700">Current Position:</span>
+                    <span id="gpsStatus" class="text-[10px] bg-green-100 text-green-800 font-bold px-2 py-0.5 rounded">GPS Ready</span>
+                </div>
+                <p class="text-xs font-mono text-gray-800 bg-white p-2 rounded border border-gray-200 mb-2" id="coordText">
+                    Waiting for live GPS location.
+                </p>
+                <p id="mapLinkRow" class="hidden text-[11px] text-gray-500">
+                    Map Link: <a id="mapLinkHref" href="#" target="_blank" rel="noopener" class="text-brand-bluelight underline"></a>
+                </p>
+            </div>
+
+            <label for="sosLandmark" class="block text-xs font-bold text-gray-700 mb-1.5">Nearby landmark (optional)</label>
+            <input id="sosLandmark" type="text" maxlength="100" placeholder="e.g. GITM main gate, Faizabad Road" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-brand-darktext placeholder:text-gray-400 focus:border-brand-bluelight focus:outline-none focus:ring-2 focus:ring-blue-100 mb-4">
+
+            <div class="space-y-3">
+                <button onclick="shareViaWhatsapp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider flex justify-center items-center gap-2 shadow">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                    <span>Share SOS Alert via WhatsApp</span>
+                </button>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="shareViaSms()" class="bg-brand-red hover:bg-brand-reddark text-white font-bold py-2.5 rounded-xl text-xs transition">Send by SMS</button>
+                    <button onclick="shareSosNative()" class="bg-blue-50 hover:bg-blue-100 text-brand-darktext font-bold py-2.5 rounded-xl text-xs transition">More share options</button>
+                </div>
+                
+                <button onclick="copySosText()" class="w-full bg-gray-100 hover:bg-gray-200 text-brand-darktext font-bold py-2.5 rounded-xl text-xs flex justify-center items-center gap-2 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>Copy Emergency Location Message</span>
+                </button>
+            </div>
+            
+            <div id="copyToast" class="hidden mt-3 text-center text-xs text-green-700 font-bold bg-green-50 p-2 rounded">
+                Message copied to clipboard!
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-brand-bordergray py-8 px-4 sm:px-6 lg:px-8 mt-12 no-print">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+            <div>
+                <strong class="text-brand-darktext">Emergency Web</strong> - Lucknow Emergency Response Portal.
+            </div>
+            <div class="flex space-x-4">
+                <a href="#" onclick="switchTab('guides')" class="hover:underline">First Aid Rules</a>
+                <a href="#" onclick="switchTab('hospitals')" class="hover:underline">Lucknow Hospitals</a>
+                <a href="#" onclick="switchTab('police')" class="hover:underline">Police Directory</a>
+            </div>
+            <div>
+                Medical Disclaimer: Always call 112 / 108 immediately for severe trauma.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Coordinates are populated only after live GPS succeeds.
+        let currentLat = null;
+        let currentLon = null;
+        let hasLiveLocation = false;
+
+        // TAB SWITCHING LOGIC
+        function switchTab(tabId) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+            tabs.forEach(tab => tab.classList.remove('block'));
+
+            // Show target tab
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
+            }
+
+            // Update Desktop Nav styles
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('text-brand-blue', 'border-b-2', 'border-brand-blue', 'font-semibold');
+                btn.classList.add('text-brand-mutedtext', 'font-medium');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-brand-mutedtext', 'font-medium');
+                activeBtn.classList.add('text-brand-blue', 'border-b-2', 'border-brand-blue', 'font-semibold');
+            }
+
+            // Mobile nav state
+            const mobBtns = document.querySelectorAll('[id^="mob-nav-"]');
+            mobBtns.forEach(btn => {
+                btn.classList.remove('text-brand-blue', 'bg-white', 'shadow-sm');
+                btn.classList.add('text-gray-600');
+            });
+            const activeMobBtn = document.getElementById(`mob-nav-${tabId}`);
+            if (activeMobBtn) {
+                activeMobBtn.classList.add('text-brand-blue', 'bg-white', 'shadow-sm');
+                activeMobBtn.classList.remove('text-gray-600');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // OPEN SPECIFIC GUIDE IN FIRST AID TAB
+        function openGuide(guideId) {
+            switchTab('guides');
+            showGuideDetail(guideId);
+        }
+
+        // SHOW FIRST AID GUIDE DETAIL PANE
+        function showGuideDetail(guideId) {
+            const panes = document.querySelectorAll('.guide-pane');
+            panes.forEach(pane => pane.classList.add('hidden'));
+
+            const targetPane = document.getElementById(`guide-detail-${guideId}`);
+            if (targetPane) {
+                targetPane.classList.remove('hidden');
+            }
+
+            // Update button styles
+            const btns = document.querySelectorAll('.guide-tab-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('bg-brand-blue', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-white', 'text-gray-700');
+            });
+
+            const activeBtn = document.getElementById(`tab-btn-${guideId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-brand-blue', 'text-white', 'shadow-sm');
+                activeBtn.classList.remove('bg-white', 'text-gray-700');
+            }
+        }
+
+        // FILTER HOSPITALS ON HOSPITALS TAB
+        function filterHospitals(category) {
+            const cards = document.querySelectorAll('.hospital-card');
+            cards.forEach(card => {
+                const features = card.getAttribute('data-features') || '';
+                if (category === 'all' || features.includes(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update button styles
+            const btns = document.querySelectorAll('.hosp-filter-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('bg-brand-blue', 'text-white');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            const activeBtn = document.getElementById(`hosp-filter-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-brand-blue', 'text-white');
+                activeBtn.classList.remove('bg-gray-100', 'text-gray-700');
+            }
+        }
+
+        // SEARCH FILTER FOR HOME PAGE SEARCH BAR
+        function filterHomeSearch() {
+            const query = document.getElementById('homeSearchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.guide-card');
+            
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        const nearbySearchRadiusMeters = 12000;
+        const nearbyServiceContainers = {
+            home: {
+                statusId: 'homeNearbyStatus',
+                hospitalsId: 'homeNearbyHospitals',
+                policeId: 'homeNearbyPolice'
+            },
+            hospitals: {
+                statusId: 'hospitalsNearbyStatus',
+                hospitalsId: 'hospitalsNearbyResults'
+            },
+            police: {
+                statusId: 'policeNearbyStatus',
+                policeId: 'policeNearbyResults'
+            }
+        };
+        let nearbyRequestInProgress = false;
+
+        function setNearbyStatus(message, isError = false) {
+            Object.values(nearbyServiceContainers).forEach(container => {
+                const status = document.getElementById(container.statusId);
+                if (status) {
+                    status.textContent = message;
+                    status.classList.toggle('text-red-700', isError);
+                    status.classList.toggle('text-gray-600', !isError);
+                }
+            });
+        }
+
+        function getDeviceLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject(new Error('This browser does not support location access.'));
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    resolve,
+                    error => {
+                        const messages = {
+                            1: 'Location permission was denied. Allow location access in your browser and try again.',
+                            2: 'Your location could not be determined. Check that device location services are enabled.',
+                            3: 'Location lookup timed out. Check your GPS or network and try again.'
+                        };
+                        reject(new Error(messages[error.code] || 'Unable to access your location.'));
+                    },
+                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
+                );
+            });
+        }
+
+        function getNearbyDistanceMeters(latitude, longitude, targetLatitude, targetLongitude) {
+            const radians = value => value * Math.PI / 180;
+            const latitudeDifference = radians(targetLatitude - latitude);
+            const longitudeDifference = radians(targetLongitude - longitude);
+            const arc = Math.sin(latitudeDifference / 2) ** 2
+                + Math.cos(radians(latitude)) * Math.cos(radians(targetLatitude))
+                * Math.sin(longitudeDifference / 2) ** 2;
+            return 6371000 * 2 * Math.atan2(Math.sqrt(arc), Math.sqrt(1 - arc));
+        }
+
+        function getNearbyPlaceDetails(element, latitude, longitude) {
+            const tags = element.tags || {};
+            const coordinates = element.center || element;
+            if (!Number.isFinite(coordinates.lat) || !Number.isFinite(coordinates.lon)) {
+                return null;
+            }
+
+            const amenity = (tags.amenity || '').toLowerCase();
+            const healthcare = (tags.healthcare || '').toLowerCase();
+            let type;
+            let category;
+
+            if (amenity === 'police') {
+                type = 'police';
+                category = 'Police station';
+            } else if (amenity === 'fire_station') {
+                type = 'police';
+                category = 'Fire station';
+            } else if (amenity === 'hospital' || healthcare === 'hospital') {
+                type = 'hospital';
+                category = 'Hospital';
+            } else if (amenity === 'clinic' || healthcare === 'clinic') {
+                type = 'hospital';
+                category = 'Clinic';
+            } else if (amenity === 'doctors' || healthcare === 'doctor' || healthcare === 'doctors') {
+                type = 'hospital';
+                category = 'Medical centre';
+            } else if (healthcare === 'emergency') {
+                type = 'hospital';
+                category = 'Emergency care';
+            } else {
+                return null;
+            }
+
+            const address = tags['addr:full'] || [
+                [tags['addr:housenumber'], tags['addr:street']].filter(Boolean).join(' '),
+                tags['addr:suburb'] || tags['addr:neighbourhood'],
+                tags['addr:city'] || tags['addr:town']
+            ].filter(Boolean).join(', ');
+
+            return {
+                id: `${element.type}/${element.id}`,
+                latitude: coordinates.lat,
+                longitude: coordinates.lon,
+                name: (tags.name || tags['name:en'] || category).trim(),
+                category,
+                type,
+                address: address || 'Address not listed on the map',
+                phone: tags.phone || tags['contact:phone'] || tags['phone:mobile'] || '',
+                distance: getNearbyDistanceMeters(latitude, longitude, coordinates.lat, coordinates.lon)
+            };
+        }
+
+        function createNearbyPlaceCard(place, originLatitude, originLongitude) {
+            const card = document.createElement('article');
+            card.className = 'nearby-card';
+
+            const heading = document.createElement('div');
+            heading.className = 'flex items-start justify-between gap-2';
+
+            const title = document.createElement('h4');
+            title.className = 'text-sm font-bold text-brand-darktext';
+            title.textContent = place.name;
+            heading.appendChild(title);
+
+            const category = document.createElement('span');
+            category.className = 'shrink-0 rounded-full bg-blue-50 px-2 py-1 text-[10px] font-bold text-brand-blue';
+            category.textContent = place.category;
+            heading.appendChild(category);
+            card.appendChild(heading);
+
+            const distance = document.createElement('p');
+            distance.className = 'mt-1 text-xs font-semibold text-emerald-700';
+            distance.textContent = place.distance < 1000
+                ? `${Math.round(place.distance)} m away`
+                : `${(place.distance / 1000).toFixed(1)} km away`;
+            card.appendChild(distance);
+
+            const address = document.createElement('p');
+            address.className = 'mt-1 text-xs text-gray-500';
+            address.textContent = place.address;
+            card.appendChild(address);
+
+            const actions = document.createElement('div');
+            actions.className = 'mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs';
+
+            if (place.phone) {
+                const phone = document.createElement('a');
+                phone.href = `tel:${place.phone.replace(/[^\d+]/g, '')}`;
+                phone.textContent = `Call ${place.phone}`;
+                actions.appendChild(phone);
+            }
+
+            const directions = document.createElement('a');
+            directions.href = `https://www.google.com/maps/dir/?api=1&origin=${originLatitude},${originLongitude}&destination=${place.latitude},${place.longitude}&travelmode=driving`;
+            directions.target = '_blank';
+            directions.rel = 'noopener noreferrer';
+            directions.textContent = 'Get directions';
+            actions.appendChild(directions);
+            card.appendChild(actions);
+
+            return card;
+        }
+
+        function renderNearbyPlaces(containerId, places, type, originLatitude, originLongitude) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.replaceChildren();
+
+            const matches = places
+                .filter(place => place.type === type)
+                .sort((first, second) => first.distance - second.distance)
+                .slice(0, 6);
+
+            if (matches.length === 0) {
+                const message = document.createElement('p');
+                message.className = 'text-xs text-gray-500';
+                message.textContent = type === 'hospital'
+                    ? 'No mapped hospitals or clinics were found within 12 km.'
+                    : 'No mapped police or fire stations were found within 12 km.';
+                container.appendChild(message);
+                return 0;
+            }
+
+            matches.forEach(place => {
+                container.appendChild(createNearbyPlaceCard(place, originLatitude, originLongitude));
+            });
+            return matches.length;
+        }
+
+        function renderNearbyServices(elements, latitude, longitude) {
+            const places = elements
+                .map(element => getNearbyPlaceDetails(element, latitude, longitude))
+                .filter(Boolean)
+                .filter(place => place.distance <= nearbySearchRadiusMeters);
+            const uniquePlaces = [...new Map(places.map(place => [place.id, place])).values()];
+            const results = [];
+
+            Object.values(nearbyServiceContainers).forEach(container => {
+                if (container.hospitalsId) {
+                    results.push(renderNearbyPlaces(container.hospitalsId, uniquePlaces, 'hospital', latitude, longitude));
+                }
+                if (container.policeId) {
+                    results.push(renderNearbyPlaces(container.policeId, uniquePlaces, 'police', latitude, longitude));
+                }
+            });
+
+            const [hospitalCount = 0, policeCount = 0] = results;
+            setNearbyStatus(`Showing up to ${hospitalCount} nearby hospitals/clinics and ${policeCount} police/fire stations within 12 km. Distances are approximate.`);
+        }
+
+        async function fetchNearbyOpenStreetMapData(latitude, longitude) {
+            const query = `[out:json][timeout:20];(nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["amenity"~"^(hospital|clinic|doctors|police|fire_station)$"];nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["healthcare"~"^(hospital|clinic|doctor|doctors|emergency)$"];);out center tags;`;
+            const endpoints = [
+                'https://overpass-api.de/api/interpreter',
+                'https://overpass.kumi.systems/api/interpreter'
+            ];
+            const errors = [];
+
+            for (const endpoint of endpoints) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 25000);
+                try {
+                    const response = await fetch(`${endpoint}?data=${encodeURIComponent(query)}`, {
+                        signal: controller.signal,
+                        headers: { Accept: 'application/json' }
+                    });
+                    if (!response.ok) {
+                        throw new Error(`Map service returned HTTP ${response.status}.`);
+                    }
+
+                    const data = await response.json();
+                    if (!Array.isArray(data.elements)) {
+                        throw new Error('Map service returned an invalid nearby places response.');
+                    }
+                    return data.elements;
+                } catch (error) {
+                    errors.push(error.name === 'AbortError' ? 'Map search timed out.' : error.message);
+                } finally {
+                    clearTimeout(timeoutId);
+                }
+            }
+
+            throw new Error(`Nearby map search is unavailable. ${errors.join(' ')}`);
+        }
+
+        async function findNearbyEmergencyServices(source) {
+            if (nearbyRequestInProgress) return;
+
+            nearbyRequestInProgress = true;
+            const buttons = document.querySelectorAll('.nearby-find-btn');
+            buttons.forEach(button => {
+                button.disabled = true;
+                button.dataset.originalLabel = button.textContent;
+                button.textContent = 'Finding nearby help...';
+            });
+            setNearbyStatus('Requesting your location. Choose Allow when your browser asks.');
+
+            try {
+                const position = await getDeviceLocation();
+                currentLat = position.coords.latitude.toFixed(5);
+                currentLon = position.coords.longitude.toFixed(5);
+                hasLiveLocation = true;
+                updateSosLocationDisplay();
+                setNearbyStatus('Location found. Searching OpenStreetMap for nearby emergency services...');
+
+                const elements = await fetchNearbyOpenStreetMapData(currentLat, currentLon);
+                renderNearbyServices(elements, Number(currentLat), Number(currentLon));
+            } catch (error) {
+                hasLiveLocation = false;
+                currentLat = null;
+                currentLon = null;
+                updateSosLocationDisplay();
+                setNearbyStatus(`${error.message} The existing emergency directory is still available below.`, true);
+            } finally {
+                nearbyRequestInProgress = false;
+                buttons.forEach(button => {
+                    button.disabled = false;
+                    button.textContent = button.dataset.originalLabel || 'Use My Location';
+                    delete button.dataset.originalLabel;
+                });
+            }
+        }
+
+        // SOS MODAL FUNCTIONS & GEOLOCATION
+        function openSosModal() {
+            document.getElementById('sosModal').classList.remove('hidden');
+            
+            // Attempt Geolocation
+            if (navigator.geolocation) {
+                document.getElementById('gpsStatus').innerText = "Fetching GPS...";
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        currentLat = position.coords.latitude.toFixed(4);
+                        currentLon = position.coords.longitude.toFixed(4);
+                        hasLiveLocation = true;
+                        updateSosLocationDisplay();
+                        document.getElementById('gpsStatus').innerText = "Live GPS Locked";
+                    },
+                    (error) => {
+                        hasLiveLocation = false;
+                        document.getElementById('gpsStatus').innerText = "GPS unavailable; add a landmark";
+                        updateSosLocationDisplay();
+                    },
+                    { timeout: 7000 }
+                );
+            } else {
+                document.getElementById('gpsStatus').innerText = "GPS is not supported; add a landmark";
+                updateSosLocationDisplay();
+            }
+        }
+
+        function updateSosLocationDisplay() {
+            const coordinateText = document.getElementById('coordText');
+            const mapLinkRow = document.getElementById('mapLinkRow');
+            if (!hasLiveLocation) {
+                coordinateText.innerText = 'GPS location unavailable. Enter a nearby landmark to share your location.';
+                mapLinkRow.classList.add('hidden');
+                return;
+            }
+
+            const mapUrl = `https://maps.google.com/?q=${currentLat},${currentLon}`;
+            coordinateText.innerText = `Lat: ${currentLat}, Lon: ${currentLon} (Live device GPS)`;
+            document.getElementById('mapLinkHref').href = mapUrl;
+            document.getElementById('mapLinkHref').innerText = mapUrl;
+            mapLinkRow.classList.remove('hidden');
+        }
+
+        function closeSosModal() {
+            document.getElementById('sosModal').classList.add('hidden');
+            document.getElementById('copyToast').classList.add('hidden');
+        }
+
+        function getSosMessage() {
+            const landmark = document.getElementById('sosLandmark').value.trim();
+            if (!hasLiveLocation && !landmark) {
+                const toast = document.getElementById('copyToast');
+                toast.innerText = 'GPS is unavailable. Enter a nearby landmark before sharing.';
+                toast.classList.remove('hidden');
+                return null;
+            }
+
+            const locationDetails = hasLiveLocation
+                ? `My live GPS location: https://maps.google.com/?q=${currentLat},${currentLon}.`
+                : `Nearby landmark: ${landmark}.`;
+            const landmarkDetails = hasLiveLocation && landmark ? ` Nearby landmark: ${landmark}.` : '';
+            return `EMERGENCY ALERT: I need immediate medical/police assistance! ${locationDetails}${landmarkDetails}`;
+        }
+
+        function shareViaWhatsapp() {
+            const message = getSosMessage();
+            if (!message) return;
+            const msg = encodeURIComponent(message);
+            window.open(`https://wa.me/?text=${msg}`, '_blank');
+        }
+
+        function shareViaSms() {
+            const sosMessage = getSosMessage();
+            if (!sosMessage) return;
+            const message = encodeURIComponent(sosMessage);
+            window.location.href = `sms:?body=${message}`;
+        }
+
+        async function shareSosNative() {
+            const message = getSosMessage();
+            if (!message) return;
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: 'Emergency SOS', text: message });
+                } catch (error) {
+                    if (error.name !== 'AbortError') {
+                        document.getElementById('copyToast').innerText = 'Sharing was not available. Use WhatsApp or SMS instead.';
+                        document.getElementById('copyToast').classList.remove('hidden');
+                    }
+                }
+                return;
+            }
+            shareViaWhatsapp();
+        }
+
+        function copySosText() {
+            const textToCopy = getSosMessage();
+            if (!textToCopy) return;
+            
+            // Execute fallback copy for iframe safe execution
+            const tempInput = document.createElement("textarea");
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            const toast = document.getElementById('copyToast');
+            toast.innerText = 'Message copied to clipboard!';
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Close Modal on click outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('sosModal');
+            if (event.target === modal) {
+                closeSosModal();
+            }
+        }
+    </script>
+</body>
+</html>
