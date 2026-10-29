@@ -640,6 +640,10 @@
                             </div>
                             <input type="text" id="homeSearchInput" onkeyup="filterHomeSearch()" placeholder="Search emergency guide (e.g. Snake Bite, Bleeding, RML Hospital, Police)..." class="w-full px-3 py-3 text-brand-darktext text-sm sm:text-base focus:outline-none">
                         </div>
+                        <button type="button" onclick="searchHomeLocationServices()" class="mt-2 w-full rounded-xl bg-white px-4 py-3 text-sm font-bold text-brand-blue shadow transition hover:bg-blue-50">
+                            Find hospitals & police near a city, area or PIN code
+                        </button>
+                        <p class="mt-1 text-[11px] text-blue-100">Type a location in the box above first. Nearby map listings may not have phone numbers.</p>
                     </div>
                 </div>
             </div>
@@ -656,7 +660,10 @@
                         <button onclick="openGuide('snakeBite')" class="guide-card p-4 rounded-xl bg-red-50 border border-red-100 hover:border-brand-red transition text-left flex flex-col justify-between h-32 group">
                             <div class="flex justify-between items-start">
                                 <span class="guide-photo-frame rounded-lg text-xs">
-                                    <img class="guide-photo-icon" src="https://images.pexels.com/photos/35902749/pexels-photo-35902749/free-photo-of-close-up-of-a-king-cobra-in-natural-habitat.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=320" alt="King cobra in its natural habitat">
+                                    <svg class="guide-photo-icon bg-red-100 p-2 text-brand-red" viewBox="0 0 24 24" fill="none" role="img" aria-label="Snake safety icon">
+                                        <path d="M5 5.5c2.5 0 2.5 3 5 3s2.5-3 5-3 2.5 3 5 3M5 12c2.5 0 2.5 3 5 3s2.5-3 5-3 2.5 3 5 3M5 18.5c2.5 0 2.5-3 5-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        <circle cx="19.5" cy="15" r="1" fill="currentColor"/>
+                                    </svg>
                                 </span>
                                 <span class="text-[10px] font-bold text-brand-red uppercase">Critical</span>
                             </div>
@@ -744,13 +751,18 @@
                 <div class="bg-white rounded-2xl border border-brand-bordergray p-5 sm:p-6 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                         <div>
-                            <h2 class="text-lg font-bold text-brand-darktext">Find Emergency Help Near You</h2>
-                            <p class="text-xs text-gray-500 mt-1">Allow location access to find nearby hospitals, clinics, police and fire stations.</p>
+                            <h2 class="text-lg font-bold text-brand-darktext">Find Emergency Help Anywhere in India</h2>
+                            <p class="text-xs text-gray-500 mt-1">Use your location or search an Indian city, area, landmark or PIN code.</p>
                         </div>
                         <button type="button" class="nearby-find-btn bg-brand-red hover:bg-brand-reddark text-white font-bold text-xs px-4 py-2.5 rounded-lg transition" onclick="findNearbyEmergencyServices('home')">
                             Use My Location
                         </button>
                     </div>
+                    <form class="flex flex-col sm:flex-row gap-2 mb-3" onsubmit="event.preventDefault(); findNearbyEmergencyServices('home', true)">
+                        <label class="sr-only" for="homeNearbyLocation">Search an Indian hospital, police station, city, area or PIN code</label>
+                        <input id="homeNearbyLocation" type="search" maxlength="120" placeholder="Hospital, police station, city, area or PIN code in India" class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
+                        <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Nearby Services</button>
+                    </form>
                     <p id="homeNearbyStatus" class="text-xs text-gray-600 mb-4" role="status" aria-live="polite">Your location is only used to search nearby emergency services.</p>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                         <div>
@@ -762,7 +774,7 @@
                             <div id="homeNearbyPolice" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                         </div>
                     </div>
-                    <p class="text-[10px] text-gray-400 mt-4">Nearby map data © OpenStreetMap contributors. Call 112 or 108 for emergencies.</p>
+                    <p class="text-[10px] text-gray-400 mt-4">Your location is used only after you choose a search. Nearby map data © OpenStreetMap contributors; coverage and contact details may be incomplete. Call 112 for emergencies (108 ambulance service where available).</p>
                 </div>
             </section>
 
@@ -887,11 +899,85 @@
             <div class="guide-hero-bg text-white py-10 px-4 sm:px-6 lg:px-8">
                 <div class="max-w-7xl mx-auto">
                     <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Step-by-Step Emergency First Aid Protocols</h1>
-                    <p class="text-gray-200 text-xs sm:text-sm mt-1">Evidence-based urgent procedure instructions while ambulance is en route.</p>
+                    <p class="text-gray-200 text-xs sm:text-sm mt-1">Basic first aid and safety guidance while professional help is on the way.</p>
                 </div>
             </div>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <section class="bg-white rounded-2xl border border-brand-bordergray p-5 sm:p-6 shadow-sm mb-6" aria-labelledby="firstAidSafetyTitle">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <h2 id="firstAidSafetyTitle" class="text-lg font-bold text-brand-darktext">First Aid Basics & Medicine Safety</h2>
+                        <div class="flex gap-2" role="group" aria-label="Precautions language">
+                            <button id="precautionsEnglishButton" type="button" aria-pressed="true" onclick="setPrecautionsLanguage('en')" class="rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white">English</button>
+                            <button id="precautionsHindiButton" type="button" aria-pressed="false" onclick="setPrecautionsLanguage('hi')" class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-bold text-gray-700">हिन्दी</button>
+                        </div>
+                    </div>
+                    <div id="precautionsEnglish">
+                    <p class="text-xs text-gray-600 mt-1">First aid is temporary support, not a diagnosis or replacement for a doctor. In a serious emergency, call <a href="tel:112" class="font-bold text-brand-blue underline">112</a> (or <a href="tel:108" class="font-bold text-brand-blue underline">108 ambulance service where available</a>).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div class="rounded-xl border border-blue-100 bg-blue-50 p-4">
+                            <h3 class="font-bold text-sm text-blue-950">Scene safety & first steps</h3>
+                            <ul class="mt-2 space-y-2 text-xs text-blue-950">
+                                <li>• Check for traffic, fire, electricity, violence or other danger; do not put yourself at risk.</li>
+                                <li>• Check responsiveness and normal breathing. Ask someone to call emergency services and bring an AED/first-aid kit.</li>
+                                <li>• If the person is unresponsive and not breathing normally, start CPR if you can and follow the emergency operator's instructions.</li>
+                                <li>• For severe bleeding, use firm continuous pressure with clean cloth or gauze; do not remove embedded objects.</li>
+                                <li>• Do not move someone with possible head, neck or spine injury unless the area is immediately dangerous.</li>
+                            </ul>
+                        </div>
+                        <div class="rounded-xl border border-emerald-100 bg-emerald-50 p-4">
+                            <h3 class="font-bold text-sm text-emerald-950">Useful basic first-aid kit</h3>
+                            <p class="mt-2 text-xs text-emerald-950">Disposable gloves, sterile gauze, assorted plasters, roller bandage, medical tape, clean scissors, saline wound wash, a digital thermometer, and packaged oral rehydration salts (ORS).</p>
+                            <p class="mt-2 text-xs text-emerald-950"><strong>ORS:</strong> Mix one sachet with exactly the amount of safe water stated on its packet. Offer small sips only to someone awake and able to swallow. Do not give anything by mouth to an unconscious or drowsy person.</p>
+                        </div>
+                        <div class="rounded-xl border border-amber-100 bg-amber-50 p-4 md:col-span-2">
+                            <h3 class="font-bold text-sm text-amber-950">Medicines: important precautions</h3>
+                            <ul class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-amber-950">
+                                <li>• There is no general emergency medicine for every injury. Do not delay an ambulance or hospital visit to find or give medicine.</li>
+                                <li>• Use over-the-counter medicines only according to the package label or a clinician/pharmacist; check allergies, expiry date, and other medicines first.</li>
+                                <li>• Never give medicines, food or drink to an unconscious person, or to someone who cannot swallow safely.</li>
+                                <li>• Do not give someone else's prescription, leftover antibiotics, or aspirin to a child; do not induce vomiting after suspected poisoning.</li>
+                                <li>• Suspected poisoning, snakebite, severe allergy, major injury, pregnancy, or a child/infant needs urgent professional advice—not self-medication.</li>
+                                <li>• Store medicines in original labelled packs, away from children, heat and moisture. Ask a pharmacist about safe disposal.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-[10px] text-gray-500">This general information cannot account for age, allergies, pregnancy or medical conditions. Follow emergency-dispatch and qualified healthcare professional instructions.</p>
+                    </div>
+                    <div id="precautionsHindi" class="hidden" lang="hi">
+                        <p class="text-xs text-gray-600 mt-1">प्राथमिक उपचार केवल अस्थायी सहायता है; यह डॉक्टर की जाँच या इलाज का विकल्प नहीं है। गंभीर आपात स्थिति में <a href="tel:112" class="font-bold text-brand-blue underline">112</a> पर कॉल करें (या जहाँ उपलब्ध हो वहाँ <a href="tel:108" class="font-bold text-brand-blue underline">108 एम्बुलेंस सेवा</a> पर)।</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div class="rounded-xl border border-blue-100 bg-blue-50 p-4">
+                                <h3 class="font-bold text-sm text-blue-950">घटनास्थल की सुरक्षा और शुरुआती कदम</h3>
+                                <ul class="mt-2 space-y-2 text-xs text-blue-950">
+                                    <li>• पहले ट्रैफ़िक, आग, बिजली, हिंसा या किसी अन्य खतरे को देखें। खुद को जोखिम में न डालें।</li>
+                                    <li>• देखें कि व्यक्ति होश में है और सामान्य रूप से साँस ले रहा है या नहीं। किसी से आपात सेवा बुलाने और AED/फर्स्ट-एड किट लाने को कहें।</li>
+                                    <li>• यदि व्यक्ति बेहोश है और सामान्य साँस नहीं ले रहा, तो अपनी जानकारी के अनुसार CPR शुरू करें और आपातकालीन ऑपरेटर के निर्देश मानें।</li>
+                                    <li>• तेज़ खून बहने पर साफ़ कपड़े या गॉज़ से लगातार मज़बूत दबाव दें। घाव में फँसी वस्तु न निकालें।</li>
+                                    <li>• सिर, गर्दन या रीढ़ की चोट का शक हो तो व्यक्ति को न हिलाएँ—सिवाय इसके कि वहीं रहना तुरंत खतरनाक हो।</li>
+                                </ul>
+                            </div>
+                            <div class="rounded-xl border border-emerald-100 bg-emerald-50 p-4">
+                                <h3 class="font-bold text-sm text-emerald-950">बुनियादी फर्स्ट-एड किट</h3>
+                                <p class="mt-2 text-xs text-emerald-950">डिस्पोज़ेबल दस्ताने, स्टरल गॉज़, अलग-अलग आकार की पट्टियाँ, रोलर बैंडेज, मेडिकल टेप, साफ़ कैंची, घाव धोने के लिए सलाइन, डिजिटल थर्मामीटर और पैकेट वाला ORS रखें।</p>
+                                <p class="mt-2 text-xs text-emerald-950"><strong>ORS:</strong> पैकेट पर लिखी ठीक उतनी ही मात्रा के सुरक्षित पानी में पूरा पैकेट मिलाएँ। केवल होश में और सुरक्षित रूप से निगल सकने वाले व्यक्ति को छोटे घूँट दें। बेहोश या बहुत उनींदे व्यक्ति को मुँह से कुछ न दें।</p>
+                            </div>
+                            <div class="rounded-xl border border-amber-100 bg-amber-50 p-4 md:col-span-2">
+                                <h3 class="font-bold text-sm text-amber-950">दवाइयाँ: ज़रूरी सावधानियाँ</h3>
+                                <ul class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-amber-950">
+                                    <li>• हर चोट के लिए एक जैसी आपातकालीन दवा नहीं होती। दवा खोजने या देने के लिए एम्बुलेंस/अस्पताल जाने में देर न करें।</li>
+                                    <li>• बिना पर्चे की दवा भी केवल पैकेट के निर्देश या डॉक्टर/फ़ार्मासिस्ट की सलाह से लें। एलर्जी, एक्सपायरी और चल रही दूसरी दवाएँ जाँचें।</li>
+                                    <li>• बेहोश व्यक्ति या सुरक्षित रूप से निगल न सकने वाले व्यक्ति को दवा, खाना या पानी न दें।</li>
+                                    <li>• किसी और की पर्चे वाली दवा, बची हुई एंटीबायोटिक या बच्चे को एस्पिरिन न दें। ज़हर निगलने पर उल्टी न कराएँ।</li>
+                                    <li>• ज़हर, साँप का काटना, गंभीर एलर्जी/चोट, गर्भावस्था या शिशु/बच्चे की स्थिति में तुरंत चिकित्सा सहायता लें—खुद से दवा न दें।</li>
+                                    <li>• दवाइयाँ उनके लेबल वाले पैक में, बच्चों से दूर और गर्मी/नमी से बचाकर रखें। सुरक्षित निपटान के लिए फ़ार्मासिस्ट से पूछें।</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-[10px] text-gray-500">यह सामान्य जानकारी उम्र, एलर्जी, गर्भावस्था या बीमारी को ध्यान में रखकर व्यक्तिगत सलाह नहीं देती। आपात सेवा और योग्य स्वास्थ्यकर्मी के निर्देश मानें।</p>
+                    </div>
+                </section>
+
                 <!-- Guide Selector Buttons -->
                 <div class="flex space-x-2 overflow-x-auto pb-4 mb-6 border-b border-gray-200 no-scrollbar">
                     <button onclick="showGuideDetail('snakeBite')" id="tab-btn-snakeBite" class="guide-tab-btn bg-brand-blue text-white px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm">
@@ -1148,14 +1234,20 @@
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
                         <div>
                             <h2 class="text-lg font-bold text-brand-darktext">Hospitals Near Your Location</h2>
-                            <p class="text-xs text-gray-500 mt-1">Find nearby hospitals and clinics using your device location.</p>
+                            <p class="text-xs text-gray-500 mt-1">Use your location or search any Indian city, area, landmark or PIN code.</p>
                         </div>
                         <button type="button" class="nearby-find-btn bg-brand-red hover:bg-brand-reddark text-white font-bold text-xs px-4 py-2.5 rounded-lg transition" onclick="findNearbyEmergencyServices('hospitals')">
                             Find Nearby Hospitals
                         </button>
                     </div>
+                    <form class="flex flex-col sm:flex-row gap-2 mb-3" onsubmit="event.preventDefault(); findNearbyEmergencyServices('hospitals', true)">
+                        <label class="sr-only" for="hospitalsNearbyLocation">Search an Indian hospital, city, area or PIN code</label>
+                        <input id="hospitalsNearbyLocation" type="search" maxlength="120" placeholder="Hospital, city, area or PIN code in India" class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
+                        <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Nearby Hospitals</button>
+                    </form>
                     <p id="hospitalsNearbyStatus" class="text-xs text-gray-600 mb-3" role="status" aria-live="polite">Location access is requested only when you tap the button.</p>
                     <div id="hospitalsNearbyResults" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                    <p class="text-[10px] text-gray-400 mt-4">Your location is used only after you choose a search. Nearby map data © OpenStreetMap contributors; coverage and contact details may be incomplete.</p>
                 </section>
 
                 <!-- Filter Bar -->
@@ -1336,15 +1428,20 @@
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
                         <div>
                             <h2 class="text-lg font-bold text-brand-darktext">Police & Fire Stations Near You</h2>
-                            <p class="text-xs text-gray-500 mt-1">Find nearby police stations and fire services using your device location.</p>
+                            <p class="text-xs text-gray-500 mt-1">Use your location or search any Indian city, area, landmark or PIN code.</p>
                         </div>
                         <button type="button" class="nearby-find-btn bg-brand-red hover:bg-brand-reddark text-white font-bold text-xs px-4 py-2.5 rounded-lg transition" onclick="findNearbyEmergencyServices('police')">
                             Find Nearby Stations
                         </button>
                     </div>
+                    <form class="flex flex-col sm:flex-row gap-2 mb-3" onsubmit="event.preventDefault(); findNearbyEmergencyServices('police', true)">
+                        <label class="sr-only" for="policeNearbyLocation">Search an Indian police station, city, area or PIN code</label>
+                        <input id="policeNearbyLocation" type="search" maxlength="120" placeholder="Police station, city, area or PIN code in India" class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
+                        <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Nearby Stations</button>
+                    </form>
                     <p id="policeNearbyStatus" class="text-xs text-gray-600 mb-3" role="status" aria-live="polite">Location access is requested only when you tap the button.</p>
                     <div id="policeNearbyResults" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-                    <p class="text-[10px] text-gray-400 mt-4">Nearby map data © OpenStreetMap contributors.</p>
+                    <p class="text-[10px] text-gray-400 mt-4">Location and nearby map data © OpenStreetMap contributors.</p>
                 </section>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1386,11 +1483,26 @@
                             <li class="flex justify-between items-center">
                                 <div>
                                     <div class="font-bold text-gray-900">Fire Brigade</div>
-                                    <div class="text-gray-500 text-xs">Fire Emergency Services</div>
+                                    <div class="text-gray-500 text-xs">112 also handles emergencies</div>
                                 </div>
                                 <a href="tel:101" class="bg-amber-600 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-amber-700">101</a>
                             </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">National Highways Helpline</div>
+                                    <div class="text-gray-500 text-xs">Highway assistance</div>
+                                </div>
+                                <a href="tel:1033" class="bg-gray-800 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-black">1033</a>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <div>
+                                    <div class="font-bold text-gray-900">LPG Leak Emergency</div>
+                                    <div class="text-gray-500 text-xs">LPG leakage helpline</div>
+                                </div>
+                                <a href="tel:1906" class="bg-amber-600 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-amber-700">1906</a>
+                            </li>
                         </ul>
+                        <p class="mt-4 text-[10px] text-gray-500">For immediate danger, call 112. Ambulance and local service availability can vary by state.</p>
                     </div>
 
                     <!-- Women & Safety Helplines -->
@@ -1401,15 +1513,29 @@
                             </span>
                             <div>
                                 <h3 class="font-bold text-base text-brand-darktext">Women & Public Safety</h3>
-                                <p class="text-xs text-gray-500">UP Police Helplines</p>
+                                <p class="text-xs text-gray-500">India-wide and Uttar Pradesh contacts</p>
                             </div>
                         </div>
 
                         <ul class="space-y-4 text-xs sm:text-sm">
                             <li class="flex justify-between items-center border-b border-gray-50 pb-2">
                                 <div>
+                                    <div class="font-bold text-gray-900">Women Helpline</div>
+                                    <div class="text-gray-500 text-xs">181; availability varies by state</div>
+                                </div>
+                                <a href="tel:181" class="bg-brand-blue text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-blue-800">181</a>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">Child Helpline</div>
+                                    <div class="text-gray-500 text-xs">Children in distress</div>
+                                </div>
+                                <a href="tel:1098" class="bg-brand-red text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-brand-reddark">1098</a>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
                                     <div class="font-bold text-gray-900">UP Women Power Line</div>
-                                    <div class="text-gray-500 text-xs">24/7 Harassment Redressal</div>
+                                    <div class="text-gray-500 text-xs">Uttar Pradesh only</div>
                                 </div>
                                 <a href="tel:1090" class="bg-brand-red text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-brand-reddark">1090</a>
                             </li>
@@ -1428,6 +1554,63 @@
                                 <a href="tel:1078" class="bg-gray-800 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-black">1078</a>
                             </li>
                         </ul>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-brand-bordergray p-6 shadow-sm">
+                        <div class="flex items-center space-x-3 mb-4 border-b border-gray-100 pb-3">
+                            <span class="bg-emerald-700 text-white p-2 rounded-lg">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </span>
+                            <div>
+                                <h3 class="font-bold text-base text-brand-darktext">Other Useful Helplines</h3>
+                                <p class="text-xs text-gray-500">Support and non-emergency assistance</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-4 text-xs sm:text-sm">
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">Cyber Financial Fraud</div>
+                                    <div class="text-gray-500 text-xs">Call promptly; also report at cybercrime.gov.in</div>
+                                </div>
+                                <a href="tel:1930" class="bg-brand-red text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-brand-reddark">1930</a>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">Tele-MANAS Mental Health Support</div>
+                                    <div class="text-gray-500 text-xs">Call or use 1-800-891-4416</div>
+                                </div>
+                                <a href="tel:14416" class="bg-brand-blue text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-blue-800">14416</a>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">Railway Helpline</div>
+                                    <div class="text-gray-500 text-xs">Rail passenger assistance</div>
+                                </div>
+                                <a href="tel:139" class="bg-gray-800 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-black">139</a>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">Elderline</div>
+                                    <div class="text-gray-500 text-xs">Senior citizen support; state coverage varies</div>
+                                </div>
+                                <a href="tel:14567" class="bg-gray-800 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-black">14567</a>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-gray-50 pb-2">
+                                <div>
+                                    <div class="font-bold text-gray-900">State Disaster Control Room</div>
+                                    <div class="text-gray-500 text-xs">1070; confirm your state's current number</div>
+                                </div>
+                                <a href="tel:1070" class="bg-amber-600 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-amber-700">1070</a>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <div>
+                                    <div class="font-bold text-gray-900">National Consumer Helpline</div>
+                                    <div class="text-gray-500 text-xs">Non-emergency consumer complaints</div>
+                                </div>
+                                <a href="tel:1915" class="bg-gray-800 text-white font-extrabold px-3 py-1.5 rounded text-xs hover:bg-black">1915</a>
+                            </li>
+                        </ul>
+                        <p class="mt-4 text-[10px] text-gray-500">Numbers, eligibility and operating hours may change or vary by state. This is a practical list, not every local/state contact. In immediate danger call 112.</p>
                     </div>
 
                     <!-- Local Lucknow Police Stations -->
@@ -1658,20 +1841,53 @@
             });
         }
 
+        function setPrecautionsLanguage(language) {
+            const showHindi = language === 'hi';
+            document.getElementById('precautionsEnglish').classList.toggle('hidden', showHindi);
+            document.getElementById('precautionsHindi').classList.toggle('hidden', !showHindi);
+            document.getElementById('precautionsEnglishButton').setAttribute('aria-pressed', String(!showHindi));
+            document.getElementById('precautionsHindiButton').setAttribute('aria-pressed', String(showHindi));
+            document.getElementById('precautionsEnglishButton').className = showHindi
+                ? 'rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-bold text-gray-700'
+                : 'rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white';
+            document.getElementById('precautionsHindiButton').className = showHindi
+                ? 'rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white'
+                : 'rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-bold text-gray-700';
+        }
+
+        async function searchHomeLocationServices() {
+            const searchInput = document.getElementById('homeSearchInput');
+            const query = searchInput.value.trim();
+            const panel = document.getElementById('homeNearbyPanel');
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            if (!query) {
+                setNearbyStatus('Enter a hospital name, city, area, landmark or PIN code in India to search nearby services.', true);
+                searchInput.focus();
+                return;
+            }
+
+            document.getElementById('homeNearbyLocation').value = query;
+            await findNearbyEmergencyServices('home', true);
+        }
+
         const nearbySearchRadiusMeters = 12000;
         const nearbyServiceContainers = {
             home: {
                 statusId: 'homeNearbyStatus',
                 hospitalsId: 'homeNearbyHospitals',
-                policeId: 'homeNearbyPolice'
+                policeId: 'homeNearbyPolice',
+                locationInputId: 'homeNearbyLocation'
             },
             hospitals: {
                 statusId: 'hospitalsNearbyStatus',
-                hospitalsId: 'hospitalsNearbyResults'
+                hospitalsId: 'hospitalsNearbyResults',
+                locationInputId: 'hospitalsNearbyLocation'
             },
             police: {
                 statusId: 'policeNearbyStatus',
-                policeId: 'policeNearbyResults'
+                policeId: 'policeNearbyResults',
+                locationInputId: 'policeNearbyLocation'
             }
         };
         let nearbyRequestInProgress = false;
@@ -1687,26 +1903,36 @@
             });
         }
 
-        function getDeviceLocation() {
-            return new Promise((resolve, reject) => {
-                if (!navigator.geolocation) {
-                    reject(new Error('This browser does not support location access.'));
-                    return;
+        async function getDeviceLocation() {
+            if (!navigator.geolocation) {
+                throw new Error('This browser does not support location access. Search by city, area or PIN code instead.');
+            }
+            if (!window.isSecureContext) {
+                throw new Error('Location access requires the secure HTTPS website. Search by city, area or PIN code instead.');
+            }
+
+            const requestPosition = options => new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject, options);
+            });
+
+            try {
+                return await requestPosition({ enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+            } catch (error) {
+                if (error.code === 1) {
+                    throw new Error('Location permission is blocked. Allow Location for this site in your browser settings, then reload. Or search by city, area or PIN code.');
                 }
 
-                navigator.geolocation.getCurrentPosition(
-                    resolve,
-                    error => {
-                        const messages = {
-                            1: 'Location permission was denied. Allow location access in your browser and try again.',
-                            2: 'Your location could not be determined. Check that device location services are enabled.',
-                            3: 'Location lookup timed out. Check your GPS or network and try again.'
-                        };
-                        reject(new Error(messages[error.code] || 'Unable to access your location.'));
-                    },
-                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
-                );
-            });
+                try {
+                    return await requestPosition({ enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 });
+                } catch (fallbackError) {
+                    const messages = {
+                        1: 'Location permission is blocked. Allow Location for this site in your browser settings, then reload. Or search by city, area or PIN code.',
+                        2: 'Your location could not be determined. Turn on device Location/GPS and try again, or search by city, area or PIN code.',
+                        3: 'Location lookup timed out. Check GPS or network and try again, or search by city, area or PIN code.'
+                    };
+                    throw new Error(messages[fallbackError.code] || 'Unable to access your location. Search by city, area or PIN code instead.');
+                }
+            }
         }
 
         function getNearbyDistanceMeters(latitude, longitude, targetLatitude, targetLongitude) {
@@ -1756,7 +1982,10 @@
             const address = tags['addr:full'] || [
                 [tags['addr:housenumber'], tags['addr:street']].filter(Boolean).join(' '),
                 tags['addr:suburb'] || tags['addr:neighbourhood'],
-                tags['addr:city'] || tags['addr:town']
+                tags['addr:city'] || tags['addr:town'] || tags['addr:village'],
+                tags['addr:district'],
+                tags['addr:state'],
+                tags['addr:postcode']
             ].filter(Boolean).join(', ');
 
             return {
@@ -1767,7 +1996,10 @@
                 category,
                 type,
                 address: address || 'Address not listed on the map',
-                phone: tags.phone || tags['contact:phone'] || tags['phone:mobile'] || '',
+                phone: tags.phone || tags['contact:phone'] || tags['phone:mobile'] || tags['contact:mobile'] || tags['emergency:phone'] || '',
+                openingHours: tags.opening_hours || '',
+                operator: tags.operator || '',
+                website: tags.website || tags['contact:website'] || '',
                 distance: getNearbyDistanceMeters(latitude, longitude, coordinates.lat, coordinates.lon)
             };
         }
@@ -1802,6 +2034,15 @@
             address.textContent = place.address;
             card.appendChild(address);
 
+            [place.operator && `Operator: ${place.operator}`, place.openingHours && `Map-listed hours: ${place.openingHours}`]
+                .filter(Boolean)
+                .forEach(detail => {
+                    const detailLine = document.createElement('p');
+                    detailLine.className = 'mt-1 text-xs text-gray-600';
+                    detailLine.textContent = detail;
+                    card.appendChild(detailLine);
+                });
+
             const actions = document.createElement('div');
             actions.className = 'mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs';
 
@@ -1810,6 +2051,35 @@
                 phone.href = `tel:${place.phone.replace(/[^\d+]/g, '')}`;
                 phone.textContent = `Call ${place.phone}`;
                 actions.appendChild(phone);
+            } else {
+                const phoneNote = document.createElement('p');
+                phoneNote.className = 'w-full text-[11px] text-amber-800';
+                phoneNote.textContent = 'Phone number is not listed in the map data; verify the facility number before travelling.';
+                actions.appendChild(phoneNote);
+
+                const phoneSearch = document.createElement('a');
+                const searchQuery = `${place.name} ${place.address} phone`;
+                phoneSearch.href = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+                phoneSearch.target = '_blank';
+                phoneSearch.rel = 'noopener noreferrer';
+                phoneSearch.textContent = 'Search phone number';
+                actions.appendChild(phoneSearch);
+            }
+
+            if (place.website) {
+                try {
+                    const websiteUrl = new URL(place.website);
+                    if (websiteUrl.protocol === 'https:' || websiteUrl.protocol === 'http:') {
+                        const website = document.createElement('a');
+                        website.href = websiteUrl.href;
+                        website.target = '_blank';
+                        website.rel = 'noopener noreferrer';
+                        website.textContent = 'Website';
+                        actions.appendChild(website);
+                    }
+                } catch (error) {
+                    if (!(error instanceof TypeError)) throw error;
+                }
             }
 
             const directions = document.createElement('a');
@@ -1831,7 +2101,7 @@
             const matches = places
                 .filter(place => place.type === type)
                 .sort((first, second) => first.distance - second.distance)
-                .slice(0, 6);
+                .slice(0, 10);
 
             if (matches.length === 0) {
                 const message = document.createElement('p');
@@ -1849,7 +2119,7 @@
             return matches.length;
         }
 
-        function renderNearbyServices(elements, latitude, longitude) {
+        function renderNearbyServices(elements, latitude, longitude, locationLabel = 'your current location') {
             const places = elements
                 .map(element => getNearbyPlaceDetails(element, latitude, longitude))
                 .filter(Boolean)
@@ -1867,7 +2137,51 @@
             });
 
             const [hospitalCount = 0, policeCount = 0] = results;
-            setNearbyStatus(`Showing up to ${hospitalCount} nearby hospitals/clinics and ${policeCount} police/fire stations within 12 km. Distances are approximate.`);
+            setNearbyStatus(`Showing emergency services near ${locationLabel}: up to ${hospitalCount} hospitals/clinics and ${policeCount} police/fire stations within 12 km. Distances are approximate.`);
+        }
+
+        async function findIndianLocation(query) {
+            const parameters = new URLSearchParams({
+                format: 'jsonv2',
+                addressdetails: '1',
+                limit: '1',
+                countrycodes: 'in',
+                q: query
+            });
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?${parameters}`, {
+                    signal: controller.signal,
+                    headers: { Accept: 'application/json' }
+                });
+                if (!response.ok) {
+                    throw new Error(`Location search returned HTTP ${response.status}.`);
+                }
+
+                const results = await response.json();
+                const result = Array.isArray(results) ? results[0] : null;
+                const latitude = Number(result && result.lat);
+                const longitude = Number(result && result.lon);
+                if (!result || result.address?.country_code?.toLowerCase() !== 'in'
+                    || !Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+                    throw new Error('Location not found in India. Try a city, area, landmark or PIN code.');
+                }
+
+                return {
+                    latitude,
+                    longitude,
+                    label: result.display_name
+                };
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    throw new Error('Location search timed out. Please try again.');
+                }
+                throw error;
+            } finally {
+                clearTimeout(timeoutId);
+            }
         }
 
         async function fetchNearbyOpenStreetMapData(latitude, longitude) {
@@ -1905,33 +2219,57 @@
             throw new Error(`Nearby map search is unavailable. ${errors.join(' ')}`);
         }
 
-        async function findNearbyEmergencyServices(source) {
+        async function findNearbyEmergencyServices(source, useSearch = false) {
             if (nearbyRequestInProgress) return;
 
             nearbyRequestInProgress = true;
-            const buttons = document.querySelectorAll('.nearby-find-btn');
+            const buttons = document.querySelectorAll('.nearby-find-btn, .nearby-search-btn');
             buttons.forEach(button => {
                 button.disabled = true;
                 button.dataset.originalLabel = button.textContent;
-                button.textContent = 'Finding nearby help...';
+                button.textContent = useSearch ? 'Searching...' : 'Finding nearby help...';
             });
-            setNearbyStatus('Requesting your location. Choose Allow when your browser asks.');
+            setNearbyStatus(useSearch
+                ? 'Searching for this location in India...'
+                : 'Requesting your location. Choose Allow when your browser asks.');
 
             try {
-                const position = await getDeviceLocation();
-                currentLat = position.coords.latitude.toFixed(5);
-                currentLon = position.coords.longitude.toFixed(5);
-                hasLiveLocation = true;
-                updateSosLocationDisplay();
-                setNearbyStatus('Location found. Searching OpenStreetMap for nearby emergency services...');
+                let latitude;
+                let longitude;
+                let locationLabel = 'your current location';
 
-                const elements = await fetchNearbyOpenStreetMapData(currentLat, currentLon);
-                renderNearbyServices(elements, Number(currentLat), Number(currentLon));
+                if (useSearch) {
+                    const input = document.getElementById(nearbyServiceContainers[source].locationInputId);
+                    const query = input.value.trim();
+                    if (!query) {
+                        throw new Error('Enter an Indian city, area, landmark or PIN code to search.');
+                    }
+
+                    const location = await findIndianLocation(query);
+                    latitude = location.latitude;
+                    longitude = location.longitude;
+                    locationLabel = location.label;
+                    setNearbyStatus(`Location found: ${locationLabel}. Searching for nearby emergency services...`);
+                } else {
+                    const position = await getDeviceLocation();
+                    currentLat = position.coords.latitude.toFixed(5);
+                    currentLon = position.coords.longitude.toFixed(5);
+                    latitude = Number(currentLat);
+                    longitude = Number(currentLon);
+                    hasLiveLocation = true;
+                    updateSosLocationDisplay();
+                    setNearbyStatus('Location found. Searching OpenStreetMap for nearby emergency services...');
+                }
+
+                const elements = await fetchNearbyOpenStreetMapData(latitude, longitude);
+                renderNearbyServices(elements, latitude, longitude, locationLabel);
             } catch (error) {
-                hasLiveLocation = false;
-                currentLat = null;
-                currentLon = null;
-                updateSosLocationDisplay();
+                if (!useSearch) {
+                    hasLiveLocation = false;
+                    currentLat = null;
+                    currentLon = null;
+                    updateSosLocationDisplay();
+                }
                 setNearbyStatus(`${error.message} The existing emergency directory is still available below.`, true);
             } finally {
                 nearbyRequestInProgress = false;
@@ -1946,29 +2284,22 @@
         // SOS MODAL FUNCTIONS & GEOLOCATION
         function openSosModal() {
             document.getElementById('sosModal').classList.remove('hidden');
-            
-            // Attempt Geolocation
-            if (navigator.geolocation) {
-                document.getElementById('gpsStatus').innerText = "Fetching GPS...";
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        currentLat = position.coords.latitude.toFixed(4);
-                        currentLon = position.coords.longitude.toFixed(4);
-                        hasLiveLocation = true;
-                        updateSosLocationDisplay();
-                        document.getElementById('gpsStatus').innerText = "Live GPS Locked";
-                    },
-                    (error) => {
-                        hasLiveLocation = false;
-                        document.getElementById('gpsStatus').innerText = "GPS unavailable; add a landmark";
-                        updateSosLocationDisplay();
-                    },
-                    { timeout: 7000 }
-                );
-            } else {
-                document.getElementById('gpsStatus').innerText = "GPS is not supported; add a landmark";
+            document.getElementById('gpsStatus').innerText = 'Fetching GPS...';
+            getDeviceLocation().then(position => {
+                currentLat = position.coords.latitude.toFixed(4);
+                currentLon = position.coords.longitude.toFixed(4);
+                hasLiveLocation = true;
                 updateSosLocationDisplay();
-            }
+                document.getElementById('gpsStatus').innerText = 'Live GPS Locked';
+            }).catch(error => {
+                hasLiveLocation = false;
+                currentLat = null;
+                currentLon = null;
+                document.getElementById('gpsStatus').innerText = error.message.includes('permission')
+                    ? 'Allow location in browser settings'
+                    : 'GPS unavailable; add a landmark';
+                updateSosLocationDisplay();
+            });
         }
 
         function updateSosLocationDisplay() {
