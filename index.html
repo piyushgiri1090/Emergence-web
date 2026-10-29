@@ -643,7 +643,7 @@
                         <button type="button" onclick="searchHomeLocationServices()" class="mt-2 w-full rounded-xl bg-white px-4 py-3 text-sm font-bold text-brand-blue shadow transition hover:bg-blue-50">
                             Find hospitals & police near a city, area or PIN code
                         </button>
-                        <p class="mt-1 text-[11px] text-blue-100">Type a location in the box above first. Nearby map listings may not have phone numbers.</p>
+                        <p class="mt-1 text-[11px] text-blue-100">Type a location in the box above first. Map listings may not have phone numbers.</p>
                     </div>
                 </div>
             </div>
@@ -744,6 +744,16 @@
                                 <p class="text-[11px] text-gray-500">Safe detachment</p>
                             </div>
                         </button>
+
+                        <button onclick="openGuide('handCut')" class="guide-card p-4 rounded-xl bg-blue-50 border border-blue-100 hover:border-brand-blue transition text-left flex flex-col justify-between h-32 group">
+                            <span class="bg-brand-blue text-white p-2 rounded-lg text-xs w-fit">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12V6a1.5 1.5 0 013 0v5-7a1.5 1.5 0 013 0v7-6a1.5 1.5 0 013 0v7-4a1.5 1.5 0 013 0v7c0 4-2 7-6 7h-2c-2 0-3-1-4-3l-3-5a1.5 1.5 0 012-2l2 2"/></svg>
+                            </span>
+                            <div>
+                                <h3 class="font-bold text-sm text-brand-darktext group-hover:text-brand-blue transition">Hand Cuts</h3>
+                                <p class="text-[11px] text-gray-500">Clean, dress & Micropore tape</p>
+                            </div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -763,26 +773,31 @@
                     <form class="flex flex-col sm:flex-row gap-2 mb-3" onsubmit="event.preventDefault(); findNearbyEmergencyServices('home', true)">
                         <label class="sr-only" for="homeNearbyLocation">Search an Indian hospital, police station, city, area or PIN code</label>
                         <input id="homeNearbyLocation" type="search" maxlength="120" placeholder="Hospital, police station, city, area or PIN code in India" class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
-                        <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Nearby Services</button>
+                        <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Services</button>
                     </form>
                     <label class="mb-3 flex flex-col gap-1 text-xs font-semibold text-gray-700 sm:max-w-sm" for="homeNearbyDistrict">
-                        Or choose a Uttar Pradesh district (searches around its mapped centre)
+                        Or choose a Uttar Pradesh district (searches automatically)
                         <select id="homeNearbyDistrict" class="nearby-district-select rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm font-normal focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
                             <option value="">Select a UP district</option>
                         </select>
                     </label>
-                    <p id="homeNearbyStatus" class="text-xs text-gray-600 mb-4" role="status" aria-live="polite">Your location is only used to search nearby emergency services.</p>
+                    <p id="homeNearbyStatus" class="text-xs text-gray-600 mb-4" role="status" aria-live="polite">Choose a location or district to search mapped services.</p>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                         <div>
-                            <h3 class="font-bold text-sm text-brand-darktext mb-2">Nearby Hospitals & Clinics</h3>
+                            <h3 class="font-bold text-sm text-brand-darktext mb-2">Hospitals & Clinics</h3>
                             <div id="homeNearbyHospitals" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                         </div>
                         <div>
-                            <h3 class="font-bold text-sm text-brand-darktext mb-2">Nearby Police & Fire Stations</h3>
+                            <h3 class="font-bold text-sm text-brand-darktext mb-2">Police & Fire Stations</h3>
                             <div id="homeNearbyPolice" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                         </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-brand-darktext mb-2">Pharmacies</h3>
+                            <div id="homeNearbyPharmacies" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                        </div>
                     </div>
-                    <p class="text-[10px] text-gray-400 mt-4">Your location is used only after you choose a search. Nearby map data © OpenStreetMap contributors; coverage and contact details may be incomplete. Call 112 for emergencies (108 ambulance service where available).</p>
+                    <button type="button" onclick="openAssistantWithNearbyRecommendations()" class="mt-4 rounded-lg border border-brand-blue px-3 py-2 text-xs font-bold text-brand-blue hover:bg-blue-50">Ask assistant about these places</button>
+                    <p class="text-[10px] text-gray-400 mt-4">Your device location is used only when you choose “Use My Location.” Map data © OpenStreetMap contributors; coverage and contact details may be incomplete. Call 112 for emergencies (108 ambulance service where available).</p>
                 </div>
             </section>
 
@@ -793,7 +808,7 @@
                     <div class="lg:col-span-2 space-y-6">
                         <div class="flex justify-between items-center border-b border-gray-200 pb-3">
                             <div>
-                                <h2 class="text-xl font-bold text-brand-darktext">Nearby Emergency Hospitals in Lucknow</h2>
+                                <h2 class="text-xl font-bold text-brand-darktext">Featured Emergency Hospitals in Lucknow</h2>
                                 <p class="text-xs text-gray-500">Faizabad Road & Gomti Nagar Extension, Lucknow</p>
                             </div>
                             <button onclick="switchTab('hospitals')" class="text-xs font-bold text-brand-bluelight hover:underline flex items-center gap-1">
@@ -1005,6 +1020,9 @@
                     </button>
                     <button onclick="showGuideDetail('electric')" id="tab-btn-electric" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
                         Electric Shock Care
+                    </button>
+                    <button onclick="showGuideDetail('handCut')" id="tab-btn-handCut" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                        Hand Cuts & Dressing
                     </button>
                 </div>
 
@@ -1220,6 +1238,37 @@
                                 </ul>
                             </div>
                         </div>
+
+                        <div id="guide-detail-handCut" class="guide-pane hidden">
+                            <div class="flex flex-col md:flex-row justify-between items-start border-b border-gray-200 pb-4 mb-6 gap-4">
+                                <div>
+                                    <span class="bg-blue-100 text-brand-blue text-xs font-extrabold px-2.5 py-1 rounded uppercase">Minor Wound First Aid</span>
+                                    <h2 class="text-2xl font-bold text-brand-darktext mt-2">Hand Cut: Clean, Cover & Check</h2>
+                                    <p class="text-xs text-gray-500">Micropore is adhesive medical tape to secure a dressing; it is not a medicine and should not be placed into the cut.</p>
+                                </div>
+                                <a href="tel:112" class="bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-brand-reddark transition">Serious injury? Call 112</a>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="rounded-xl border border-green-200 bg-green-50 p-5">
+                                    <h3 class="font-bold text-green-900 text-base mb-3">For a small, shallow cut</h3>
+                                    <ol class="space-y-3 text-xs sm:text-sm text-green-950">
+                                        <li><strong>1. Stop bleeding:</strong> Press a clean gauze pad or cloth firmly on the cut continuously. Raise the hand if comfortable.</li>
+                                        <li><strong>2. Rinse:</strong> Once bleeding is controlled, gently rinse with clean running water. Wash the surrounding skin with soap; do not scrub inside the cut.</li>
+                                        <li><strong>3. Cover:</strong> Pat the surrounding skin dry, put a sterile non-stick pad or clean plaster over the cut, then use Micropore tape on intact skin to hold the dressing. Keep it clean and change it if wet or dirty.</li>
+                                        <li><strong>4. Check tetanus:</strong> If the cut is dirty/deep or vaccine status is uncertain, ask a clinician whether a booster is needed.</li>
+                                    </ol>
+                                </div>
+                                <div class="rounded-xl border border-amber-200 bg-amber-50 p-5">
+                                    <h3 class="font-bold text-amber-950 text-base mb-3">Medicines & when to get help</h3>
+                                    <ul class="space-y-3 text-xs sm:text-sm text-amber-950">
+                                        <li>Micropore tape is not an antiseptic, antibiotic, or pain medicine. Do not put tape, powder, glue, or ointment inside the wound.</li>
+                                        <li>Do not pour alcohol, hydrogen peroxide, or strong antiseptic into the cut. Do not start antibiotic tablets or creams without a clinician/pharmacist's advice.</li>
+                                        <li>Get urgent care for bleeding that will not stop with firm pressure, a deep/gaping cut, a foreign object, numbness, trouble moving a finger, or a bite wound.</li>
+                                        <li>Seek medical advice if redness, warmth, swelling, worsening pain, pus, or fever develops. For a serious emergency call 112.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -1245,23 +1294,23 @@
                             <p class="text-xs text-gray-500 mt-1">Use your location or search any Indian city, area, landmark or PIN code.</p>
                         </div>
                         <button type="button" class="nearby-find-btn bg-brand-red hover:bg-brand-reddark text-white font-bold text-xs px-4 py-2.5 rounded-lg transition" onclick="findNearbyEmergencyServices('hospitals')">
-                            Find Nearby Hospitals
+                            Search Hospitals & Clinics
                         </button>
                     </div>
                     <form class="flex flex-col sm:flex-row gap-2 mb-3" onsubmit="event.preventDefault(); findNearbyEmergencyServices('hospitals', true)">
                         <label class="sr-only" for="hospitalsNearbyLocation">Search an Indian hospital, city, area or PIN code</label>
                         <input id="hospitalsNearbyLocation" type="search" maxlength="120" placeholder="Hospital, city, area or PIN code in India" class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
-                        <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Nearby Hospitals</button>
+                        <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Search Area</button>
                     </form>
                     <label class="mb-3 flex flex-col gap-1 text-xs font-semibold text-gray-700 sm:max-w-sm" for="hospitalsNearbyDistrict">
-                        Or choose a Uttar Pradesh district (searches around its mapped centre)
+                        Or choose a Uttar Pradesh district (searches the whole mapped district)
                         <select id="hospitalsNearbyDistrict" class="nearby-district-select rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm font-normal focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
                             <option value="">Select a UP district</option>
                         </select>
                     </label>
                     <p id="hospitalsNearbyStatus" class="text-xs text-gray-600 mb-3" role="status" aria-live="polite">Location access is requested only when you tap the button.</p>
                     <div id="hospitalsNearbyResults" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-                    <p class="text-[10px] text-gray-400 mt-4">Your location is used only after you choose a search. Nearby map data © OpenStreetMap contributors; coverage and contact details may be incomplete.</p>
+                    <p class="text-[10px] text-gray-400 mt-4">Your location is used only after you choose a search. Map data © OpenStreetMap contributors; coverage and contact details may be incomplete.</p>
                 </section>
 
                 <!-- Filter Bar -->
@@ -1445,16 +1494,16 @@
                             <p class="text-xs text-gray-500 mt-1">Use your location or search any Indian city, area, landmark or PIN code.</p>
                         </div>
                         <button type="button" class="nearby-find-btn bg-brand-red hover:bg-brand-reddark text-white font-bold text-xs px-4 py-2.5 rounded-lg transition" onclick="findNearbyEmergencyServices('police')">
-                            Find Nearby Stations
+                            Search Police & Fire Stations
                         </button>
                     </div>
                     <form class="flex flex-col sm:flex-row gap-2 mb-3" onsubmit="event.preventDefault(); findNearbyEmergencyServices('police', true)">
                         <label class="sr-only" for="policeNearbyLocation">Search an Indian police station, city, area or PIN code</label>
                         <input id="policeNearbyLocation" type="search" maxlength="120" placeholder="Police station, city, area or PIN code in India" class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
-                        <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Find Nearby Stations</button>
+                        <button type="submit" class="nearby-search-btn rounded-lg bg-brand-blue px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-800">Search Area</button>
                     </form>
                     <label class="mb-3 flex flex-col gap-1 text-xs font-semibold text-gray-700 sm:max-w-sm" for="policeNearbyDistrict">
-                        Or choose a Uttar Pradesh district (searches around its mapped centre)
+                        Or choose a Uttar Pradesh district (searches the whole mapped district)
                         <select id="policeNearbyDistrict" class="nearby-district-select rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm font-normal focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
                             <option value="">Select a UP district</option>
                         </select>
@@ -1685,6 +1734,7 @@
             <div id="emergencyAssistantMessages" class="max-h-64 space-y-3 overflow-y-auto p-4 text-xs" aria-live="polite">
                 <p class="max-w-[90%] rounded-xl bg-blue-50 p-3 text-gray-800">Describe what happened—try “snake bite”, “bleeding”, “burn”, “electric shock”, “poison”, or “accident”. हिंदी में भी पूछें।</p>
             </div>
+            <div id="assistantNearbyRecommendations" class="hidden max-h-40 overflow-y-auto border-t border-gray-100 px-4 py-3 text-xs" aria-live="polite"></div>
             <form class="flex gap-2 border-t border-gray-100 p-3" onsubmit="event.preventDefault(); submitEmergencyAssistantQuestion()">
                 <label class="sr-only" for="emergencyAssistantInput">Ask about basic first aid</label>
                 <input id="emergencyAssistantInput" type="text" maxlength="300" autocomplete="off" placeholder="Ask a first-aid question..." class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-xs focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-blue-100">
@@ -1945,6 +1995,7 @@
                 statusId: 'homeNearbyStatus',
                 hospitalsId: 'homeNearbyHospitals',
                 policeId: 'homeNearbyPolice',
+                pharmaciesId: 'homeNearbyPharmacies',
                 locationInputId: 'homeNearbyLocation',
                 districtSelectId: 'homeNearbyDistrict'
             },
@@ -1961,7 +2012,21 @@
                 districtSelectId: 'policeNearbyDistrict'
             }
         };
+        document.querySelectorAll('.nearby-district-select').forEach(select => {
+            select.addEventListener('change', () => {
+                if (!select.value) return;
+                const source = Object.keys(nearbyServiceContainers)
+                    .find(key => nearbyServiceContainers[key].districtSelectId === select.id);
+                if (!source) return;
+                document.getElementById(nearbyServiceContainers[source].locationInputId).value = '';
+                findNearbyEmergencyServices(source, true);
+            });
+        });
         let nearbyRequestInProgress = false;
+        let latestNearbyLocation = '';
+        let latestNearbyPlaces = [];
+        let latestNearbySearchScope = 'nearby';
+        let latestNearbyOrigin = null;
 
         function setNearbyStatus(message, isError = false) {
             Object.values(nearbyServiceContainers).forEach(container => {
@@ -2034,6 +2099,9 @@
             } else if (amenity === 'fire_station') {
                 type = 'police';
                 category = 'Fire station';
+            } else if (amenity === 'pharmacy' || healthcare === 'pharmacy') {
+                type = 'pharmacy';
+                category = 'Pharmacy';
             } else if (amenity === 'hospital' || healthcare === 'hospital') {
                 type = 'hospital';
                 category = 'Hospital';
@@ -2164,51 +2232,135 @@
             return card;
         }
 
-        function renderNearbyPlaces(containerId, places, type, originLatitude, originLongitude) {
+        function renderNearbyPlaces(containerId, places, type, originLatitude, originLongitude, searchScope) {
             const container = document.getElementById(containerId);
             if (!container) return;
             container.replaceChildren();
 
             const matches = places
                 .filter(place => place.type === type)
-                .sort((first, second) => first.distance - second.distance)
-                .slice(0, 10);
+                .sort((first, second) => first.distance - second.distance);
+            const displayedMatches = searchScope === 'area' ? matches : matches.slice(0, 10);
 
-            if (matches.length === 0) {
+            if (displayedMatches.length === 0) {
                 const message = document.createElement('p');
                 message.className = 'text-xs text-gray-500';
                 message.textContent = type === 'hospital'
-                    ? 'No mapped hospitals or clinics were found within 12 km.'
-                    : 'No mapped police or fire stations were found within 12 km.';
+                    ? searchScope === 'area' ? 'No mapped hospitals or clinics were found in this searched area.' : 'No mapped hospitals or clinics were found nearby.'
+                    : type === 'pharmacy'
+                        ? searchScope === 'area' ? 'No mapped pharmacies were found in this searched area.' : 'No mapped pharmacies were found nearby.'
+                        : searchScope === 'area' ? 'No mapped police or fire stations were found in this searched area.' : 'No mapped police or fire stations were found nearby.';
                 container.appendChild(message);
                 return 0;
             }
 
-            matches.forEach(place => {
+            displayedMatches.forEach(place => {
                 container.appendChild(createNearbyPlaceCard(place, originLatitude, originLongitude));
             });
-            return matches.length;
+            return displayedMatches.length;
         }
 
-        function renderNearbyServices(elements, latitude, longitude, locationLabel = 'your current location') {
+        function renderNearbyServices(elements, latitude, longitude, locationLabel = 'your current location', searchScope = 'nearby') {
             const places = elements
                 .map(element => getNearbyPlaceDetails(element, latitude, longitude))
                 .filter(Boolean)
-                .filter(place => place.distance <= nearbySearchRadiusMeters);
+                .filter(place => searchScope === 'area' || place.distance <= nearbySearchRadiusMeters);
             const uniquePlaces = [...new Map(places.map(place => [place.id, place])).values()];
-            const results = [];
+            latestNearbyLocation = locationLabel;
+            latestNearbyPlaces = uniquePlaces;
+            latestNearbySearchScope = searchScope;
+            latestNearbyOrigin = { latitude, longitude };
+            const counts = { hospital: 0, police: 0, pharmacy: 0 };
 
             Object.values(nearbyServiceContainers).forEach(container => {
                 if (container.hospitalsId) {
-                    results.push(renderNearbyPlaces(container.hospitalsId, uniquePlaces, 'hospital', latitude, longitude));
+                    counts.hospital = Math.max(counts.hospital, renderNearbyPlaces(container.hospitalsId, uniquePlaces, 'hospital', latitude, longitude, searchScope));
                 }
                 if (container.policeId) {
-                    results.push(renderNearbyPlaces(container.policeId, uniquePlaces, 'police', latitude, longitude));
+                    counts.police = Math.max(counts.police, renderNearbyPlaces(container.policeId, uniquePlaces, 'police', latitude, longitude, searchScope));
+                }
+                if (container.pharmaciesId) {
+                    counts.pharmacy = renderNearbyPlaces(container.pharmaciesId, uniquePlaces, 'pharmacy', latitude, longitude, searchScope);
                 }
             });
 
-            const [hospitalCount = 0, policeCount = 0] = results;
-            setNearbyStatus(`Showing emergency services near ${locationLabel}: up to ${hospitalCount} hospitals/clinics and ${policeCount} police/fire stations within 12 km. Distances are approximate.`);
+            updateAssistantNearbyRecommendations();
+            const scopeDescription = searchScope === 'area' ? 'in the searched area' : 'within 12 km';
+            const countQualifier = searchScope === 'area' ? '' : 'up to ';
+            setNearbyStatus(`Showing mapped services ${scopeDescription} for ${locationLabel}: ${countQualifier}${counts.hospital} hospitals/clinics, ${countQualifier}${counts.police} police/fire stations and ${countQualifier}${counts.pharmacy} pharmacies. Distances are approximate; map coverage may be incomplete.`);
+        }
+
+        function updateAssistantNearbyRecommendations() {
+            const container = document.getElementById('assistantNearbyRecommendations');
+            if (!container || !latestNearbyLocation) return;
+            container.replaceChildren();
+            container.classList.remove('hidden');
+
+            const heading = document.createElement('p');
+            heading.className = 'mb-2 font-bold text-brand-darktext';
+            heading.textContent = `${latestNearbySearchScope === 'area' ? 'Map results in' : 'Nearby map results for'} ${latestNearbyLocation}`;
+            container.appendChild(heading);
+
+            const types = [
+                ['hospital', 'Hospitals & clinics'],
+                ['police', 'Police & fire stations'],
+                ['pharmacy', 'Pharmacies']
+            ];
+            types.forEach(([type, label]) => {
+                const matches = latestNearbyPlaces
+                    .filter(place => place.type === type)
+                    .sort((first, second) => first.distance - second.distance)
+                    .slice(0, 3);
+                const group = document.createElement('div');
+                group.className = 'mb-2';
+                const title = document.createElement('p');
+                title.className = 'font-semibold text-gray-700';
+                title.textContent = label;
+                group.appendChild(title);
+                if (!matches.length) {
+                    const empty = document.createElement('p');
+                    empty.className = 'text-gray-500';
+                    empty.textContent = latestNearbySearchScope === 'area'
+                        ? 'No mapped results in this searched area.'
+                        : 'No mapped results nearby.';
+                    group.appendChild(empty);
+                }
+                matches.forEach(place => {
+                    const item = document.createElement('div');
+                    item.className = 'flex flex-wrap items-center gap-x-2 text-gray-600';
+                    const details = `${place.name} · ${(place.distance / 1000).toFixed(1)} km${place.phone ? ` · ${place.phone}` : ''}`;
+                    const text = document.createElement('span');
+                    text.textContent = details;
+                    const directions = document.createElement('a');
+                    directions.className = 'font-semibold text-brand-blue underline';
+                    directions.href = `https://www.google.com/maps/dir/?api=1&origin=${latestNearbyOrigin.latitude},${latestNearbyOrigin.longitude}&destination=${place.latitude},${place.longitude}&travelmode=driving`;
+                    directions.target = '_blank';
+                    directions.rel = 'noopener noreferrer';
+                    directions.textContent = 'Directions';
+                    item.append(text, directions);
+                    if (place.phone) {
+                        const phone = document.createElement('a');
+                        phone.className = 'font-semibold text-brand-blue underline';
+                        phone.href = `tel:${place.phone.replace(/[^\d+]/g, '')}`;
+                        phone.textContent = 'Call';
+                        item.appendChild(phone);
+                    }
+                    group.appendChild(item);
+                });
+                container.appendChild(group);
+            });
+            const note = document.createElement('p');
+            note.className = 'text-[10px] text-gray-500';
+            note.textContent = 'OpenStreetMap data may be incomplete. Confirm details before travelling.';
+            container.appendChild(note);
+        }
+
+        function openAssistantWithNearbyRecommendations() {
+            const panel = document.getElementById('emergencyAssistantPanel');
+            if (panel.classList.contains('hidden')) toggleEmergencyAssistant();
+            const input = document.getElementById('emergencyAssistantInput');
+            input.value = 'Show nearby hospitals, police stations and pharmacies';
+            submitEmergencyAssistantQuestion();
         }
 
         async function findIndianLocation(query, district = '') {
@@ -2249,7 +2401,13 @@
                 return {
                     latitude,
                     longitude,
-                    label: result.display_name
+                    label: result.display_name,
+                    areaId: result.osm_type === 'relation' && result.category === 'boundary' && result.type === 'administrative'
+                        ? 3600000000 + Number(result.osm_id)
+                        : null,
+                    boundingBox: Array.isArray(result.boundingbox) && result.boundingbox.length === 4
+                        ? result.boundingbox.map(Number)
+                        : null
                 };
             } catch (error) {
                 if (error.name === 'AbortError') {
@@ -2261,39 +2419,61 @@
             }
         }
 
-        async function fetchNearbyOpenStreetMapData(latitude, longitude) {
-            const query = `[out:json][timeout:20];(nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["amenity"~"^(hospital|clinic|doctors|police|fire_station)$"];nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["healthcare"~"^(hospital|clinic|doctor|doctors|emergency)$"];);out center tags;`;
+        async function fetchNearbyOpenStreetMapData(latitude, longitude, searchArea = null) {
+            const amenityPattern = 'hospital|clinic|doctors|police|fire_station|pharmacy';
+            const healthcarePattern = 'hospital|clinic|doctor|doctors|emergency|pharmacy';
+            const queries = [];
+            if (searchArea?.areaId) {
+                queries.push({
+                    scope: 'area',
+                    query: `[out:json][timeout:25];area(${searchArea.areaId})->.a;(nwr(area.a)["amenity"~"^(${amenityPattern})$"];nwr(area.a)["healthcare"~"^(${healthcarePattern})$"];);out center tags;`
+                });
+            }
+            if (searchArea?.boundingBox) {
+                const [south, north, west, east] = searchArea.boundingBox;
+                queries.push({
+                    scope: 'area',
+                    query: `[out:json][timeout:25];(nwr(${south},${west},${north},${east})["amenity"~"^(${amenityPattern})$"];nwr(${south},${west},${north},${east})["healthcare"~"^(${healthcarePattern})$"];);out center tags;`
+                });
+            }
+            queries.push({
+                scope: 'nearby',
+                query: `[out:json][timeout:20];(nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["amenity"~"^(${amenityPattern})$"];nwr(around:${nearbySearchRadiusMeters},${latitude},${longitude})["healthcare"~"^(${healthcarePattern})$"];);out center tags;`
+            });
             const endpoints = [
-                'https://overpass-api.de/api/interpreter',
-                'https://overpass.kumi.systems/api/interpreter'
+                'https://overpass.kumi.systems/api/interpreter',
+                'https://overpass-api.de/api/interpreter'
             ];
             const errors = [];
 
-            for (const endpoint of endpoints) {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 25000);
-                try {
-                    const response = await fetch(`${endpoint}?data=${encodeURIComponent(query)}`, {
-                        signal: controller.signal,
-                        headers: { Accept: 'application/json' }
-                    });
-                    if (!response.ok) {
-                        throw new Error(`Map service returned HTTP ${response.status}.`);
-                    }
+            for (const query of queries) {
+                for (const endpoint of endpoints) {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000);
+                    try {
+                        const response = await fetch(`${endpoint}?data=${encodeURIComponent(query.query)}`, {
+                            signal: controller.signal
+                        });
+                        if (!response.ok) {
+                            throw new Error(`Map service returned HTTP ${response.status}.`);
+                        }
 
-                    const data = await response.json();
-                    if (!Array.isArray(data.elements)) {
-                        throw new Error('Map service returned an invalid nearby places response.');
+                        const data = await response.json();
+                        if (!Array.isArray(data.elements)) {
+                            throw new Error('Map service returned an invalid nearby places response.');
+                        }
+                        if (data.elements.length || query.scope === 'nearby') {
+                            return { elements: data.elements, scope: query.scope };
+                        }
+                    } catch (error) {
+                        errors.push(error.name === 'AbortError' ? 'Map search timed out.' : error.message);
+                    } finally {
+                        clearTimeout(timeoutId);
                     }
-                    return data.elements;
-                } catch (error) {
-                    errors.push(error.name === 'AbortError' ? 'Map search timed out.' : error.message);
-                } finally {
-                    clearTimeout(timeoutId);
                 }
             }
 
-            throw new Error(`Nearby map search is unavailable. ${errors.join(' ')}`);
+            throw new Error(`Map search is unavailable. ${errors.join(' ')}`);
         }
 
         async function findNearbyEmergencyServices(source, useSearch = false) {
@@ -2314,12 +2494,15 @@
                 let latitude;
                 let longitude;
                 let locationLabel = 'your current location';
+                let searchArea = null;
 
                 if (useSearch) {
                     const sourceContainer = nearbyServiceContainers[source];
                     const input = document.getElementById(sourceContainer.locationInputId);
                     const query = input.value.trim();
-                    const district = document.getElementById(sourceContainer.districtSelectId).value;
+                    const districtSelect = document.getElementById(sourceContainer.districtSelectId);
+                    const district = query ? '' : districtSelect.value;
+                    if (query) districtSelect.value = '';
                     if (!query && !district) {
                         throw new Error('Enter an Indian city, area, landmark or PIN code, or select a Uttar Pradesh district.');
                     }
@@ -2328,7 +2511,8 @@
                     latitude = location.latitude;
                     longitude = location.longitude;
                     locationLabel = location.label;
-                    setNearbyStatus(`Location found: ${locationLabel}. Searching for nearby emergency services...`);
+                    searchArea = location;
+                    setNearbyStatus(`Location found: ${locationLabel}. Searching the location area for services...`);
                 } else {
                     const position = await getDeviceLocation();
                     currentLat = position.coords.latitude.toFixed(5);
@@ -2337,11 +2521,11 @@
                     longitude = Number(currentLon);
                     hasLiveLocation = true;
                     updateSosLocationDisplay();
-                    setNearbyStatus('Location found. Searching OpenStreetMap for nearby emergency services...');
+                    setNearbyStatus('Location found. Searching OpenStreetMap for mapped services within 12 km...');
                 }
 
-                const elements = await fetchNearbyOpenStreetMapData(latitude, longitude);
-                renderNearbyServices(elements, latitude, longitude, locationLabel);
+                const result = await fetchNearbyOpenStreetMapData(latitude, longitude, searchArea);
+                renderNearbyServices(result.elements, latitude, longitude, locationLabel, result.scope);
             } catch (error) {
                 if (!useSearch) {
                     hasLiveLocation = false;
@@ -2373,11 +2557,15 @@
         function getEmergencyAssistantReply(question) {
             const text = question.toLowerCase();
             const isHindi = /[\u0900-\u097f]/.test(question)
-                || /\b(kya|kaise|karo|kare|bachao|hai|kaat|kata|lag|chot|jal|khun|khoon|madad|dawa|aspataal|kahan|batao)\b/i.test(question);
+                || /\b(kya|kaise|karo|kare|bachao|hai|kaat|kata|lag|chot|jal|khun|khoon|madad|dawa|aspataal|kahan|batao|haath|patti|zakhm)\b/i.test(question);
             const replies = {
                 emergency: [
                     'Call 112 now (or 108 ambulance service where available). Move away from immediate danger only if it is safe, and follow the emergency operator. Do not wait for this chat.',
                     'अभी 112 पर कॉल करें (जहाँ उपलब्ध हो वहाँ 108 एम्बुलेंस भी)। केवल सुरक्षित होने पर ही खतरे से दूर जाएँ और आपातकालीन ऑपरेटर के निर्देश मानें। चैट के लिए इंतज़ार न करें।'
+                ],
+                handCut: [
+                    'For a small hand cut: press firmly with clean gauze/cloth until bleeding stops, rinse with clean running water, and cover with a sterile pad or plaster. Micropore is tape—not medicine: use it only on intact skin to secure the dressing, never inside/on the cut. Avoid alcohol or peroxide in the wound. Get urgent care if bleeding will not stop, it is deep/gaping, movement or feeling is affected, or it is a bite; check tetanus advice for a dirty/deep wound. Call 112 for a serious emergency.',
+                    'छोटे हाथ के कट पर साफ़ गॉज़/कपड़े से लगातार दबाव दें, खून रुकने पर साफ़ बहते पानी से धोकर sterile पट्टी/प्लास्टर से ढकें। Micropore दवा नहीं, टेप है—इसे केवल पट्टी को स्वस्थ त्वचा पर टिकाने के लिए लगाएँ; कट के अंदर/ऊपर नहीं। घाव में alcohol या peroxide न डालें। खून न रुके, कट गहरा/खुला हो, उँगली चलाने/महसूस करने में दिक्कत हो या जानवर ने काटा हो तो तुरंत चिकित्सा लें। गंदे/गहरे घाव में tetanus सलाह लें। गंभीर स्थिति में 112 पर कॉल करें।'
                 ],
                 snake: [
                     'Snakebite: call 112/108 and arrange urgent hospital care. Keep the person calm and still; remove rings/tight items and loosely immobilize the limb. Do not cut, suck, ice, or tightly tie the bite; do not try to catch the snake.',
@@ -2412,8 +2600,8 @@
                     'सड़क दुर्घटना में पहले जगह सुरक्षित करें और 112/108 पर कॉल करें। सिर/गर्दन/पीठ की चोट के शक में व्यक्ति को न हिलाएँ, जब तक तुरंत खतरा न हो। तेज़ खून पर दबाव दें; हेलमेट न उतारें, सिवाय साँस का रास्ता खोलने की ज़रूरत और प्रशिक्षण होने पर।'
                 ],
                 hospital: [
-                    'Use “Use My Location” or choose a UP district in the nearby-services panel to find mapped hospitals and police stations. Allow location access in your browser. Map coverage and phone numbers may be incomplete—verify by calling; call 112 for immediate danger.',
-                    'पास के अस्पताल/पुलिस स्टेशन के लिए nearby-services में “Use My Location” दबाएँ या UP का ज़िला चुनें। ब्राउज़र में location अनुमति दें। मैप/फोन नंबर अधूरे हो सकते हैं—जाने से पहले पुष्टि करें; तत्काल खतरे में 112 पर कॉल करें।'
+                    'Search any Indian city, area, PIN code, or choose a UP district to see mapped hospitals, police/fire stations, and pharmacies across that searched area. “Use My Location” shows services within 12 km. Map data and phone numbers may be incomplete—confirm before travelling; call 112 for immediate danger.',
+                    'किसी भी भारतीय शहर, इलाके, PIN code को खोजें या UP का ज़िला चुनें—उस पूरे खोजे गए क्षेत्र के अस्पताल, पुलिस/फायर स्टेशन और फ़ार्मेसी दिखेंगे। “Use My Location” से 12 km के भीतर सेवाएँ दिखती हैं। मैप/फोन नंबर अधूरे हो सकते हैं—जाने से पहले पुष्टि करें; तत्काल खतरे में 112 पर कॉल करें।'
                 ],
                 medicine: [
                     'I cannot diagnose or recommend a medicine or dose. Do not give medicines/food/drink to an unconscious person. Follow the packet or a clinician/pharmacist; for poisoning, allergy, snakebite, severe symptoms, or a child, seek urgent professional help. Call 112 for emergencies.',
@@ -2427,6 +2615,7 @@
 
             let topic = 'general';
             if (/snake|साँप|सांप|snakebite|सर्पदंश|saap/.test(text)) topic = 'snake';
+            else if (/cut|wound|hand|micropore|bandage|घाव|कट|चोट|हाथ|पट्टी|माइक्रोपोर|ज़ख्म|जख्म/.test(text)) topic = 'handCut';
             else if (/bleed|blood|खून|रक्त|bleeding/.test(text)) topic = 'bleeding';
             else if (/burn|जल|झुलस|आग/.test(text)) topic = 'burn';
             else if (/electric|shock|बिजली|करंट/.test(text)) topic = 'electric';
@@ -2434,10 +2623,33 @@
             else if (/chok|दम घुट|गले में|सांस|साँस|breath/.test(text)) topic = 'choking';
             else if (/cpr|बेहोश|होश|cardiac|heart|दिल/.test(text)) topic = 'cpr';
             else if (/accident|दुर्घटना|एक्सीडेंट|fracture|हड्डी|spine|रीढ़/.test(text)) topic = 'accident';
-            else if (/hospital|police|location|nearby|near me|अस्पताल|पुलिस|लोकेशन|पास में|नज़दीक/.test(text)) topic = 'hospital';
+            else if (/hospital|police|pharmacy|location|nearby|near me|district|अस्पताल|पुलिस|दवा की दुकान|फ़ार्मेसी|लोकेशन|पास में|नज़दीक|ज़िला|जिला/.test(text)) topic = 'hospital';
             else if (/medicine|medicine|दवा|गोली|tablet|dose|खुराक|medication/.test(text)) topic = 'medicine';
             else if (/emergency|urgent|help now|आपात|इमरजेंसी|खतरा/.test(text)) topic = 'emergency';
 
+            if (topic === 'hospital' && latestNearbyLocation) {
+                const categories = [
+                    ['hospital', isHindi ? 'अस्पताल/क्लिनिक' : 'Hospitals/clinics'],
+                    ['police', isHindi ? 'पुलिस/फायर स्टेशन' : 'Police/fire stations'],
+                    ['pharmacy', isHindi ? 'फ़ार्मेसी' : 'Pharmacies']
+                ];
+                const suggestions = categories.map(([type, label]) => {
+                    const matches = latestNearbyPlaces
+                        .filter(place => place.type === type)
+                        .sort((first, second) => first.distance - second.distance)
+                        .slice(0, 3);
+                    if (!matches.length) return `${label}: ${isHindi ? 'मैप में परिणाम नहीं मिला' : 'no mapped results'}`;
+                    const details = matches.map(place => {
+                        const distance = `${(place.distance / 1000).toFixed(1)} km`;
+                        return `${place.name} (${distance}${place.phone ? `, ${place.phone}` : ''})`;
+                    });
+                    return `${label}: ${details.join('; ')}`;
+                });
+                const scope = latestNearbySearchScope === 'area'
+                    ? (isHindi ? 'खोजे गए क्षेत्र में' : 'in the searched area')
+                    : (isHindi ? 'आपकी जगह से 12 km के भीतर' : 'within 12 km of your location');
+                return `${isHindi ? `मैप के अनुसार ${latestNearbyLocation} ${scope} के परिणाम:` : `Mapped results for ${latestNearbyLocation} ${scope}:`}\n${suggestions.join('\n')}\n${isHindi ? 'मैप/फोन विवरण अधूरे हो सकते हैं; जाने से पहले पुष्टि करें।' : 'Map/phone details may be incomplete; confirm before travelling.'}`;
+            }
             return replies[topic][isHindi ? 1 : 0];
         }
 
