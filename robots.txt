@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://piyushgiri1090.github.io/Emergence-web/sitemap.xml
