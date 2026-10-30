@@ -123,6 +123,44 @@
             scrollbar-width: none;
         }
 
+        .sanskrit-word {
+            display: inline-block;
+            animation: sanskrit-word-in 650ms ease-out both;
+        }
+
+        .sanskrit-word:nth-child(2) {
+            animation-delay: 120ms;
+        }
+
+        .sanskrit-word:nth-child(3) {
+            animation-delay: 240ms;
+        }
+
+        .sanskrit-word:nth-child(4) {
+            animation-delay: 360ms;
+        }
+
+        .sanskrit-word:nth-child(5) {
+            animation-delay: 480ms;
+        }
+
+        @keyframes sanskrit-word-in {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .sanskrit-word {
+                animation: none;
+            }
+        }
+
         body {
             background: #edf0ef;
             color: #17212d;
@@ -594,7 +632,13 @@
                 <svg class="w-5 h-5 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
-                <span class="font-bold tracking-wide text-xs sm:text-sm uppercase">आरोग्यं परमं भाग्यं स्वास्थ्यं सर्वार्थसाधनम्॥</span>
+                <span class="font-bold tracking-wide text-xs sm:text-sm uppercase" lang="sa" aria-label="आरोग्यं परमं भाग्यं स्वास्थ्यं सर्वार्थसाधनम्">
+                    <span class="sanskrit-word">आरोग्यं</span>
+                    <span class="sanskrit-word">परमं</span>
+                    <span class="sanskrit-word">भाग्यं</span>
+                    <span class="sanskrit-word">स्वास्थ्यं</span>
+                    <span class="sanskrit-word">सर्वार्थसाधनम्॥</span>
+                </span>
             </div>
             <div class="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm font-semibold">
                 <a href="tel:112" aria-label="Call emergency services on 112" class="bg-white text-brand-red hover:bg-gray-100 px-3 py-1 rounded-md transition flex items-center gap-1.5 shadow-sm">
@@ -1095,27 +1139,32 @@
                     </div>
                 </section>
 
+                <div class="flex flex-wrap items-center justify-end gap-2 mb-4" role="group" aria-label="First aid guide language">
+                    <button id="guidesEnglishButton" type="button" aria-pressed="true" onclick="setGuidesLanguage('en')" class="rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white">English</button>
+                    <button id="guidesHindiButton" type="button" aria-pressed="false" onclick="setGuidesLanguage('hi')" class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-bold text-gray-700">हिन्दी में अनुवाद</button>
+                </div>
+
                 <!-- Guide Selector Buttons -->
                 <div class="flex flex-wrap gap-2 pb-4 mb-6 border-b border-gray-200">
-                    <button onclick="showGuideDetail('snakeBite')" id="tab-btn-snakeBite" class="guide-tab-btn bg-brand-blue text-white px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm">
+                    <button onclick="showGuideDetail('snakeBite')" id="tab-btn-snakeBite" data-guide-hi="साँप का काटना" class="guide-tab-btn bg-brand-blue text-white px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm">
                         Snake Bite Protocol
                     </button>
-                    <button onclick="showGuideDetail('bleeding')" id="tab-btn-bleeding" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                    <button onclick="showGuideDetail('bleeding')" id="tab-btn-bleeding" data-guide-hi="तेज़ रक्तस्राव" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
                         Heavy Blood Bleeding
                     </button>
-                    <button onclick="showGuideDetail('accident')" id="tab-btn-accident" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                    <button onclick="showGuideDetail('accident')" id="tab-btn-accident" data-guide-hi="सड़क दुर्घटना / चोट" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
                         Road Accident / Trauma
                     </button>
-                    <button onclick="showGuideDetail('cpr')" id="tab-btn-cpr" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                    <button onclick="showGuideDetail('cpr')" id="tab-btn-cpr" data-guide-hi="हृदयगति रुकना और CPR" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
                         Cardiac Arrest & CPR
                     </button>
-                    <button onclick="showGuideDetail('burns')" id="tab-btn-burns" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                    <button onclick="showGuideDetail('burns')" id="tab-btn-burns" data-guide-hi="जलना और झुलसना" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
                         Burns & Scalds
                     </button>
-                    <button onclick="showGuideDetail('electric')" id="tab-btn-electric" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                    <button onclick="showGuideDetail('electric')" id="tab-btn-electric" data-guide-hi="बिजली का झटका" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
                         Electric Shock Care
                     </button>
-                    <button onclick="showGuideDetail('handCut')" id="tab-btn-handCut" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
+                    <button onclick="showGuideDetail('handCut')" id="tab-btn-handCut" data-guide-hi="हाथ का कट और पट्टी" class="guide-tab-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap border border-gray-200">
                         Hand Cuts & Dressing
                     </button>
                 </div>
@@ -1127,13 +1176,13 @@
                     <div id="guide-detail-snakeBite" class="guide-pane">
                         <div class="flex flex-col md:flex-row justify-between items-start border-b border-gray-200 pb-4 mb-6 gap-4">
                             <div>
-                                <span class="bg-red-100 text-brand-red text-xs font-extrabold px-2.5 py-1 rounded uppercase">Highest Priority Action</span>
+                                <span data-guide-hi="सबसे ज़रूरी कार्रवाई" class="bg-red-100 text-brand-red text-xs font-extrabold px-2.5 py-1 rounded uppercase">Highest Priority Action</span>
                                 <h2 class="text-2xl font-bold text-brand-darktext mt-2">Snake Bite First Aid Protocol</h2>
                                 <p class="text-xs text-gray-500">Common snakes in UP belt: Krait, Cobra, Russell's Viper. Immediate transport is critical.</p>
                             </div>
                             <a href="tel:108" class="bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-brand-reddark transition flex items-center gap-1.5">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-                                <span>Call Ambulance 108</span>
+                                <span data-guide-hi="एम्बुलेंस 108 पर कॉल करें">Call Ambulance 108</span>
                             </a>
                         </div>
 
@@ -1191,7 +1240,7 @@
                             </div>
                         </div>
 
-                        <div class="bg-gray-100 rounded-xl p-4 text-xs text-gray-700">
+                        <div class="guide-translation-note bg-gray-100 rounded-xl p-4 text-xs text-gray-700">
                             <strong>Note for Medical Staff / Escort:</strong> Note down time of bite, physical appearance of snake if safely seen (DO NOT capture or kill snake), and monitor breathing.
                         </div>
                     </div>
@@ -1200,11 +1249,11 @@
                     <div id="guide-detail-bleeding" class="guide-pane hidden">
                         <div class="flex flex-col md:flex-row justify-between items-start border-b border-gray-200 pb-4 mb-6 gap-4">
                             <div>
-                                <span class="bg-red-100 text-brand-red text-xs font-extrabold px-2.5 py-1 rounded uppercase">Hemostasis Emergency</span>
+                                <span data-guide-hi="रक्तस्राव रोकने की आपात स्थिति" class="bg-red-100 text-brand-red text-xs font-extrabold px-2.5 py-1 rounded uppercase">Hemostasis Emergency</span>
                                 <h2 class="text-2xl font-bold text-brand-darktext mt-2">Heavy Blood Bleeding Protocol</h2>
                                 <p class="text-xs text-gray-500">Uncontrolled bleeding can lead to fatal shock in minutes.</p>
                             </div>
-                            <a href="tel:108" class="bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-brand-reddark transition">Call Ambulance 108</a>
+                            <a href="tel:108" data-guide-hi="एम्बुलेंस 108 पर कॉल करें" class="bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-brand-reddark transition">Call Ambulance 108</a>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -1231,7 +1280,7 @@
                     <!-- GUIDE: ACCIDENT -->
                     <div id="guide-detail-accident" class="guide-pane hidden">
                         <div class="border-b border-gray-200 pb-4 mb-6">
-                            <span class="bg-blue-100 text-brand-blue text-xs font-extrabold px-2.5 py-1 rounded uppercase">Road Trauma Response</span>
+                            <span data-guide-hi="सड़क दुर्घटना में प्राथमिक सहायता" class="bg-blue-100 text-brand-blue text-xs font-extrabold px-2.5 py-1 rounded uppercase">Road Trauma Response</span>
                             <h2 class="text-2xl font-bold text-brand-darktext mt-2">Road Accident & Spine Immobilization</h2>
                             <p class="text-xs text-gray-500">Faizabad Road Expressway accident protocols.</p>
                         </div>
@@ -1259,7 +1308,7 @@
                     <!-- GUIDE: CPR -->
                     <div id="guide-detail-cpr" class="guide-pane hidden">
                         <div class="border-b border-gray-200 pb-4 mb-6">
-                            <span class="bg-red-100 text-brand-red text-xs font-extrabold px-2.5 py-1 rounded uppercase">Cardiac Lifesaving</span>
+                            <span data-guide-hi="हृदय जीवनरक्षक सहायता" class="bg-red-100 text-brand-red text-xs font-extrabold px-2.5 py-1 rounded uppercase">Cardiac Lifesaving</span>
                             <h2 class="text-2xl font-bold text-brand-darktext mt-2">Cardiac Arrest Hands-Only CPR</h2>
                             <p class="text-xs text-gray-500">Perform when victim is unresponsive and not breathing normally.</p>
                         </div>
@@ -1286,7 +1335,7 @@
                     <!-- GUIDE: BURNS -->
                     <div id="guide-detail-burns" class="guide-pane hidden">
                         <div class="border-b border-gray-200 pb-4 mb-6">
-                            <span class="bg-amber-100 text-amber-800 text-xs font-extrabold px-2.5 py-1 rounded uppercase">Thermal First Aid</span>
+                            <span data-guide-hi="जलने पर प्राथमिक उपचार" class="bg-amber-100 text-amber-800 text-xs font-extrabold px-2.5 py-1 rounded uppercase">Thermal First Aid</span>
                             <h2 class="text-2xl font-bold text-brand-darktext mt-2">Burns & Scalds Management</h2>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -1312,7 +1361,7 @@
                     <!-- GUIDE: ELECTRIC -->
                     <div id="guide-detail-electric" class="guide-pane hidden">
                         <div class="border-b border-gray-200 pb-4 mb-6">
-                            <span class="bg-amber-100 text-amber-800 text-xs font-extrabold px-2.5 py-1 rounded uppercase">Electrical Hazard</span>
+                            <span data-guide-hi="बिजली का खतरा" class="bg-amber-100 text-amber-800 text-xs font-extrabold px-2.5 py-1 rounded uppercase">Electrical Hazard</span>
                             <h2 class="text-2xl font-bold text-brand-darktext mt-2">Electric Shock Safety & Relief</h2>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -1333,14 +1382,16 @@
                             </div>
                         </div>
 
-                        <div id="guide-detail-handCut" class="guide-pane hidden">
+                    </div>
+
+                    <div id="guide-detail-handCut" class="guide-pane hidden">
                             <div class="flex flex-col md:flex-row justify-between items-start border-b border-gray-200 pb-4 mb-6 gap-4">
                                 <div>
-                                    <span class="bg-blue-100 text-brand-blue text-xs font-extrabold px-2.5 py-1 rounded uppercase">Minor Wound First Aid</span>
+                                    <span data-guide-hi="छोटे घाव की प्राथमिक सहायता" class="bg-blue-100 text-brand-blue text-xs font-extrabold px-2.5 py-1 rounded uppercase">Minor Wound First Aid</span>
                                     <h2 class="text-2xl font-bold text-brand-darktext mt-2">Hand Cut: Clean, Cover & Check</h2>
                                     <p class="text-xs text-gray-500">Micropore is adhesive medical tape to secure a dressing; it is not a medicine and should not be placed into the cut.</p>
                                 </div>
-                                <a href="tel:112" class="bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-brand-reddark transition">Serious injury? Call 112</a>
+                                <a href="tel:112" data-guide-hi="गंभीर चोट? 112 पर कॉल करें" class="bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-brand-reddark transition">Serious injury? Call 112</a>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="rounded-xl border border-green-200 bg-green-50 p-5">
@@ -1360,7 +1411,6 @@
                                         <li>Get urgent care for bleeding that will not stop with firm pressure, a deep/gaping cut, a foreign object, numbness, trouble moving a finger, or a bite wound.</li>
                                         <li>Seek medical advice if redness, warmth, swelling, worsening pain, pus, or fever develops. For a serious emergency call 112.</li>
                                     </ul>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -2160,6 +2210,144 @@
                 ? 'rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-bold text-gray-700'
                 : 'rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white';
             document.getElementById('precautionsHindiButton').className = showHindi
+                ? 'rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white'
+                : 'rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-bold text-gray-700';
+        }
+
+        const guideHindiTranslations = {
+            snakeBite: [
+                'साँप के काटने पर प्राथमिक उपचार',
+                'उत्तर प्रदेश में आम साँप: करैत, कोबरा और रसेल वाइपर। तुरंत अस्पताल ले जाना बेहद ज़रूरी है।',
+                'तुरंत करें',
+                'व्यक्ति को बिल्कुल स्थिर रखें: घबराहट से ज़हर शरीर में तेज़ी से फैल सकता है। उसे शांति से लिटाएँ।',
+                'काटे गए अंग को स्थिर करें: हाथ या पैर को स्प्लिंट/सहारे से हृदय के स्तर पर या उससे नीचे रखें।',
+                'कसी हुई चीज़ें हटाएँ: सूजन शुरू होने से पहले काटने की जगह के पास की अंगूठी, घड़ी, पायल या तंग कपड़े हटा दें।',
+                'एंटी-स्नेक वेनम वाले अस्पताल जाएँ: तुरंत RMLIMS Hospital या Chandan Hospital पहुँचें।',
+                'ये काम बिल्कुल न करें',
+                'घाव न काटें और ज़हर न चूसें: इससे ऊतक नष्ट हो सकते हैं और गंभीर संक्रमण हो सकता है; ज़हर भी नहीं निकलता।',
+                'कसकर पट्टी/टूर्निकेट न बाँधें: इससे रक्त प्रवाह रुक सकता है और अंग को नुकसान हो सकता है।',
+                'बर्फ, रसायन या जड़ी-बूटी का पाउडर न लगाएँ: इससे स्थानीय ऊतक को और नुकसान हो सकता है।',
+                'शराब या एस्पिरिन न दें: एस्पिरिन रक्तस्राव का जोखिम बढ़ा सकती है।',
+                'चिकित्सा कर्मियों/साथी के लिए नोट: काटने का समय और साँप का रूप (यदि सुरक्षित रूप से देखा हो) लिखें। साँप को पकड़ें या मारें नहीं; साँस पर नज़र रखें।'
+            ],
+            bleeding: [
+                'अत्यधिक रक्तस्राव की आपात स्थिति',
+                'अनियंत्रित रक्तस्राव से कुछ ही मिनटों में जानलेवा शॉक हो सकता है।',
+                'कार्रवाई के चरण',
+                'सीधा और लगातार दबाव दें: घाव पर स्टेराइल गॉज़ या उपलब्ध सबसे साफ कपड़ा रखकर दोनों हाथों से मज़बूती से दबाएँ।',
+                'दबाव बनाए रखें: घाव देखने के लिए कपड़ा न हटाएँ। खून आर-पार आए तो ऊपर एक और कपड़ा रखें।',
+                'खून बह रहे अंग को ऊपर उठाएँ: हड्डी टूटने का संदेह न हो तो अंग को हृदय के स्तर से ऊपर रखें।',
+                'दबाव वाली पट्टी बाँधें: ड्रेसिंग के ऊपर पट्टी कसकर बाँधें, लेकिन अंग में रक्त प्रवाह बंद न हो।',
+                'चेतावनी: ये काम न करें',
+                'फँसी हुई चीज़ न निकालें: चाकू, काँच या धातु फँसी हो तो उसके आसपास दबाव दें; उसे बाहर न खींचें।',
+                'बड़े घाव को पहले साफ करने में समय न लगाएँ: पहले खून रोकने पर ध्यान दें।',
+                'बिना प्रशिक्षण टूर्निकेट न लगाएँ: व्यावसायिक टूर्निकेट केवल अंग से तेज़ धमनी रक्तस्राव होने और सीधे दबाव से न रुकने पर इस्तेमाल करें।'
+            ],
+            accident: [
+                'सड़क दुर्घटना और रीढ़ को स्थिर रखना',
+                'फ़ैज़ाबाद रोड एक्सप्रेसवे दुर्घटनाओं के लिए प्राथमिक कदम।',
+                'ज़रूरी कदम',
+                'घटनास्थल सुरक्षित करें: हैज़र्ड लाइट चालू करें, यातायात को मोड़ें और व्यक्ति को आते वाहनों से बचाएँ।',
+                'सिर और गर्दन स्थिर रखें: सिर को गर्दन के सीध में थामें। जाँच होने तक रीढ़ की चोट मानकर चलें।',
+                'साँस की जाँच करें: गर्दन पीछे झुकाए बिना देखें कि व्यक्ति होश में है और सामान्य रूप से साँस ले रहा है या नहीं।',
+                'पुलिस और चिकित्सा सहायता बुलाएँ: सही स्थान/पहचान-चिह्न बताकर 112 / 108 पर कॉल करें।',
+                'ज़रूरी सावधानियाँ',
+                'व्यक्ति को बिना ज़रूरत न हिलाएँ: रीढ़ की चोट में हिलाने से स्थायी लकवा या मृत्यु हो सकती है।',
+                'मोटरसाइकिल का हेलमेट न उतारें: केवल तब विचार करें जब व्यक्ति साँस न ले रहा हो और वायुमार्ग पूरी तरह बंद हो।',
+                'बेहोश व्यक्ति को पानी न दें: इससे दम घुट सकता है और वायुमार्ग बंद हो सकता है।'
+            ],
+            cpr: [
+                'हृदय गति रुकने पर केवल हाथों से CPR',
+                'जब व्यक्ति प्रतिक्रिया न दे और सामान्य रूप से साँस न ले रहा हो, तब करें।',
+                'छाती दबाने की प्रक्रिया',
+                'हाथ रखें: उँगलियाँ एक-दूसरे में फँसाएँ और हथेली का निचला हिस्सा छाती के बीच, उरोस्थि के निचले आधे भाग पर रखें।',
+                'ज़ोर से और तेज़ दबाएँ: छाती को लगभग 5 सेमी दबाएँ; हर मिनट 100–120 बार दबाएँ।',
+                'छाती को वापस उठने दें: हर दबाव के बाद छाती को पूरी तरह सामान्य स्थिति में आने दें।',
+                'बिना रुके जारी रखें: आपातकालीन एम्बुलेंस टीम के आने तक हर 2 मिनट में दबाने वाले व्यक्ति को बदलें।',
+                'ज़रूरी सावधानियाँ',
+                'CPR शुरू करने में देर न करें: रक्त प्रवाह रुकने पर कुछ ही मिनटों में मस्तिष्क को नुकसान हो सकता है।',
+                'नरम बिस्तर पर CPR न करें: प्रभावी दबाव के लिए व्यक्ति को सख़्त, सपाट ज़मीन पर रखें।'
+            ],
+            burns: [
+                'जलने और गर्म तरल से झुलसने का उपचार',
+                'ठंडा करने के चरण',
+                'तुरंत ठंडा करें: जले हुए हिस्से पर 10–20 मिनट तक साफ़, ठंडा बहता पानी डालें।',
+                'ढीला ढकें: जले हिस्से पर साफ़ क्लिंग फ़िल्म या स्टेराइल, रोएँ-रहित कपड़ा ढीला रखें।',
+                'शरीर को गर्म रखें: हाइपोथर्मिया से बचाने के लिए घायल न हुए हिस्सों को गर्म रखें।',
+                'ये चीज़ें बिल्कुल न लगाएँ',
+                'बर्फ़ या बर्फ़ का पानी नहीं: इससे ऊतक को गंभीर नुकसान और ठंड से जलन हो सकती है।',
+                'टूथपेस्ट, मक्खन या तेल नहीं: ये ऊष्मा को फँसा सकते हैं और संक्रमण का जोखिम बढ़ाते हैं।',
+                'छाले न फोड़ें: साबुत छाले बैक्टीरिया के संक्रमण से बचाव करते हैं।'
+            ],
+            electric: [
+                'बिजली के झटके से सुरक्षा और प्राथमिक सहायता',
+                'सुरक्षित रूप से अलग करना',
+                'पहले बिजली बंद करें: व्यक्ति को छूने से पहले मुख्य स्विच बंद करें या प्लग निकालें।',
+                'बिजली न चलाने वाली वस्तु इस्तेमाल करें: बिजली बंद न हो सके तो सूखी लकड़ी/रबर पर खड़े होकर सूखी लकड़ी या प्लास्टिक से व्यक्ति को दूर करें।',
+                'ज़रूरी संकेत जाँचें: अलग करने के बाद साँस और नाड़ी जाँचें। हृदय रुकने पर CPR शुरू करें।',
+                'खतरे',
+                'नंगे हाथ से न छुएँ: बिजली के संपर्क में रहते हुए छूने से बचावकर्ता को भी करंट लग सकता है।',
+                'धातु या गीली वस्तु इस्तेमाल न करें: इनसे करंट सीधे बचावकर्ता तक पहुँच सकता है।'
+            ],
+            handCut: [
+                'हाथ का कट: साफ़ करें, ढकें और जाँचें',
+                'माइक्रोपोर ड्रेसिंग को जगह पर रखने वाली चिपकने वाली मेडिकल टेप है; यह दवा नहीं है और इसे कट के अंदर नहीं लगाना चाहिए।',
+                'छोटे और उथले कट के लिए',
+                'खून रोकें: साफ़ गॉज़ या कपड़े से कट पर लगातार मज़बूती से दबाव दें। आरामदायक हो तो हाथ ऊपर रखें।',
+                'धोएँ: खून रुकने पर साफ़ बहते पानी से धीरे से धोएँ। आसपास की त्वचा साबुन से धोएँ; कट के अंदर न रगड़ें।',
+                'ढकें: आसपास की त्वचा सुखाएँ, कट पर स्टेराइल न चिपकने वाला पैड या साफ़ प्लास्टर रखें और माइक्रोपोर टेप साबुत त्वचा पर लगाएँ। गीला या गंदा हो तो बदलें।',
+                'टिटनेस जाँचें: कट गहरा/गंदा हो या टीके की जानकारी न हो तो डॉक्टर से बूस्टर के बारे में पूछें।',
+                'दवाइयाँ और चिकित्सा सहायता कब लें',
+                'माइक्रोपोर टेप एंटीसेप्टिक, एंटीबायोटिक या दर्द की दवा नहीं है। टेप, पाउडर, गोंद या मरहम घाव के अंदर न डालें।',
+                'कट में अल्कोहल, हाइड्रोजन पेरॉक्साइड या तेज़ एंटीसेप्टिक न डालें। डॉक्टर/फ़ार्मासिस्ट की सलाह के बिना एंटीबायोटिक गोली या क्रीम शुरू न करें।',
+                'दबाव के बाद भी खून न रुके, कट गहरा/खुला हो, कोई वस्तु फँसी हो, सुन्नपन हो, उँगली हिलाने में दिक्कत हो या काटने का घाव हो तो तुरंत चिकित्सा लें।',
+                'लालिमा, गर्माहट, सूजन, बढ़ता दर्द, मवाद या बुखार हो तो चिकित्सकीय सलाह लें। गंभीर आपात स्थिति में 112 पर कॉल करें।'
+            ]
+        };
+        const guideOriginalMarkup = new WeakMap();
+
+        function setGuidesLanguage(language) {
+            const showHindi = language === 'hi';
+            const panes = document.querySelectorAll('.guide-pane');
+
+            panes.forEach(pane => {
+                const guideId = pane.id.replace('guide-detail-', '');
+                const translations = guideHindiTranslations[guideId];
+                const textElements = pane.querySelectorAll('h2, h3, p, li, .guide-translation-note');
+                if (!translations || textElements.length !== translations.length) {
+                    throw new Error(`Hindi translation mismatch for guide: ${guideId}`);
+                }
+
+                textElements.forEach((element, index) => {
+                    if (!guideOriginalMarkup.has(element)) {
+                        guideOriginalMarkup.set(element, element.innerHTML);
+                    }
+                    if (showHindi) {
+                        element.textContent = translations[index];
+                    } else {
+                        element.innerHTML = guideOriginalMarkup.get(element);
+                    }
+                });
+                pane.lang = showHindi ? 'hi' : 'en';
+            });
+
+            document.querySelectorAll('[data-guide-hi]').forEach(element => {
+                if (!guideOriginalMarkup.has(element)) {
+                    guideOriginalMarkup.set(element, element.innerHTML);
+                }
+                if (showHindi) {
+                    element.textContent = element.dataset.guideHi;
+                } else {
+                    element.innerHTML = guideOriginalMarkup.get(element);
+                }
+            });
+
+            document.getElementById('guidesEnglishButton').setAttribute('aria-pressed', String(!showHindi));
+            document.getElementById('guidesHindiButton').setAttribute('aria-pressed', String(showHindi));
+            document.getElementById('guidesEnglishButton').className = showHindi
+                ? 'rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-bold text-gray-700'
+                : 'rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white';
+            document.getElementById('guidesHindiButton').className = showHindi
                 ? 'rounded-lg bg-brand-blue px-3 py-2 text-xs font-bold text-white'
                 : 'rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-bold text-gray-700';
         }
