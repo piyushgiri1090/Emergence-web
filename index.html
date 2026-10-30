@@ -461,18 +461,29 @@
 
             #appSidebar > .md\:hidden {
                 display: flex;
-                max-height: 150px;
-                flex-direction: column;
+                flex-direction: row;
+                flex-wrap: nowrap;
                 justify-content: flex-start;
                 gap: 4px;
-                overflow-x: hidden;
-                overflow-y: auto;
+                overflow-x: auto;
+                overflow-y: hidden;
                 scrollbar-width: thin;
+            }
+
+            #appSidebar > .md\:hidden::-webkit-scrollbar {
+                height: 4px;
             }
 
             #appSidebar .nav-btn {
                 width: 100%;
                 white-space: nowrap;
+            }
+
+            #appSidebar > .md\:hidden button {
+                width: auto;
+                flex: 0 0 auto;
+                white-space: nowrap;
+                text-align: center;
             }
 
             #appSidebar > div:first-child > .flex.justify-between > .flex.items-center.space-x-3 + nav + div {
@@ -534,11 +545,6 @@
 
             #emergencyTopbar a svg {
                 display: none;
-            }
-
-            #appSidebar > .md\:hidden button {
-                width: 100%;
-                text-align: left;
             }
 
             .hero-video {
